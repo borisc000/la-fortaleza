@@ -53,13 +53,25 @@ jobs:
           path: game/dist
           retention-days: 7
 
-  # Partidas completas simuladas (unos 20 minutos). Solo en main o a mano,
-  # para no gastar minutos de Actions en cada push de una PR.
+  # Partidas completas simuladas, repartidas en ocho máquinas (unas dos partidas cada una).
+  # Solo en main o a mano: cada partida tarda varios minutos.
   simulacion:
-    name: Simulaciones de partida completa
+    name: Simulación · ${{ matrix.nombre }}
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { nombre: sondas de balance, archivo: balance-probes, patron: '.' }
+          - { nombre: guerrero combate, archivo: campaign-warrior-combat, patron: '.' }
+          - { nombre: guerrero fuego/agua, archivo: campaign-warrior-build, patron: 'reaches (fire|water) ' }
+          - { nombre: guerrero tierra/aire, archivo: campaign-warrior-build, patron: 'reaches (earth|air) ' }
+          - { nombre: mago fuego/agua, archivo: campaign-mage, patron: 'reaches (fire|water) ' }
+          - { nombre: mago tierra/aire, archivo: campaign-mage, patron: 'reaches (earth|air) ' }
+          - { nombre: arquero fuego/agua, archivo: campaign-archer, patron: 'reaches (fire|water) ' }
+          - { nombre: arquero tierra/aire, archivo: campaign-archer, patron: 'reaches (earth|air) ' }
     steps:
       - uses: actions/checkout@v4
         with:
@@ -74,5 +86,9 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
+      # Falla también si el patrón no selecciona ninguna prueba.
       - name: Simulaciones
-        run: npm run test:sim
+        run: |
+          node --experimental-strip-types --test --test-name-pattern="${{ matrix.patron }}" \
+            tests/simulation/${{ matrix.archivo }}.test.ts | tee salida.txt
+          grep -qE '^# pass [1-9]' salida.txt
