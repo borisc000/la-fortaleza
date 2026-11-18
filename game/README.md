@@ -72,7 +72,8 @@ Refuerzos a 11–23 m con distancia segura, ruta para el enemigo y el héroe, y 
 | `src/input` | Estado de teclas y dos punteros; conexión de teclado, ratón, táctil, captura y pérdida de foco |
 | `src/rendering` | Escena, materiales, personajes provisionales, animación, arcos, números de daño, cristales de esencia/núcleo, anticipaciones, proyectiles y cámara |
 | `src/rendering/collision.ts` | Funciones puras de volumen de cámara y recuperación |
-| `src/main.ts` | Coordinación, bucle, redimensionado e interfaz |
+| `src/ui` | Interfaz DOM: HUD, radar, tutorial, anuncios, subida de nivel, tienda, resultados y ajustes. Lee la partida mediante `UiContext`; no la modifica salvo a través de `run.choose` y `run.shop.buy` |
+| `src/main.ts` | Coordinación: carga, bucle de simulación y render, fases, redimensionado y botones |
 | `public/assets` | Materiales y cielo locales con manifiesto de origen |
 
 El render consume eventos y estado; no decide daño ni orientación de ataque. Movimiento y combate corren a 60 pasos por segundo con interpolación visual. Se recuperan como máximo cinco pasos por cuadro (83,33 ms), registrando saturación en diagnóstico. Unidades: metros y segundos. La cámara conserva su rumbo aunque el Guerrero golpee hacia otro lado. Los personajes y sus animaciones son provisionales.
@@ -86,6 +87,8 @@ npm test
 npm run build
 npm run preview
 ```
+
+`npm test` ejecuta la suite rápida (unos 30 s). Las partidas completas simuladas (14 campañas de seis minutos sobre el mapa real y 12 sondas de supervivencia) están en `tests/simulation/` y se ejecutan con `npm run test:sim` (unos 20 min). La CI de GitHub corre la suite rápida, el typecheck y el build en cada push y PR, y las simulaciones solo en `main` o a mano.
 
 La última orden sirve `dist/` en http://127.0.0.1:4183/. Compilar no publica el proyecto. La advertencia de tamaño del paquete se debe principalmente al motor Three.js; se registra para optimización posterior.
 
