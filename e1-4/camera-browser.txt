@@ -1,0 +1,22 @@
+### Result
+{"gate":{"engine":"three.js r187","frame":"5277","cameraDistance":"12.00","obstructed":"false","yaw":"0.072","pitch":"0.420","playerX":"4.715","playerZ":"-8.036","hp":"100","kills":"1","encounter":"running","impetus":"0","whirlwind":"false","level":"1","xp":"1","wave":"15","stage":"waves","seed":"1518974728","classId":"warrior","affinity":"","mastery":"false","coins":"6","openedChests":"0","captureProgress":"0.00","captureState":"idle","shopping":"false"},"far":{"engine":"three.js r187","frame":"5359","cameraDistance":"17.75","obstructed":"false","yaw":"-0.198","pitch":"0.354","playerX":"4.715","playerZ":"-8.036","hp":"100","kills":"1","encounter":"running","impetus":"0","whirlwind":"false","level":"1","xp":"1","wave":"15","stage":"waves","seed":"1518974728","classId":"warrior","affinity":"","mastery":"false","coins":"6","openedChests":"0","captureProgress":"0.00","captureState":"idle","shopping":"false"},"near":{"engine":"three.js r187","frame":"5469","cameraDistance":"4.00","obstructed":"false","yaw":"-0.198","pitch":"0.354","playerX":"4.715","playerZ":"-8.036","hp":"100","kills":"1","encounter":"running","impetus":"0","whirlwind":"false","level":"1","xp":"1","wave":"15","stage":"waves","seed":"1518974728","classId":"warrior","affinity":"","mastery":"false","coins":"6","openedChests":"0","captureProgress":"0.00","captureState":"idle","shopping":"false"}}
+### Ran Playwright code
+```js
+await (async (page) => {
+ await page.getByRole('button',{name:'Continuar',exact:true}).click();
+ await page.keyboard.down('w'); await page.waitForTimeout(6000); await page.keyboard.up('w');
+ await page.screenshot({path:'output/playwright/e14-warrior-gate.png'});
+ const gate=await page.locator('#world').evaluate(el=>({...el.dataset}));
+ await page.mouse.move(750,450); await page.mouse.move(810,450,{steps:8});
+ for(let i=0;i<10;i++) await page.mouse.wheel(0,220);
+ await page.waitForTimeout(350);
+ const far=await page.locator('#world').evaluate(el=>({...el.dataset}));
+ for(let i=0;i<22;i++) await page.mouse.wheel(0,-220);
+ await page.waitForTimeout(350);
+ const near=await page.locator('#world').evaluate(el=>({...el.dataset}));
+ await page.screenshot({path:'output/playwright/e14-warrior-camera.png'});
+ await page.keyboard.press('Escape');
+ return {gate,far,near};
+}
+)(page);
+```

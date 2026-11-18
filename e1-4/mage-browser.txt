@@ -1,0 +1,15 @@
+### Result
+{"engine":"three.js r187","frame":"2230","cameraDistance":"12.00","obstructed":"false","yaw":"0.072","pitch":"0.420","playerX":"13.589","playerZ":"115.646","hp":"80","kills":"3","encounter":"running","impetus":"2","whirlwind":"false","level":"1","xp":"1","wave":"7","stage":"waves","seed":"458597405","classId":"mage","affinity":"fire","mastery":"false","coins":"3","openedChests":"0","captureProgress":"0.00","captureState":"idle","shopping":"false"}
+### Ran Playwright code
+```js
+await (async (page) => {
+ await page.reload();
+ await page.getByRole('combobox',{name:'Elige tu clase',exact:true}).selectOption('mage');
+ await page.getByRole('button',{name:'Entrar en el territorio'}).click();
+ await page.keyboard.down('w'); await page.waitForTimeout(18000); await page.keyboard.up('w');
+ await page.screenshot({path:'output/playwright/e14-mage-field.png'});
+ await page.keyboard.press('Escape');
+ return await page.locator('#world').evaluate(el=>({...el.dataset}));
+}
+)(page);
+```

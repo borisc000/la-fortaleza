@@ -1,0 +1,16 @@
+### Result
+{"start":{"engine":"three.js r187","frame":"42","cameraDistance":"12.00","obstructed":"false","yaw":"0.072","pitch":"0.420","playerX":"20.000","playerZ":"205.000","hp":"100","kills":"0","encounter":"running","impetus":"0","whirlwind":"false","level":"1","xp":"0","wave":"1","stage":"waves","seed":"3560322173","classId":"warrior","affinity":"","mastery":"false","coins":"0","openedChests":"0","captureProgress":"0.00","captureState":"idle","shopping":"false"},"end":{"engine":"three.js r187","frame":"273","cameraDistance":"12.00","obstructed":"false","yaw":"0.072","pitch":"0.420","playerX":"18.551","playerZ":"184.802","hp":"100","kills":"1","encounter":"running","impetus":"2","whirlwind":"false","level":"1","xp":"1","wave":"2","stage":"waves","seed":"3560322173","classId":"warrior","affinity":"","mastery":"false","coins":"3","openedChests":"0","captureProgress":"0.00","captureState":"idle","shopping":"false"},"errors":[]}
+### Ran Playwright code
+```js
+await (async page => {
+ const errors=[]; page.on('pageerror',e=>errors.push(e.message));
+ await page.bringToFront();await page.setViewportSize({width:1440,height:900});
+ await page.getByRole('button',{name:'Entrar en el territorio',exact:true}).click();await page.waitForTimeout(500);
+ const canvas=page.locator('canvas').first(), start=await canvas.evaluate(e=>({...e.dataset}));
+ await page.keyboard.down('w');await page.waitForTimeout(5000);await page.keyboard.up('w');
+ const end=await canvas.evaluate(e=>({...e.dataset}));await page.screenshot({path:'output/playwright/e12-game.png'});
+ await page.keyboard.press('Escape');
+ return {start,end,errors};
+}
+)(page);
+```

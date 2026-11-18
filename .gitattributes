@@ -1,0 +1,12 @@
+# Texto: finales de línea normalizados en el repositorio
+* text=auto
+
+# Fuentes de arte y capturas pesadas: Git LFS
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+game/art/**/*.glb filter=lfs diff=lfs merge=lfs -text
+
+# Recursos que carga el juego (game/public): git normal, para que la CI no consuma cuota LFS
+*.glb binary
+*.jpg binary
+*.hdr binary

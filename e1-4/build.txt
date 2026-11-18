@@ -1,0 +1,27 @@
+
+> fortaleza-survivor@0.2.15 build
+> npm run typecheck && vite build
+
+
+> fortaleza-survivor@0.2.15 typecheck
+> tsc --noEmit
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 108 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/model-lab.html                    5.41 kB │ gzip:   2.11 kB
+dist/index.html                       11.37 kB │ gzip:   4.08 kB
+dist/assets/models-9UIL0UqC.css        4.39 kB │ gzip:   1.65 kB
+dist/assets/game-Cw0mSH_w.css         21.61 kB │ gzip:   5.64 kB
+dist/assets/models-BQewSZ8S.js        53.33 kB │ gzip:  16.43 kB
+dist/assets/game-mCa_C9L4.js          75.10 kB │ gzip:  25.62 kB
+dist/assets/mage-spells-DlNZZocA.js  830.44 kB │ gzip: 223.42 kB
+
+✓ built in 486ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.

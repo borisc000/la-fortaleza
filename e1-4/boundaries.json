@@ -1,0 +1,161 @@
+{
+  "passed": 12,
+  "results": [
+    {
+      "classId": "warrior",
+      "start": {
+        "x": -137,
+        "z": 239
+      },
+      "stopped": {
+        "x": -137.6,
+        "z": 239.6,
+        "yaw": 2.1752597480305136
+      },
+      "returnedToMap": true
+    },
+    {
+      "classId": "warrior",
+      "start": {
+        "x": 141,
+        "z": 239
+      },
+      "stopped": {
+        "x": 141.6,
+        "z": 239.6,
+        "yaw": -2.1752597480305136
+      },
+      "returnedToMap": true
+    },
+    {
+      "classId": "warrior",
+      "start": {
+        "x": -137,
+        "z": -10
+      },
+      "stopped": {
+        "x": -137.6,
+        "z": -16.274998237060547,
+        "yaw": 1.1203518417945105e-10
+      },
+      "returnedToMap": true
+    },
+    {
+      "classId": "warrior",
+      "start": {
+        "x": 141,
+        "z": -10
+      },
+      "stopped": {
+        "x": 141.6,
+        "z": -16.274998237060547,
+        "yaw": -1.1203518417945105e-10
+      },
+      "returnedToMap": true
+    },
+    {
+      "classId": "mage",
+      "start": {
+        "x": -137,
+        "z": 239
+      },
+      "stopped": {
+        "x": -137.6,
+        "z": 239.6,
+        "yaw": 2.1752597480305136
+      },
+      "returnedToMap": true
+    },
+    {
+      "classId": "mage",
+      "start": {
+        "x": 141,
+        "z": 239
+      },
+      "stopped": {
+        "x": 141.6,
+        "z": 239.6,
+        "yaw": -2.1752597480305136
+      },
+      "returnedToMap": true
+    },
+    {
+      "classId": "mage",
+      "start": {
+        "x": -137,
+        "z": -10
+      },
+      "stopped": {
+        "x": -137.6,
+        "z": -16.274998237060547,
+        "yaw": 1.1203518417945105e-10
+      },
+      "returnedToMap": true
+    },
+    {
+      "classId": "mage",
+      "start": {
+        "x": 141,
+        "z": -10
+      },
+      "stopped": {
+        "x": 141.6,
+        "z": -16.274998237060547,
+        "yaw": -1.1203518417945105e-10
+      },
+      "returnedToMap": true
+    },
+    {
+      "classId": "archer",
+      "start": {
+        "x": -137,
+        "z": 239
+      },
+      "stopped": {
+        "x": -137.6,
+        "z": 239.6,
+        "yaw": 2.1277096738071246
+      },
+      "returnedToMap": true
+    },
+    {
+      "classId": "archer",
+      "start": {
+        "x": 141,
+        "z": 239
+      },
+      "stopped": {
+        "x": 141.6,
+        "z": 239.6,
+        "yaw": -2.1277096738071246
+      },
+      "returnedToMap": true
+    },
+    {
+      "classId": "archer",
+      "start": {
+        "x": -137,
+        "z": -10
+      },
+      "stopped": {
+        "x": -137.6,
+        "z": -16.274998237060547,
+        "yaw": 2.579378638876543e-10
+      },
+      "returnedToMap": true
+    },
+    {
+      "classId": "archer",
+      "start": {
+        "x": 141,
+        "z": -10
+      },
+      "stopped": {
+        "x": 141.6,
+        "z": -16.274998237060547,
+        "yaw": -2.579378638876543e-10
+      },
+      "returnedToMap": true
+    }
+  ]
+}

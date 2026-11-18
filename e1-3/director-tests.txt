@@ -1,0 +1,157 @@
+TAP version 13
+# Subtest: large enemies retain a reachable approach when the hero hugs a wall
+ok 1 - large enemies retain a reachable approach when the hero hugs a wall
+  ---
+  duration_ms: 237.2486
+  type: 'test'
+  ...
+# Subtest: archer announces a frozen aim, then fires a non-homing bolt once
+ok 2 - archer announces a frozen aim, then fires a non-homing bolt once
+  ---
+  duration_ms: 232.3763
+  type: 'test'
+  ...
+# Subtest: standing in a bolt path takes one hit; contact alone has no archer damage
+ok 3 - standing in a bolt path takes one hit; contact alone has no archer damage
+  ---
+  duration_ms: 392.5998
+  type: 'test'
+  ...
+# Subtest: projectiles sweep thin obstacles and targets without tunnelling
+ok 4 - projectiles sweep thin obstacles and targets without tunnelling
+  ---
+  duration_ms: 0.6438
+  type: 'test'
+  ...
+# Subtest: projectile lifetime, population and pause are bounded
+ok 5 - projectile lifetime, population and pause are bounded
+  ---
+  duration_ms: 391.9399
+  type: 'test'
+  ...
+# Subtest: charge warns for one second, locks heading and only hits once
+ok 6 - charge warns for one second, locks heading and only hits once
+  ---
+  duration_ms: 397.9791
+  type: 'test'
+  ...
+# Subtest: charging into a wall stops before it and cannot damage through it
+ok 7 - charging into a wall stops before it and cannot damage through it
+  ---
+  duration_ms: 223.5029
+  type: 'test'
+  ...
+# Subtest: elite drops a real unique core and eight essence, with no provisional group grant
+ok 8 - elite drops a real unique core and eight essence, with no provisional group grant
+  ---
+  duration_ms: 564.7127
+  type: 'test'
+  ...
+# Subtest: elite and boss have correct water resistance, while burn still applies
+ok 9 - elite and boss have correct water resistance, while burn still applies
+  ---
+  duration_ms: 866.7455
+  type: 'test'
+  ...
+# Subtest: boss alternates sweep, ground slam and volley with recovery windows
+ok 10 - boss alternates sweep, ground slam and volley with recovery windows
+  ---
+  duration_ms: 458.0928
+  type: 'test'
+  ...
+# Subtest: leaving the boss slam circle before impact avoids damage
+ok 11 - leaving the boss slam circle before impact avoids damage
+  ---
+  duration_ms: 493.3104
+  type: 'test'
+  ...
+# Subtest: boss fury widens the volley without creating homing projectiles
+ok 12 - boss fury widens the volley without creating homing projectiles
+  ---
+  duration_ms: 957.0176
+  type: 'test'
+  ...
+# Subtest: the director introduces enemies on schedule and respects rest windows
+ok 13 - the director introduces enemies on schedule and respects rest windows
+  ---
+  duration_ms: 922.6759
+  type: 'test'
+  ...
+# Subtest: population cap discards missed waves instead of bursting a backlog
+ok 14 - population cap discards missed waves instead of bursting a backlog
+  ---
+  duration_ms: 1252.7541
+  type: 'test'
+  ...
+# Subtest: at six minutes normal enemies withdraw without loot and the live elite blocks the boss
+ok 15 - at six minutes normal enemies withdraw without loot and the live elite blocks the boss
+  ---
+  duration_ms: 900.2393
+  type: 'test'
+  ...
+# Subtest: boss arrival is announced, invulnerable, and never grants victory on time alone
+ok 16 - boss arrival is announced, invulnerable, and never grants victory on time alone
+  ---
+  duration_ms: 1017.8885
+  type: 'test'
+  ...
+# Subtest: only killing the boss wins; simultaneous lethal blows are defeat
+ok 17 - only killing the boss wins; simultaneous lethal blows are defeat
+  ---
+  duration_ms: 1397.5447
+  type: 'test'
+  ...
+# Subtest: pruning dead actors keeps IDs unique and releases render objects
+ok 18 - pruning dead actors keeps IDs unique and releases render objects
+  ---
+  duration_ms: 231.0646
+  type: 'test'
+  ...
+# Subtest: same seed reproduces spawns and a fresh run clears every campaign state
+ok 19 - same seed reproduces spawns and a fresh run clears every campaign state
+  ---
+  duration_ms: 2696.0068
+  type: 'test'
+  ...
+# {"actors":20,"cpuMedianMs":3.909900000000107,"cpuP95Ms":6.636700000000019,"cpuMaxMs":10.40099999999984,"gpuMeasured":false}
+# {"actors":60,"cpuMedianMs":12.907099999998536,"cpuP95Ms":17.9387999999999,"cpuMaxMs":26.630199999999604,"gpuMeasured":false}
+# {"actors":100,"cpuMedianMs":18.370600000000195,"cpuP95Ms":27.208199999997305,"cpuMaxMs":111.55240000000049,"gpuMeasured":false}
+# Subtest: spatial broad phase never drops exact neighbors, including moving across negative cells
+ok 20 - spatial broad phase never drops exact neighbors, including moving across negative cells
+  ---
+  duration_ms: 13.8519
+  type: 'test'
+  ...
+# Subtest: each stage fills its local target with a weak majority, bounded threats and no backlog
+ok 21 - each stage fills its local target with a weak majority, bounded threats and no backlog
+  ---
+  duration_ms: 216.9368
+  type: 'test'
+  ...
+# Subtest: weak pursuers die to one base sword hit and award exactly one death; retirement awards none
+ok 22 - weak pursuers die to one base sword hit and award exactly one death; retirement awards none
+  ---
+  duration_ms: 19.0305
+  type: 'test'
+  ...
+# Subtest: one hundred weak bodies and warnings use three shared meshes and reset without stale instances
+ok 23 - one hundred weak bodies and warnings use three shared meshes and reset without stale instances
+  ---
+  duration_ms: 54.8714
+  type: 'test'
+  ...
+# Subtest: real-map CPU load samples at 20, 60 and 100 actors remain finite and within collision bounds
+ok 24 - real-map CPU load samples at 20, 60 and 100 actors remain finite and within collision bounds
+  ---
+  duration_ms: 23246.4177
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 24327.5776

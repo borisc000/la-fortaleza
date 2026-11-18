@@ -1,0 +1,29 @@
+<!doctype html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Atelier · La Fortaleza</title></head><body>
+<header><div><span class="eyebrow">LA FORTALEZA / HERRAMIENTAS</span><h1>Atelier <span>de modelos</span></h1></div><a href="/">Volver al juego ↗</a></header>
+<main><aside><label for="lab-mode">Modo de laboratorio</label><select id="lab-mode"><option value="models">Modelos y animaciones</option><option value="abilities">Habilidades completas</option></select>
+<section id="ability-settings" hidden aria-label="Configurar habilidad">
+<label for="trial-class">Clase</label><select id="trial-class"><option value="warrior">Guerrero</option><option value="mage">Mago</option><option value="archer">Arquero</option></select>
+<label for="trial-ability">Habilidad</label><select id="trial-ability"></select>
+<div class="trial-pair"><div><label for="trial-level">Nivel</label><select id="trial-level"></select></div><div><label for="trial-element">Elemento</label><select id="trial-element"><option value="fire">Fuego</option><option value="water">Agua</option><option value="earth">Tierra</option><option value="air">Aire</option></select></div></div>
+<label for="trial-focus">Priorizar mejoras</label><select id="trial-focus"><option value="expansion">Expansión</option><option value="power">Potencia</option><option value="specialization">Especialización</option><option value="rhythm">Ritmo</option></select>
+<p id="trial-branches" class="aside-note"></p>
+<label for="trial-mutation">Mutación · nivel 5</label><select id="trial-mutation"></select><p id="trial-mutation-note" class="aside-note"></p>
+<label for="trial-finisher">Remate · nivel 10</label><select id="trial-finisher"></select><p id="trial-finisher-note" class="aside-note"></p>
+<button id="trial-run" type="button">Ejecutar de nuevo</button>
+<p class="aside-note">Cambia cualquier opción para reiniciar la prueba. Afinidad de rango 1, sin maestría ni reliquias.</p>
+</section><div id="model-collection"><label for="search">Colección <span id="count"></span></label><input id="search" type="search" placeholder="Buscar un modelo…"><nav id="catalog" aria-label="Catálogo de modelos"></nav><p class="aside-note">Geometrías del juego.<br>Modelos y movimientos del juego.</p></div></aside>
+<section class="viewer" aria-label="Visor 3D"><div class="caption"><span class="eyebrow" id="category"></span><h2 id="title">Preparando el estudio…</h2></div><canvas id="scene" aria-label="Modelo 3D: arrastra para girar, rueda para zoom"></canvas><p id="status" role="status"></p><div class="toolbar"><button id="reset">Encuadrar</button><button id="front">Frente</button><button id="side">Perfil</button><button id="back">Espalda</button><button id="rotate" aria-pressed="false">Giro automático</button></div><p class="help">Arrastrar: girar · Rueda: zoom · Botón derecho: desplazar</p></section>
+<aside class="inspector"><span class="eyebrow">MESA DE REVISIÓN</span><h2>Inspeccionar</h2><fieldset id="animation-controls" disabled>
+<legend>Animaciones</legend>
+<div id="pose-settings"><label for="pose">Secuencia</label>
+<select id="pose"><option value="rest">Reposo</option><option value="walk">Caminar</option><option value="attack">Ataque básico</option><option value="cast">Gesto de habilidad</option><option value="hit">Impacto recibido</option><option value="fade">Desvanecimiento</option></select></div>
+<div class="playback-buttons"><button id="play" type="button">Pausar</button><button id="rewind" type="button">Reiniciar</button><button id="step" type="button" title="Avanzar 1/60 de segundo">+1 fotograma</button></div>
+<label for="timeline">Tiempo</label>
+<input id="timeline" type="range" min="0" max="3" step="0.016666666666666666" value="0">
+<output id="animation-time" for="timeline" aria-live="off">0.00 / 3.00 s</output>
+<label for="animation-speed">Velocidad</label>
+<select id="animation-speed"><option value=".25">0,25×</option><option value=".5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option></select>
+<label class="check"><input id="loop" type="checkbox" checked> Repetir</label>
+</fieldset>
+<p id="animation-note" class="aside-note">Selecciona un personaje para probar sus animaciones.</p>
+<label class="check"><input type="checkbox" id="wire"> Ver malla</label><label class="check"><input type="checkbox" id="grid" checked> Cuadrícula</label><label for="light">Iluminación</label><select id="light"><option value="studio">Estudio neutro</option><option value="warm">Luz cálida</option><option value="dark">Contraste oscuro</option></select><div id="metrics"></div><p id="description"></p><code id="source"></code><div id="model-notes"><label for="notes">Notas para mejorar</label><textarea id="notes" rows="6" placeholder="Silueta, armadura, materiales, detalles…"></textarea><small id="saved">Guardadas en este navegador, por modelo.</small><button id="export">Exportar notas</button><p class="aside-note">Las notas no modifican el modelo. Sirven para preparar la siguiente revisión artística.</p></div></aside></main><script type="module" src="/src/model-lab.ts"></script></body></html>

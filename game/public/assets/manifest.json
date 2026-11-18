@@ -1,0 +1,105 @@
+[
+  {
+    "file": "castle_wall_slates-Diffuse.jpg",
+    "asset": "castle_wall_slates",
+    "channel": "Diffuse",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/castle_wall_slates/castle_wall_slates_diff_1k.jpg",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/castle_wall_slates"
+  },
+  {
+    "file": "castle_wall_slates-nor_gl.jpg",
+    "asset": "castle_wall_slates",
+    "channel": "nor_gl",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/castle_wall_slates/castle_wall_slates_nor_gl_1k.jpg",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/castle_wall_slates"
+  },
+  {
+    "file": "castle_wall_slates-rough.jpg",
+    "asset": "castle_wall_slates",
+    "channel": "rough",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/castle_wall_slates/castle_wall_slates_rough_1k.jpg",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/castle_wall_slates"
+  },
+  {
+    "file": "cobblestone_floor_04-Diffuse.jpg",
+    "asset": "cobblestone_floor_04",
+    "channel": "Diffuse",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_04/cobblestone_floor_04_diff_1k.jpg",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/cobblestone_floor_04"
+  },
+  {
+    "file": "cobblestone_floor_04-nor_gl.jpg",
+    "asset": "cobblestone_floor_04",
+    "channel": "nor_gl",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_04/cobblestone_floor_04_nor_gl_1k.jpg",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/cobblestone_floor_04"
+  },
+  {
+    "file": "cobblestone_floor_04-rough.jpg",
+    "asset": "cobblestone_floor_04",
+    "channel": "rough",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_04/cobblestone_floor_04_rough_1k.jpg",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/cobblestone_floor_04"
+  },
+  {
+    "file": "brown_mud_02-Diffuse.jpg",
+    "asset": "brown_mud_02",
+    "channel": "Diffuse",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_02/brown_mud_02_diff_1k.jpg",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/brown_mud_02"
+  },
+  {
+    "file": "brown_mud_02-nor_gl.jpg",
+    "asset": "brown_mud_02",
+    "channel": "nor_gl",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_02/brown_mud_02_nor_gl_1k.jpg",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/brown_mud_02"
+  },
+  {
+    "file": "brown_mud_02-rough.jpg",
+    "asset": "brown_mud_02",
+    "channel": "rough",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_02/brown_mud_02_rough_1k.jpg",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/brown_mud_02"
+  },
+  {
+    "file": "weathered_brown_planks-Diffuse.jpg",
+    "asset": "weathered_brown_planks",
+    "channel": "Diffuse",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/weathered_brown_planks/weathered_brown_planks_diff_1k.jpg",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/weathered_brown_planks"
+  },
+  {
+    "file": "weathered_brown_planks-nor_gl.jpg",
+    "asset": "weathered_brown_planks",
+    "channel": "nor_gl",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/weathered_brown_planks/weathered_brown_planks_nor_gl_1k.jpg",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/weathered_brown_planks"
+  },
+  {
+    "file": "weathered_brown_planks-rough.jpg",
+    "asset": "weathered_brown_planks",
+    "channel": "rough",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/weathered_brown_planks/weathered_brown_planks_rough_1k.jpg",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/weathered_brown_planks"
+  },
+  {
+    "file": "overcast.hdr",
+    "asset": "kloofendal_overcast_puresky",
+    "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/kloofendal_overcast_puresky_1k.hdr",
+    "license": "CC0",
+    "source": "https://polyhaven.com/a/kloofendal_overcast_puresky"
+  }
+]

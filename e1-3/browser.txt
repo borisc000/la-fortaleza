@@ -1,0 +1,6 @@
+Revisión visual en Chromium/Playwright, 1440 × 900.
+Escena real con recursos, seed 19, cámara 12 m: llegada, fuente del sur, mercader, captura, abadía, molinos.
+Auditoría con objetos: /audits/e0.html?objects=1. Sin simulación de combate en esta herramienta.
+Recursos de escena: 0 fallos. Único error en auditoría: favicon.ico 404, sin relación con la escena.
+Partida real 0.2.15 iniciada con Guerrero y pausada con Escape; consola: 0 errores, 0 advertencias.
+Capturas: game/output/playwright/e13-*.png. No es prueba prolongada de balance ni rendimiento.

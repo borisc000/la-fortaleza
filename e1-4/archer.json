@@ -1,0 +1,42 @@
+{
+  "classId": "archer",
+  "routes": [
+    {
+      "id": "main",
+      "seconds": 41.63333333333225,
+      "x": 3.999994793291013,
+      "z": -7.900148769886869
+    },
+    {
+      "id": "ruins",
+      "seconds": 33.36666666666478,
+      "x": 49.90479733392187,
+      "z": 55.05285884425619
+    },
+    {
+      "id": "crossing",
+      "seconds": 38.333333333331154,
+      "x": -27.845506798451133,
+      "z": 110.0857993659463
+    }
+  ],
+  "seconds": 113.33333333332818,
+  "meters": 589.3333333333139,
+  "kills": 68,
+  "level": 2,
+  "choices": 1,
+  "peak": 67,
+  "sectors": [
+    "A",
+    "C",
+    "E",
+    "F",
+    "D"
+  ],
+  "boundaries": 4,
+  "minCamera": 11.903238593669313,
+  "retracted": 1,
+  "cpuStepMedianMs": 9.754500000002736,
+  "cpuStepP95Ms": 28.15979999999763,
+  "scope": "actual domain and map; 60 Hz; boosted fixture HP; no renderer, no GPU or survival balance"
+}

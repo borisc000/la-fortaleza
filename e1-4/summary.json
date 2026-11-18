@@ -1,0 +1,13 @@
+{
+  "runs": 3,
+  "routes": 7,
+  "sectors": 6,
+  "meters": 2041.166666666757,
+  "simulatedSeconds": 403.7000000000102,
+  "kills": 219,
+  "maxPopulation": 80,
+  "boundaryChecks": 12,
+  "unitTests": 20,
+  "productionVersion": "0.2.15",
+  "fixtureHp": 100000
+}

@@ -1,0 +1,20 @@
+{
+  "physical": {
+    "hash": "129799a0cd3d1fe62d84e0ffbbd3901da3a4f0ccc00d3c45128ae91ecc63a64a",
+    "hp": 9646,
+    "kills": 8,
+    "hits": 72
+  },
+  "fire": {
+    "hash": "fddc18474be9bbf0c53d417feb1e494a501c6a80df5ba4f1d5de635a5727149f",
+    "hp": 9664,
+    "kills": 8,
+    "hits": 108
+  },
+  "water": {
+    "hash": "00f3e0582b90c9e235ddec46c8c228c4aa52e952274e0fed483e46eb56fd0a9d",
+    "hp": 9646,
+    "kills": 8,
+    "hits": 72
+  }
+}

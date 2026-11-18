@@ -1,0 +1,42 @@
+{
+  "classId": "warrior",
+  "routes": [
+    {
+      "id": "main",
+      "seconds": 43.28333333333216,
+      "x": 3.9999873118966796,
+      "z": -7.823303507993229
+    },
+    {
+      "id": "west",
+      "seconds": 71.86666666666258,
+      "x": 9.87479672128244,
+      "z": 174.98021379790453
+    },
+    {
+      "id": "pasture",
+      "seconds": 44.6166666666912,
+      "x": -35.147681246680186,
+      "z": 30.08618701610647
+    }
+  ],
+  "seconds": 159.76666666668595,
+  "meters": 798.8333333334214,
+  "kills": 68,
+  "level": 3,
+  "choices": 2,
+  "peak": 80,
+  "sectors": [
+    "A",
+    "C",
+    "E",
+    "F",
+    "B"
+  ],
+  "boundaries": 4,
+  "minCamera": 12,
+  "retracted": 0,
+  "cpuStepMedianMs": 10.718599999992875,
+  "cpuStepP95Ms": 27.933200000001307,
+  "scope": "actual domain and map; 60 Hz; boosted fixture HP; no renderer, no GPU or survival balance"
+}

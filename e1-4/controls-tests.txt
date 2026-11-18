@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: camera stops before a wall, including its volume and safety gap
+ok 1 - camera stops before a wall, including its volume and safety gap
+  ---
+  duration_ms: 1.3945
+  type: 'test'
+  ...
+# Subtest: volume catches a corner missed by an unpadded centre ray
+ok 2 - volume catches a corner missed by an unpadded centre ray
+  ---
+  duration_ms: 0.2028
+  type: 'test'
+  ...
+# Subtest: parallel rays outside a wall and walls behind the player do not obstruct
+ok 3 - parallel rays outside a wall and walls behind the player do not obstruct
+  ---
+  duration_ms: 0.277
+  type: 'test'
+  ...
+# Subtest: starting inside an expanded obstacle cannot place camera beyond it
+ok 4 - starting inside an expanded obstacle cannot place camera beyond it
+  ---
+  duration_ms: 0.2094
+  type: 'test'
+  ...
+# Subtest: lowest camera position leaves space above the terrain
+ok 5 - lowest camera position leaves space above the terrain
+  ---
+  duration_ms: 0.1766
+  type: 'test'
+  ...
+# Subtest: snap in immediately; recover independently of render framerate
+ok 6 - snap in immediately; recover independently of render framerate
+  ---
+  duration_ms: 0.2818
+  type: 'test'
+  ...
+# Subtest: wide screens increase camera collision volume to protect near-plane corners
+ok 7 - wide screens increase camera collision volume to protect near-plane corners
+  ---
+  duration_ms: 0.1908
+  type: 'test'
+  ...
+# Subtest: loading and pause require explicit entry; fatal state cannot resume
+ok 8 - loading and pause require explicit entry; fatal state cannot resume
+  ---
+  duration_ms: 0.3243
+  type: 'test'
+  ...
+# Subtest: capture, lock loss, rejected capture and touch preserve the input contract
+ok 9 - capture, lock loss, rejected capture and touch preserve the input contract
+  ---
+  duration_ms: 3.4079
+  type: 'test'
+  ...
+# Subtest: E is one-shot, pause clears queued interaction and touch interaction preserves both sticks
+ok 10 - E is one-shot, pause clears queued interaction and touch interaction preserves both sticks
+  ---
+  duration_ms: 1.2411
+  type: 'test'
+  ...
+# Subtest: W follows camera heading; D remains perpendicular and diagonal speed is capped
+ok 11 - W follows camera heading; D remains perpendicular and diagonal speed is capped
+  ---
+  duration_ms: 1.1271
+  type: 'test'
+  ...
+# Subtest: one second of walking covers 5 metres and stops immediately after release
+ok 12 - one second of walking covers 5 metres and stops immediately after release
+  ---
+  duration_ms: 1.383
+  type: 'test'
+  ...
+# Subtest: thin wall stops a large displacement without tunnelling
+ok 13 - thin wall stops a large displacement without tunnelling
+  ---
+  duration_ms: 0.3786
+  type: 'test'
+  ...
+# Subtest: diagonal contact slides along the wall rather than stopping the tangent
+ok 14 - diagonal contact slides along the wall rather than stopping the tangent
+  ---
+  duration_ms: 0.2229
+  type: 'test'
+  ...
+# Subtest: a circular body can round an exposed corner without penetrating
+ok 15 - a circular body can round an exposed corner without penetrating
+  ---
+  duration_ms: 0.2577
+  type: 'test'
+  ...
+# Subtest: concave wall junction and map limits cannot trap the body inside solids
+ok 16 - concave wall junction and map limits cannot trap the body inside solids
+  ---
+  duration_ms: 0.8383
+  type: 'test'
+  ...
+# Subtest: rotation takes the short path across ±PI and camera angle is independent
+ok 17 - rotation takes the short path across ±PI and camera angle is independent
+  ---
+  duration_ms: 0.141
+  type: 'test'
+  ...
+# Subtest: two fingers remain independent when either is released or cancelled
+ok 18 - two fingers remain independent when either is released or cancelled
+  ---
+  duration_ms: 0.8028
+  type: 'test'
+  ...
+# Subtest: a third finger cannot steal movement and crossing screen halves keeps ownership
+ok 19 - a third finger cannot steal movement and crossing screen halves keeps ownership
+  ---
+  duration_ms: 0.3091
+  type: 'test'
+  ...
+# Subtest: joystick deadzone prevents drift; clearing removes keys and both pointers
+ok 20 - joystick deadzone prevents drift; clearing removes keys and both pointers
+  ---
+  duration_ms: 0.4218
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 200.6493

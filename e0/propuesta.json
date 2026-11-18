@@ -1,0 +1,289 @@
+{
+  "status": "design_for_E1_not_implemented",
+  "bounds": {
+    "minX": -138,
+    "maxX": 142,
+    "minZ": -20,
+    "maxZ": 240
+  },
+  "spawn": {
+    "x": 20,
+    "z": 205
+  },
+  "gate": {
+    "x": 4,
+    "z": -18
+  },
+  "cameraDistance": 12,
+  "anchors": [
+    [
+      4,
+      -8
+    ],
+    [
+      -35,
+      30
+    ],
+    [
+      -30,
+      65
+    ],
+    [
+      4,
+      45
+    ],
+    [
+      50,
+      55
+    ],
+    [
+      35,
+      2
+    ],
+    [
+      -95,
+      65
+    ],
+    [
+      -78,
+      105
+    ],
+    [
+      -28,
+      110
+    ],
+    [
+      8,
+      130
+    ],
+    [
+      90,
+      120
+    ],
+    [
+      100,
+      65
+    ],
+    [
+      -85,
+      160
+    ],
+    [
+      10,
+      180
+    ],
+    [
+      90,
+      190
+    ]
+  ],
+  "primary": [
+    [
+      20,
+      205
+    ],
+    [
+      10,
+      175
+    ],
+    [
+      8,
+      130
+    ],
+    [
+      -4,
+      85
+    ],
+    [
+      4,
+      40
+    ],
+    [
+      4,
+      -8
+    ]
+  ],
+  "westLoop": [
+    [
+      10,
+      175
+    ],
+    [
+      -85,
+      160
+    ],
+    [
+      -78,
+      105
+    ],
+    [
+      -28,
+      110
+    ],
+    [
+      -35,
+      30
+    ],
+    [
+      4,
+      40
+    ]
+  ],
+  "eastLoop": [
+    [
+      10,
+      175
+    ],
+    [
+      90,
+      190
+    ],
+    [
+      90,
+      120
+    ],
+    [
+      100,
+      65
+    ],
+    [
+      50,
+      55
+    ],
+    [
+      4,
+      40
+    ]
+  ],
+  "crossLinks": [
+    [
+      [
+        -78,
+        105
+      ],
+      [
+        -95,
+        65
+      ],
+      [
+        -35,
+        30
+      ]
+    ],
+    [
+      [
+        -28,
+        110
+      ],
+      [
+        8,
+        130
+      ],
+      [
+        90,
+        120
+      ]
+    ],
+    [
+      [
+        -30,
+        65
+      ],
+      [
+        -4,
+        85
+      ],
+      [
+        50,
+        55
+      ]
+    ]
+  ],
+  "activities": {
+    "shop": [
+      35,
+      180
+    ],
+    "capture": [
+      -20,
+      110
+    ],
+    "firstChest": [
+      25,
+      195
+    ],
+    "firstSupply": [
+      12,
+      199
+    ],
+    "firstCoins": [
+      20,
+      194
+    ]
+  },
+  "sectors": [
+    {
+      "id": "A",
+      "name": "Llegada y caravanas",
+      "center": [
+        20,
+        205
+      ]
+    },
+    {
+      "id": "B",
+      "name": "Campos y molinos",
+      "center": [
+        -85,
+        145
+      ]
+    },
+    {
+      "id": "C",
+      "name": "Abadía y cruce",
+      "center": [
+        -28,
+        110
+      ]
+    },
+    {
+      "id": "D",
+      "name": "Bosque y atalaya",
+      "center": [
+        90,
+        100
+      ]
+    },
+    {
+      "id": "E",
+      "name": "Campamentos del cerco",
+      "center": [
+        -35,
+        35
+      ]
+    },
+    {
+      "id": "F",
+      "name": "Explanada y fortaleza",
+      "center": [
+        4,
+        -5
+      ]
+    }
+  ],
+  "primaryEstimate": {
+    "meters": 216.9,
+    "secondsAt5mps": 43.4,
+    "method": "polyline estimate; no new geometry/collisions yet"
+  },
+  "westLoopEstimate": {
+    "meters": 322.4,
+    "secondsAt5mps": 64.5,
+    "method": "polyline estimate; no new geometry/collisions yet"
+  },
+  "eastLoopEstimate": {
+    "meters": 306.7,
+    "secondsAt5mps": 61.3,
+    "method": "polyline estimate; no new geometry/collisions yet"
+  }
+}

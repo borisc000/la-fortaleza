@@ -1,0 +1,20 @@
+### Result
+{"arrival":{"engine":"three.js r187","frame":"5201","cameraDistance":"12.00","obstructed":"false","yaw":"0.072","pitch":"0.420","playerX":"4.749","playerZ":"-7.567","hp":"90","kills":"3","encounter":"running","impetus":"0","whirlwind":"false","level":"1","xp":"1","wave":"14","stage":"waves","seed":"513268327","classId":"archer","affinity":"","mastery":"false","coins":"6","openedChests":"0","captureProgress":"0.00","captureState":"idle","shopping":"false"},"wall":{"engine":"three.js r187","frame":"5362","cameraDistance":"10.87","obstructed":"true","yaw":"-3.048","pitch":"0.354","playerX":"4.749","playerZ":"-7.567","hp":"90","kills":"3","encounter":"running","impetus":"0","whirlwind":"false","level":"1","xp":"1","wave":"15","stage":"waves","seed":"513268327","classId":"archer","affinity":"","mastery":"false","coins":"6","openedChests":"0","captureProgress":"0.00","captureState":"idle","shopping":"false"},"final":{"engine":"three.js r187","frame":"6027","cameraDistance":"10.87","obstructed":"true","yaw":"-3.048","pitch":"0.354","playerX":"4.749","playerZ":"-7.567","hp":"90","kills":"8","encounter":"running","impetus":"3","whirlwind":"false","level":"1","xp":"1","wave":"16","stage":"waves","seed":"513268327","classId":"archer","affinity":"","mastery":"false","coins":"6","openedChests":"0","captureProgress":"0.00","captureState":"idle","shopping":"false"}}
+### Ran Playwright code
+```js
+await (async (page) => {
+ await page.getByRole('button',{name:'Continuar',exact:true}).click();
+ await page.keyboard.down('w'); await page.waitForTimeout(19000); await page.keyboard.up('w');
+ await page.screenshot({path:'output/playwright/e14-archer-gate.png'});
+ const arrival=await page.locator('#world').evaluate(el=>({...el.dataset}));
+ await page.mouse.move(1760,450,{steps:20});
+ await page.waitForTimeout(1000);
+ await page.screenshot({path:'output/playwright/e14-archer-wall.png'});
+ const wall=await page.locator('#world').evaluate(el=>({...el.dataset}));
+ await page.waitForTimeout(5000);
+ await page.screenshot({path:'output/playwright/e14-archer-combat.png'});
+ await page.keyboard.press('Escape');
+ return {arrival,wall,final:await page.locator('#world').evaluate(el=>({...el.dataset}))};
+}
+)(page);
+```

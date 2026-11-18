@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    name: Typecheck, pruebas y build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: game
+    steps:
+      # Sin LFS: el juego y las pruebas solo usan game/public, que está en git normal.
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: game/.nvmrc
+          cache: npm
+          cache-dependency-path: game/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Pruebas
+        run: npm test
+
+      - name: Build
+        run: npx vite build
+
+      - name: Guardar build
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: game/dist
+          retention-days: 7

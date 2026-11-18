@@ -1,0 +1,42 @@
+TAP version 13
+# Encuentro real: victory, 9.77 s, 5 bajas, 28 vida (simulación sin GPU).
+# Refuerzos: 48 posiciones del jugador verificadas sobre el mapa real.
+# Subtest: the actual fortress builds with fallback materials and every viewpoint has a safe camera
+ok 1 - the actual fortress builds with fallback materials and every viewpoint has a safe camera
+  ---
+  duration_ms: 517.9982
+  type: 'test'
+  ...
+# Subtest: walking from every spawn across the real clearing preserves body and camera clearance
+ok 2 - walking from every spawn across the real clearing preserves body and camera clearance
+  ---
+  duration_ms: 2866.6282
+  type: 'test'
+  ...
+# Subtest: the full five-soldier encounter completes on the actual map with unique deaths
+ok 3 - the full five-soldier encounter completes on the actual map with unique deaths
+  ---
+  duration_ms: 2684.2398
+  type: 'test'
+  ...
+# Subtest: a pursuer routes around the actual ruin rather than attacking through its walls
+ok 4 - a pursuer routes around the actual ruin rather than attacking through its walls
+  ---
+  duration_ms: 1256.4319
+  type: 'test'
+  ...
+# Subtest: reinforcements have enough safe reachable positions across the actual clearing
+ok 5 - reinforcements have enough safe reachable positions across the actual clearing
+  ---
+  duration_ms: 5758.2314
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 14183.1947

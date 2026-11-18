@@ -1,0 +1,42 @@
+{
+  "classId": "mage",
+  "routes": [
+    {
+      "id": "main",
+      "seconds": 43.28333333333216,
+      "x": 3.9999873118966796,
+      "z": -7.823303507993229
+    },
+    {
+      "id": "east-tower",
+      "seconds": 17.466666666665674,
+      "x": 49.919827179636876,
+      "z": 54.84458742466247
+    },
+    {
+      "id": "east",
+      "seconds": 69.84999999999823,
+      "x": 10.171462544941438,
+      "z": 175.03211943731105
+    }
+  ],
+  "seconds": 130.59999999999607,
+  "meters": 653.0000000000217,
+  "kills": 83,
+  "level": 2,
+  "choices": 1,
+  "peak": 69,
+  "sectors": [
+    "A",
+    "C",
+    "E",
+    "F",
+    "D"
+  ],
+  "boundaries": 4,
+  "minCamera": 12,
+  "retracted": 0,
+  "cpuStepMedianMs": 9.096699999994598,
+  "cpuStepP95Ms": 29.417699999999968,
+  "scope": "actual domain and map; 60 Hz; boosted fixture HP; no renderer, no GPU or survival balance"
+}

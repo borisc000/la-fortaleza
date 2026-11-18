@@ -1,0 +1,1865 @@
+TAP version 13
+# Subtest: each class has eight skills, one independent basic, immutable catalog and four slots
+ok 1 - each class has eight skills, one independent basic, immutable catalog and four slots
+  ---
+  duration_ms: 8.073
+  type: 'test'
+  ...
+# Subtest: all 27 attacks reach level ten through two distinct legal paths with seven branch points
+ok 2 - all 27 attacks reach level ten through two distinct legal paths with seven branch points
+  ---
+  duration_ms: 66.58
+  type: 'test'
+  ...
+# Subtest: cross-class, skipped milestone, invalid rank and stale or repeated transactions cannot mutate state
+ok 3 - cross-class, skipped milestone, invalid rank and stale or repeated transactions cannot mutate state
+  ---
+  duration_ms: 2.4948
+  type: 'test'
+  ...
+# Subtest: simultaneous actions have independent clocks and immutable launch snapshots
+ok 4 - simultaneous actions have independent clocks and immutable launch snapshots
+  ---
+  duration_ms: 0.9052
+  type: 'test'
+  ...
+# Subtest: pause, missing targets, invalid time, death and reset do not leak actions or cooldowns
+ok 5 - pause, missing targets, invalid time, death and reset do not leak actions or cooldowns
+  ---
+  duration_ms: 0.6323
+  type: 'test'
+  ...
+# Subtest: offers are deterministic, stable on reopen, unique and validate selection IDs/revisions
+ok 6 - offers are deterministic, stable on reopen, unique and validate selection IDs/revisions
+  ---
+  duration_ms: 3.9227
+  type: 'test'
+  ...
+# Subtest: learning and affinity opportunities cannot starve even when the player chooses stats
+ok 7 - learning and affinity opportunities cannot starve even when the player chooses stats
+  ---
+  duration_ms: 18.3513
+  type: 'test'
+  ...
+# Subtest: milestones show both exclusive alternatives and leave an unrelated choice; empty pools are safe
+ok 8 - milestones show both exclusive alternatives and leave an unrelated choice; empty pools are safe
+  ---
+  duration_ms: 0.7092
+  type: 'test'
+  ...
+# Subtest: trial progression uses legal branch budgets and unlocks variants only at 5 and 10
+ok 9 - trial progression uses legal branch budgets and unlocks variants only at 5 and 10
+  ---
+  duration_ms: 210.804
+  type: 'test'
+  ...
+# Subtest: warrior:sword trial activates at level 1 and both level 10 variants
+ok 10 - warrior:sword trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 195.4151
+  type: 'test'
+  ...
+# Subtest: warrior:whirlwind trial activates at level 1 and both level 10 variants
+ok 11 - warrior:whirlwind trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 138.7603
+  type: 'test'
+  ...
+# Subtest: warrior:steel-wave trial activates at level 1 and both level 10 variants
+ok 12 - warrior:steel-wave trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 123.3616
+  type: 'test'
+  ...
+# Subtest: warrior:orbiting-axes trial activates at level 1 and both level 10 variants
+ok 13 - warrior:orbiting-axes trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 80.2507
+  type: 'test'
+  ...
+# Subtest: warrior:war-hammer trial activates at level 1 and both level 10 variants
+ok 14 - warrior:war-hammer trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 84.1322
+  type: 'test'
+  ...
+# Subtest: warrior:spectral-spears trial activates at level 1 and both level 10 variants
+ok 15 - warrior:spectral-spears trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 85.1818
+  type: 'test'
+  ...
+# Subtest: warrior:war-banner trial activates at level 1 and both level 10 variants
+ok 16 - warrior:war-banner trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 101.6882
+  type: 'test'
+  ...
+# Subtest: warrior:retaliation trial activates at level 1 and both level 10 variants
+ok 17 - warrior:retaliation trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 113.3787
+  type: 'test'
+  ...
+# Subtest: warrior:war-chain trial activates at level 1 and both level 10 variants
+ok 18 - warrior:war-chain trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 95.8026
+  type: 'test'
+  ...
+# Subtest: mage:orb trial activates at level 1 and both level 10 variants
+ok 19 - mage:orb trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 162.9359
+  type: 'test'
+  ...
+# Subtest: mage:cataclysm trial activates at level 1 and both level 10 variants
+ok 20 - mage:cataclysm trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 113.9594
+  type: 'test'
+  ...
+# Subtest: mage:arcane-lances trial activates at level 1 and both level 10 variants
+ok 21 - mage:arcane-lances trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 113.6885
+  type: 'test'
+  ...
+# Subtest: mage:guardian-orbs trial activates at level 1 and both level 10 variants
+ok 22 - mage:guardian-orbs trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 221.6339
+  type: 'test'
+  ...
+# Subtest: mage:detonation trial activates at level 1 and both level 10 variants
+ok 23 - mage:detonation trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 90.3226
+  type: 'test'
+  ...
+# Subtest: mage:runic-beam trial activates at level 1 and both level 10 variants
+ok 24 - mage:runic-beam trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 117.1341
+  type: 'test'
+  ...
+# Subtest: mage:nova trial activates at level 1 and both level 10 variants
+ok 25 - mage:nova trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 126.4153
+  type: 'test'
+  ...
+# Subtest: mage:fragments trial activates at level 1 and both level 10 variants
+ok 26 - mage:fragments trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 104.2623
+  type: 'test'
+  ...
+# Subtest: mage:mirror trial activates at level 1 and both level 10 variants
+ok 27 - mage:mirror trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 186.0248
+  type: 'test'
+  ...
+# Subtest: archer:arrow trial activates at level 1 and both level 10 variants
+ok 28 - archer:arrow trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 175.3187
+  type: 'test'
+  ...
+# Subtest: archer:rain trial activates at level 1 and both level 10 variants
+ok 29 - archer:rain trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 133.1211
+  type: 'test'
+  ...
+# Subtest: archer:fan-volley trial activates at level 1 and both level 10 variants
+ok 30 - archer:fan-volley trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 139.15
+  type: 'test'
+  ...
+# Subtest: archer:siege-shot trial activates at level 1 and both level 10 variants
+ok 31 - archer:siege-shot trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 102.6839
+  type: 'test'
+  ...
+# Subtest: archer:ricochet trial activates at level 1 and both level 10 variants
+ok 32 - archer:ricochet trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 137.9592
+  type: 'test'
+  ...
+# Subtest: archer:spike-trap trial activates at level 1 and both level 10 variants
+ok 33 - archer:spike-trap trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 226.8167
+  type: 'test'
+  ...
+# Subtest: archer:return-arrows trial activates at level 1 and both level 10 variants
+ok 34 - archer:return-arrows trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 175.771
+  type: 'test'
+  ...
+# Subtest: archer:hunting-beacon trial activates at level 1 and both level 10 variants
+ok 35 - archer:hunting-beacon trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 114.0044
+  type: 'test'
+  ...
+# Subtest: archer:stakes trial activates at level 1 and both level 10 variants
+ok 36 - archer:stakes trial activates at level 1 and both level 10 variants
+  ---
+  duration_ms: 103.9223
+  type: 'test'
+  ...
+# Subtest: restarting a trial recreates the same hits and positions, with no state leaking to another trial
+ok 37 - restarting a trial recreates the same hits and positions, with no state leaking to another trial
+  ---
+  duration_ms: 116.6324
+  type: 'test'
+  ...
+# Subtest: isolated skills suppress basic attacks while support skills deliberately keep them
+ok 38 - isolated skills suppress basic attacks while support skills deliberately keep them
+  ---
+  duration_ms: 147.3428
+  type: 'test'
+  ...
+# Captura y compra: 72.32 s, 32 monedas antes de comprar, saldo 14; simulación sin GPU.
+# Subtest: capture warns, pauses progress outside the circle and pays only on completion
+ok 39 - capture warns, pauses progress outside the circle and pays only on completion
+  ---
+  duration_ms: 4.9829
+  type: 'test'
+  ...
+# Subtest: capture cannot progress across walls and incomplete objectives close at the final transition
+ok 40 - capture cannot progress across walls and incomplete objectives close at the final transition
+  ---
+  duration_ms: 0.4925
+  type: 'test'
+  ...
+# Subtest: run credits the capture once, never a core, and the boss deadline takes priority
+ok 41 - run credits the capture once, never a core, and the boss deadline takes priority
+  ---
+  duration_ms: 2397.1015
+  type: 'test'
+  ...
+# Subtest: capture uses one shared wave budget, bounded cadence and the global enemy cap
+ok 42 - capture uses one shared wave budget, bounded cadence and the global enemy cap
+  ---
+  duration_ms: 2493.6649
+  type: 'test'
+  ...
+# Subtest: entering the merchant freezes combat, projectiles, capture and the director until explicitly closed
+ok 43 - entering the merchant freezes combat, projectiles, capture and the director until explicitly closed
+  ---
+  duration_ms: 896.9299
+  type: 'test'
+  ...
+# Subtest: merchant cannot open remotely or through a pending upgrade
+ok 44 - merchant cannot open remotely or through a pending upgrade
+  ---
+  duration_ms: 825.2513
+  type: 'test'
+  ...
+# Subtest: purchases reject stale clicks, insufficient funds, full health and exhausted stock
+ok 45 - purchases reject stale clicks, insufficient funds, full health and exhausted stock
+  ---
+  duration_ms: 1596.1823
+  type: 'test'
+  ...
+# Subtest: shop upgrades share rank caps and immediately affect combat, maximum health and movement
+ok 46 - shop upgrades share rank caps and immediately affect combat, maximum health and movement
+  ---
+  duration_ms: 1776.6348
+  type: 'test'
+  ...
+# Subtest: closing or restarting invalidates shop clicks and resets stock, capture and economy
+ok 47 - closing or restarting invalidates shop clicks and resets stock, capture and economy
+  ---
+  duration_ms: 1775.8618
+  type: 'test'
+  ...
+# Subtest: actual-map expedition can capture then physically reach the merchant and purchase with its reward
+ok 48 - actual-map expedition can capture then physically reach the merchant and purchase with its reward
+  ---
+  duration_ms: 25574.5965
+  type: 'test'
+  ...
+# Subtest: merchant and capture views update state without accumulating geometry across resets
+ok 49 - merchant and capture views update state without accumulating geometry across resets
+  ---
+  duration_ms: 4.3605
+  type: 'test'
+  ...
+# Subtest: all twelve builds can select their affinity, reach rank III, spend a core and restart cleanly
+ok 50 - all twelve builds can select their affinity, reach rank III, spend a core and restart cleanly
+  ---
+  duration_ms: 1060.3206
+  type: 'test'
+  ...
+# Subtest: Mage Earth guard uses the released cast snapshot, lasts four seconds, and does not refresh before six seconds
+ok 51 - Mage Earth guard uses the released cast snapshot, lasts four seconds, and does not refresh before six seconds
+  ---
+  duration_ms: 90.2136
+  type: 'test'
+  ...
+# Subtest: Earth masteries retain fixed centers and double only the final area pulse
+ok 52 - Earth masteries retain fixed centers and double only the final area pulse
+  ---
+  duration_ms: 27.3089
+  type: 'test'
+  ...
+# Subtest: Earth applies one non-stacking Quebranto to ranged hits and never a Water slow or splash
+ok 53 - Earth applies one non-stacking Quebranto to ranged hits and never a Water slow or splash
+  ---
+  duration_ms: 42.6624
+  type: 'test'
+  ...
+# Subtest: Archer Earth armor penetration and subsequent Quebranto are applied by Combat, not render or status damage
+ok 54 - Archer Earth armor penetration and subsequent Quebranto are applied by Combat, not render or status damage
+  ---
+  duration_ms: 120.6265
+  type: 'test'
+  ...
+# Subtest: Mage Air push/pull respect enemy resistance and leave attacks intact
+ok 55 - Mage Air push/pull respect enemy resistance and leave attacks intact
+  ---
+  duration_ms: 15.6
+  type: 'test'
+  ...
+# Subtest: Mage Air cannot pull through a wall, through the hero or beyond its fixed center
+ok 56 - Mage Air cannot pull through a wall, through the hero or beyond its fixed center
+  ---
+  duration_ms: 23.6072
+  type: 'test'
+  ...
+# Subtest: Air range and velocity scale by rank, allowing targets beyond the normal class reach
+ok 57 - Air range and velocity scale by rank, allowing targets beyond the normal class reach
+  ---
+  duration_ms: 114.2724
+  type: 'test'
+  ...
+# Subtest: Archer Air adds penetration without granting extra Precision per pierced enemy and snapshots its mastery
+ok 58 - Archer Air adds penetration without granting extra Precision per pierced enemy and snapshots its mastery
+  ---
+  duration_ms: 56.5105
+  type: 'test'
+  ...
+# Subtest: Air masteries enlarge their areas without adding Fire pulses or following the player
+ok 59 - Air masteries enlarge their areas without adding Fire pulses or following the player
+  ---
+  duration_ms: 29.8013
+  type: 'test'
+  ...
+# Subtest: fast Air shots and wider Earth rocks collide with thin walls even on a long simulation step
+ok 60 - fast Air shots and wider Earth rocks collide with thin walls even on a long simulation step
+  ---
+  duration_ms: 112.0558
+  type: 'test'
+  ...
+# Subtest: new affinities render their own colors and shapes; Mage vortex is fixed to the cast location
+ok 61 - new affinities render their own colors and shapes; Mage vortex is fixed to the cast location
+  ---
+  duration_ms: 198.8697
+  type: 'test'
+  ...
+# Subtest: mage earth clears a small encounter at normal starting HP
+ok 62 - mage earth clears a small encounter at normal starting HP
+  ---
+  duration_ms: 19.8292
+  type: 'test'
+  ...
+# Subtest: mage air clears a small encounter at normal starting HP
+ok 63 - mage air clears a small encounter at normal starting HP
+  ---
+  duration_ms: 83.9929
+  type: 'test'
+  ...
+# Subtest: archer earth clears a small encounter at normal starting HP
+ok 64 - archer earth clears a small encounter at normal starting HP
+  ---
+  duration_ms: 27.4293
+  type: 'test'
+  ...
+# Subtest: archer air clears a small encounter at normal starting HP
+ok 65 - archer air clears a small encounter at normal starting HP
+  ---
+  duration_ms: 38.8342
+  type: 'test'
+  ...
+# Subtest: exported archer keeps its bow, string and hands together during draw, release and reset
+ok 66 - exported archer keeps its bow, string and hands together during draw, release and reset
+  ---
+  duration_ms: 226.1773
+  type: 'test'
+  ...
+# Subtest: Archer starts physical, picks affinity at level 2 and shares shops/upgrades with its own stats
+ok 67 - Archer starts physical, picks affinity at level 2 and shares shops/upgrades with its own stats
+  ---
+  duration_ms: 58.8766
+  type: 'test'
+  ...
+# Subtest: arrows have flight time, ignore camera facing and snapshot direction, damage, affinity and penetration
+ok 68 - arrows have flight time, ignore camera facing and snapshot direction, damage, affinity and penetration
+  ---
+  duration_ms: 21.0775
+  type: 'test'
+  ...
+# Subtest: three consecutive successful arrows unlock penetration, and each arrow contributes only one Precision stack
+ok 69 - three consecutive successful arrows unlock penetration, and each arrow contributes only one Precision stack
+  ---
+  duration_ms: 29.8065
+  type: 'test'
+  ...
+# Subtest: penetration follows the line rather than selecting nearby targets, and walls stop the rest of an arrow
+ok 70 - penetration follows the line rather than selecting nearby targets, and walls stop the rest of an arrow
+  ---
+  duration_ms: 18.315
+  type: 'test'
+  ...
+# Subtest: missing or hitting a wall without any enemy resets Precision; inactivity also expires it
+ok 71 - missing or hitting a wall without any enemy resets Precision; inactivity also expires it
+  ---
+  duration_ms: 29.7006
+  type: 'test'
+  ...
+# Subtest: moving targets can evade the frozen arrow direction and projectiles remain bounded
+ok 72 - moving targets can evade the frozen arrow direction and projectiles remain bounded
+  ---
+  duration_ms: 10.1506
+  type: 'test'
+  ...
+# Subtest: Rain is telegraphed, fixed in the world, snapshots damage and does not grant Precision
+ok 73 - Rain is telegraphed, fixed in the world, snapshots damage and does not grant Precision
+  ---
+  duration_ms: 26.431
+  type: 'test'
+  ...
+# Subtest: Rain waits for an active shot and honors obstacles and spawn warnings
+ok 74 - Rain waits for an active shot and honors obstacles and spawn warnings
+  ---
+  duration_ms: 52.6839
+  type: 'test'
+  ...
+# Subtest: Fire mastery adds two rain volleys and Water mastery enlarges its area without adding a second transformation
+ok 75 - Fire mastery adds two rain volleys and Water mastery enlarges its area without adding a second transformation
+  ---
+  duration_ms: 43.0229
+  type: 'test'
+  ...
+# Subtest: Archer Fire uses its elemental share, while Water splashes once per arrow with no recursive effects
+ok 76 - Archer Fire uses its elemental share, while Water splashes once per arrow with no recursive effects
+  ---
+  duration_ms: 10.0765
+  type: 'test'
+  ...
+# Subtest: upgrades and shop freeze arrow flight and Precision; defeat and restart clear actions
+ok 77 - upgrades and shop freeze arrow flight and Precision; defeat and restart clear actions
+  ---
+  duration_ms: 134.23
+  type: 'test'
+  ...
+# Subtest: all three character views can switch cleanly; Archer projectiles never appear as Mage orbs
+ok 78 - all three character views can switch cleanly; Archer projectiles never appear as Mage orbs
+  ---
+  duration_ms: 825.9589
+  type: 'test'
+  ...
+# Subtest: Archer audio routes bow and rain events separately from other classes
+ok 79 - Archer audio routes bow and rain events separately from other classes
+  ---
+  duration_ms: 14.3217
+  type: 'test'
+  ...
+# Subtest: Archer physical clears three approaching soldiers with normal 90 HP
+ok 80 - Archer physical clears three approaching soldiers with normal 90 HP
+  ---
+  duration_ms: 27.5412
+  type: 'test'
+  ...
+# Subtest: Archer fire clears three approaching soldiers with normal 90 HP
+ok 81 - Archer fire clears three approaching soldiers with normal 90 HP
+  ---
+  duration_ms: 17.7751
+  type: 'test'
+  ...
+# Subtest: Archer water clears three approaching soldiers with normal 90 HP
+ok 82 - Archer water clears three approaching soldiers with normal 90 HP
+  ---
+  duration_ms: 56.7739
+  type: 'test'
+  ...
+# Subtest: camera stops before a wall, including its volume and safety gap
+ok 83 - camera stops before a wall, including its volume and safety gap
+  ---
+  duration_ms: 9.4995
+  type: 'test'
+  ...
+# Subtest: volume catches a corner missed by an unpadded centre ray
+ok 84 - volume catches a corner missed by an unpadded centre ray
+  ---
+  duration_ms: 0.3296
+  type: 'test'
+  ...
+# Subtest: parallel rays outside a wall and walls behind the player do not obstruct
+ok 85 - parallel rays outside a wall and walls behind the player do not obstruct
+  ---
+  duration_ms: 0.5447
+  type: 'test'
+  ...
+# Subtest: starting inside an expanded obstacle cannot place camera beyond it
+ok 86 - starting inside an expanded obstacle cannot place camera beyond it
+  ---
+  duration_ms: 0.5097
+  type: 'test'
+  ...
+# Subtest: lowest camera position leaves space above the terrain
+ok 87 - lowest camera position leaves space above the terrain
+  ---
+  duration_ms: 1.2595
+  type: 'test'
+  ...
+# Subtest: snap in immediately; recover independently of render framerate
+ok 88 - snap in immediately; recover independently of render framerate
+  ---
+  duration_ms: 0.6114
+  type: 'test'
+  ...
+# Subtest: wide screens increase camera collision volume to protect near-plane corners
+ok 89 - wide screens increase camera collision volume to protect near-plane corners
+  ---
+  duration_ms: 0.2313
+  type: 'test'
+  ...
+# Subtest: loading and pause require explicit entry; fatal state cannot resume
+ok 90 - loading and pause require explicit entry; fatal state cannot resume
+  ---
+  duration_ms: 0.4131
+  type: 'test'
+  ...
+# Subtest: large enemies retain a reachable approach when the hero hugs a wall
+ok 91 - large enemies retain a reachable approach when the hero hugs a wall
+  ---
+  duration_ms: 632.6208
+  type: 'test'
+  ...
+# Subtest: archer announces a frozen aim, then fires a non-homing bolt once
+ok 92 - archer announces a frozen aim, then fires a non-homing bolt once
+  ---
+  duration_ms: 446.7734
+  type: 'test'
+  ...
+# Subtest: standing in a bolt path takes one hit; contact alone has no archer damage
+ok 93 - standing in a bolt path takes one hit; contact alone has no archer damage
+  ---
+  duration_ms: 950.4237
+  type: 'test'
+  ...
+# Subtest: projectiles sweep thin obstacles and targets without tunnelling
+ok 94 - projectiles sweep thin obstacles and targets without tunnelling
+  ---
+  duration_ms: 1.4638
+  type: 'test'
+  ...
+# Subtest: projectile lifetime, population and pause are bounded
+ok 95 - projectile lifetime, population and pause are bounded
+  ---
+  duration_ms: 804.0526
+  type: 'test'
+  ...
+# Subtest: charge warns for one second, locks heading and only hits once
+ok 96 - charge warns for one second, locks heading and only hits once
+  ---
+  duration_ms: 1079.3772
+  type: 'test'
+  ...
+# Subtest: charging into a wall stops before it and cannot damage through it
+ok 97 - charging into a wall stops before it and cannot damage through it
+  ---
+  duration_ms: 418.9212
+  type: 'test'
+  ...
+# Subtest: elite drops a real unique core and eight essence, with no provisional group grant
+ok 98 - elite drops a real unique core and eight essence, with no provisional group grant
+  ---
+  duration_ms: 1320.0244
+  type: 'test'
+  ...
+# Subtest: elite and boss have correct water resistance, while burn still applies
+ok 99 - elite and boss have correct water resistance, while burn still applies
+  ---
+  duration_ms: 1784.356
+  type: 'test'
+  ...
+# Subtest: boss alternates sweep, ground slam and volley with recovery windows
+ok 100 - boss alternates sweep, ground slam and volley with recovery windows
+  ---
+  duration_ms: 935.8959
+  type: 'test'
+  ...
+# Subtest: leaving the boss slam circle before impact avoids damage
+ok 101 - leaving the boss slam circle before impact avoids damage
+  ---
+  duration_ms: 1157.2783
+  type: 'test'
+  ...
+# Subtest: boss fury widens the volley without creating homing projectiles
+ok 102 - boss fury widens the volley without creating homing projectiles
+  ---
+  duration_ms: 2024.77
+  type: 'test'
+  ...
+# Subtest: the director introduces enemies on schedule and respects rest windows
+ok 103 - the director introduces enemies on schedule and respects rest windows
+  ---
+  duration_ms: 1295.7103
+  type: 'test'
+  ...
+# Subtest: population cap discards missed waves instead of bursting a backlog
+ok 104 - population cap discards missed waves instead of bursting a backlog
+  ---
+  duration_ms: 1163.0964
+  type: 'test'
+  ...
+# Subtest: at six minutes normal enemies withdraw without loot and the live elite blocks the boss
+ok 105 - at six minutes normal enemies withdraw without loot and the live elite blocks the boss
+  ---
+  duration_ms: 868.0249
+  type: 'test'
+  ...
+# Subtest: boss arrival is announced, invulnerable, and never grants victory on time alone
+ok 106 - boss arrival is announced, invulnerable, and never grants victory on time alone
+  ---
+  duration_ms: 935.1225
+  type: 'test'
+  ...
+# Subtest: only killing the boss wins; simultaneous lethal blows are defeat
+ok 107 - only killing the boss wins; simultaneous lethal blows are defeat
+  ---
+  duration_ms: 1284.4718
+  type: 'test'
+  ...
+# Subtest: pruning dead actors keeps IDs unique and releases render objects
+ok 108 - pruning dead actors keeps IDs unique and releases render objects
+  ---
+  duration_ms: 219.3119
+  type: 'test'
+  ...
+# Subtest: same seed reproduces spawns and a fresh run clears every campaign state
+ok 109 - same seed reproduces spawns and a fresh run clears every campaign state
+  ---
+  duration_ms: 2449.3425
+  type: 'test'
+  ...
+# Subtest: Warrior physical matches the pre-extraction 0.1.16 trace for 3600 steps
+ok 110 - Warrior physical matches the pre-extraction 0.1.16 trace for 3600 steps
+  ---
+  duration_ms: 1731.0026
+  type: 'test'
+  ...
+# Subtest: Warrior fire matches the pre-extraction 0.1.16 trace for 3600 steps
+ok 111 - Warrior fire matches the pre-extraction 0.1.16 trace for 3600 steps
+  ---
+  duration_ms: 1642.4552
+  type: 'test'
+  ...
+# Subtest: Warrior water matches the pre-extraction 0.1.16 trace for 3600 steps
+ok 112 - Warrior water matches the pre-extraction 0.1.16 trace for 3600 steps
+  ---
+  duration_ms: 1441.4467
+  type: 'test'
+  ...
+# Subtest: only implemented classes are registered and their shared definition is immutable
+ok 113 - only implemented classes are registered and their shared definition is immutable
+  ---
+  duration_ms: 19.2308
+  type: 'test'
+  ...
+# Subtest: kits, elemental effects, upgrades and shop stocks never leak between expeditions
+ok 114 - kits, elemental effects, upgrades and shop stocks never leak between expeditions
+  ---
+  duration_ms: 42.0023
+  type: 'test'
+  ...
+# Subtest: class statistics drive basic reach/damage, projectile collision, armor, speed and purchases
+ok 115 - class statistics drive basic reach/damage, projectile collision, armor, speed and purchases
+  ---
+  duration_ms: 27.8465
+  type: 'test'
+  ...
+# Subtest: a separate kit can use shared armor, rewards, lifecycle and progression without Warrior actions
+ok 116 - a separate kit can use shared armor, rewards, lifecycle and progression without Warrior actions
+  ---
+  duration_ms: 51.4012
+  type: 'test'
+  ...
+# Subtest: acquisition is stable, switches at 25% advantage, and resolves ties by ID
+ok 117 - acquisition is stable, switches at 25% advantage, and resolves ties by ID
+  ---
+  duration_ms: 21.4818
+  type: 'test'
+  ...
+# Subtest: the blade uses its frozen arc, target radius and line of sight
+ok 118 - the blade uses its frozen arc, target radius and line of sight
+  ---
+  duration_ms: 27.0253
+  type: 'test'
+  ...
+# Subtest: one swing hits multiple eligible enemies once each and excludes the rear
+ok 119 - one swing hits multiple eligible enemies once each and excludes the rear
+  ---
+  duration_ms: 24.7734
+  type: 'test'
+  ...
+# Subtest: no target consumes no cooldown; camera/locomotion heading does not aim the sword
+ok 120 - no target consumes no cooldown; camera/locomotion heading does not aim the sword
+  ---
+  duration_ms: 25.8289
+  type: 'test'
+  ...
+# Subtest: touching does no damage; enemy needs its complete windup and a valid strike
+ok 121 - touching does no damage; enemy needs its complete windup and a valid strike
+  ---
+  duration_ms: 8.4992
+  type: 'test'
+  ...
+# Subtest: leaving the telegraphed strike prevents damage without a dodge button
+ok 122 - leaving the telegraphed strike prevents damage without a dodge button
+  ---
+  duration_ms: 6.4353
+  type: 'test'
+  ...
+# Subtest: simultaneous attackers cause one hit and protection blocks later external sources
+ok 123 - simultaneous attackers cause one hit and protection blocks later external sources
+  ---
+  duration_ms: 3.9288
+  type: 'test'
+  ...
+# Subtest: simultaneous lethal strikes resolve as defeat and deaths are emitted once
+ok 124 - simultaneous lethal strikes resolve as defeat and deaths are emitted once
+  ---
+  duration_ms: 6.8145
+  type: 'test'
+  ...
+# Subtest: a dead enemy never awards a second kill while another enemy remains
+ok 125 - a dead enemy never awards a second kill while another enemy remains
+  ---
+  duration_ms: 7.0033
+  type: 'test'
+  ...
+# Subtest: a short encounter can finish and a new run resets health, clocks, target and attacks
+ok 126 - a short encounter can finish and a new run resets health, clocks, target and attacks
+  ---
+  duration_ms: 17.9337
+  type: 'test'
+  ...
+# Subtest: armor math keeps precision, clamps negative armor and never heals
+ok 127 - armor math keeps precision, clamps negative armor and never heals
+  ---
+  duration_ms: 0.3943
+  type: 'test'
+  ...
+# Subtest: navigation routes around a wall without stepping through it
+ok 128 - navigation routes around a wall without stepping through it
+  ---
+  duration_ms: 8.4274
+  type: 'test'
+  ...
+# Subtest: results cannot resume an ended encounter; restart is explicit
+ok 129 - results cannot resume an ended encounter; restart is explicit
+  ---
+  duration_ms: 0.3613
+  type: 'test'
+  ...
+# Subtest: capture, lock loss, rejected capture and touch preserve the input contract
+ok 130 - capture, lock loss, rejected capture and touch preserve the input contract
+  ---
+  duration_ms: 25.1332
+  type: 'test'
+  ...
+# Subtest: E is one-shot, pause clears queued interaction and touch interaction preserves both sticks
+ok 131 - E is one-shot, pause clears queued interaction and touch interaction preserves both sticks
+  ---
+  duration_ms: 2.6295
+  type: 'test'
+  ...
+# Subtest: all three classes offer four affinities in their respective selection stage
+ok 132 - all three classes offer four affinities in their respective selection stage
+  ---
+  duration_ms: 13.9341
+  type: 'test'
+  ...
+# Subtest: Quebranto affects subsequent damage by 15%, refreshes without stacking and expires
+ok 133 - Quebranto affects subsequent damage by 15%, refreshes without stacking and expires
+  ---
+  duration_ms: 44.4993
+  type: 'test'
+  ...
+# Subtest: stone protection is granted once per cleave, has rank values, expires and cannot refresh before its cooldown
+ok 134 - stone protection is granted once per cleave, has rank values, expires and cannot refresh before its cooldown
+  ---
+  duration_ms: 33.948
+  type: 'test'
+  ...
+# Subtest: stone protection absorbs actual incoming damage including projectiles and does not heal or provide unlimited immunity
+ok 135 - stone protection absorbs actual incoming damage including projectiles and does not heal or provide unlimited immunity
+  ---
+  duration_ms: 7.5552
+  type: 'test'
+  ...
+# Subtest: Earth mastery releases exactly three extra seismic waves with obstacles and no recursive effects
+ok 136 - Earth mastery releases exactly three extra seismic waves with obstacles and no recursive effects
+  ---
+  duration_ms: 6.7315
+  type: 'test'
+  ...
+# Subtest: Air extends basic reach by rank and preserves the reach of an already prepared swing
+ok 137 - Air extends basic reach by rank and preserves the reach of an already prepared swing
+  ---
+  duration_ms: 9.3417
+  type: 'test'
+  ...
+# Subtest: Air displacements respect normal/elite/boss resistance and cannot cancel prepared enemy attacks
+ok 138 - Air displacements respect normal/elite/boss resistance and cannot cancel prepared enemy attacks
+  ---
+  duration_ms: 22.6029
+  type: 'test'
+  ...
+# Subtest: Air pull has a repetition limit, stops outside the hero and gains mastery radius
+ok 139 - Air pull has a repetition limit, stops outside the hero and gains mastery radius
+  ---
+  duration_ms: 1.9551
+  type: 'test'
+  ...
+# Subtest: repeated Air push and pull cannot cross thin walls, bounds or pull through obstacles
+ok 140 - repeated Air push and pull cannot cross thin walls, bounds or pull through obstacles
+  ---
+  duration_ms: 10.2863
+  type: 'test'
+  ...
+# Subtest: Earth barrier and Quebranto freeze during upgrade/shop pauses and disappear on defeat or retirement
+ok 141 - Earth barrier and Quebranto freeze during upgrade/shop pauses and disappear on defeat or retirement
+  ---
+  duration_ms: 28.5296
+  type: 'test'
+  ...
+# Subtest: Earth/Air visuals and audio have distinct cues and dispose their temporary representations
+ok 142 - Earth/Air visuals and audio have distinct cues and dispose their temporary representations
+  ---
+  duration_ms: 49.7369
+  type: 'test'
+  ...
+# Subtest: Warrior earth reaches mastery through progression and clears a short encounter with normal HP
+ok 143 - Warrior earth reaches mastery through progression and clears a short encounter with normal HP
+  ---
+  duration_ms: 69.6903
+  type: 'test'
+  ...
+# Subtest: Warrior air reaches mastery through progression and clears a short encounter with normal HP
+ok 144 - Warrior air reaches mastery through progression and clears a short encounter with normal HP
+  ---
+  duration_ms: 21.2692
+  type: 'test'
+  ...
+# Subtest: level two selects one affinity and later offers only its upgrades
+ok 145 - level two selects one affinity and later offers only its upgrades
+  ---
+  duration_ms: 9.8987
+  type: 'test'
+  ...
+# Subtest: mastery requires both prerequisites in either order and consumes neither XP nor a level choice
+ok 146 - mastery requires both prerequisites in either order and consumes neither XP nor a level choice
+  ---
+  duration_ms: 1.4354
+  type: 'test'
+  ...
+# Subtest: an elite death drops eight essence and a core, awarded only upon collection
+ok 147 - an elite death drops eight essence and a core, awarded only upon collection
+  ---
+  duration_ms: 0.8241
+  type: 'test'
+  ...
+# Subtest: direct elemental conversion preserves the total physical-plus-elemental budget
+ok 148 - direct elemental conversion preserves the total physical-plus-elemental budget
+  ---
+  duration_ms: 2584.073
+  type: 'test'
+  ...
+# Subtest: burn lasts three seconds with six periodic ticks and no new momentum
+ok 149 - burn lasts three seconds with six periodic ticks and no new momentum
+  ---
+  duration_ms: 440.8427
+  type: 'test'
+  ...
+# Subtest: burn refresh keeps the highest potency and does not reset its next tick
+ok 150 - burn refresh keeps the highest potency and does not reset its next tick
+  ---
+  duration_ms: 387.1532
+  type: 'test'
+  ...
+# Subtest: a periodic burn kill emits one death and never damages the corpse again
+ok 151 - a periodic burn kill emits one death and never damages the corpse again
+  ---
+  duration_ms: 298.4273
+  type: 'test'
+  ...
+# Subtest: fire death explosions respect walls and never chain through an already burning victim
+ok 152 - fire death explosions respect walls and never chain through an already burning victim
+  ---
+  duration_ms: 409.0748
+  type: 'test'
+  ...
+# Subtest: fire mastery changes the next Torbellino to eight pulses over 3.2 seconds
+ok 153 - fire mastery changes the next Torbellino to eight pulses over 3.2 seconds
+  ---
+  duration_ms: 517.9444
+  type: 'test'
+  ...
+# Subtest: an active swing and whirlwind retain the loadout they started with
+ok 154 - an active swing and whirlwind retain the loadout they started with
+  ---
+  duration_ms: 379.7632
+  type: 'test'
+  ...
+# Subtest: wet slows actual pursuit by 15 percent and expires without stacking
+ok 155 - wet slows actual pursuit by 15 percent and expires without stacking
+  ---
+  duration_ms: 876.9285
+  type: 'test'
+  ...
+# Subtest: water push is bounded, protected for half a second and blocked by architecture
+ok 156 - water push is bounded, protected for half a second and blocked by architecture
+  ---
+  duration_ms: 500.7393
+  type: 'test'
+  ...
+# Subtest: splash needs an already wet primary, excludes it, and triggers at most once per second
+ok 157 - splash needs an already wet primary, excludes it, and triggers at most once per second
+  ---
+  duration_ms: 438.4318
+  type: 'test'
+  ...
+# Subtest: splash cannot cross walls and water never heals or freezes
+ok 158 - splash cannot cross walls and water never heals or freezes
+  ---
+  duration_ms: 354.4586
+  type: 'test'
+  ...
+# Subtest: water mastery acquires enemies in its enlarged radius, without sword splash
+ok 159 - water mastery acquires enemies in its enlarged radius, without sword splash
+  ---
+  duration_ms: 417.9675
+  type: 'test'
+  ...
+# Subtest: defeat wins simultaneous burn death and cancels mastery rewards
+ok 160 - defeat wins simultaneous burn death and cancels mastery rewards
+  ---
+  duration_ms: 1131.132
+  type: 'test'
+  ...
+# Subtest: element effects freeze with pending choices and reset with a fresh run
+ok 161 - element effects freeze with pending choices and reset with a fresh run
+  ---
+  duration_ms: 1740.177
+  type: 'test'
+  ...
+# Subtest: element visuals consume events, freeze, reset and release their scene objects
+ok 162 - element visuals consume events, freeze, reset and release their scene objects
+  ---
+  duration_ms: 419.0928
+  type: 'test'
+  ...
+# Subtest: mouse motion rotates without a button and never drifts across pauses or UI
+ok 163 - mouse motion rotates without a button and never drifts across pauses or UI
+  ---
+  duration_ms: 0.7135
+  type: 'test'
+  ...
+# Superficie libre muestreada: 70919 m²; sector anterior sin su antigua valla: 2147 m²; razón 33.03.
+# Expansión: 342 apariciones seguras para tres tamaños, 15 destinos y cuatro bordes.
+# Circuito transitable: 15 destinos; tramo máximo 45.6 s a velocidad base.
+# Subtest: offscreen candidates are preferred; visible fallback retains warning and safe distance
+ok 164 - offscreen candidates are preferred; visible fallback retains warning and safe distance
+  ---
+  duration_ms: 1282.8238
+  type: 'test'
+  ...
+# Subtest: unsafe or disconnected spawn rings are deferred without a later wave backlog
+ok 165 - unsafe or disconnected spawn rings are deferred without a later wave backlog
+  ---
+  duration_ms: 1494.2015
+  type: 'test'
+  ...
+# Subtest: only persistently distant unseen normals retire; visibility resets grace and rewards survive
+ok 166 - only persistently distant unseen normals retire; visibility resets grace and rewards survive
+  ---
+  duration_ms: 2463.1532
+  type: 'test'
+  ...
+# Subtest: local replenishment follows a relocated player while respecting rests and population
+ok 167 - local replenishment follows a relocated player while respecting rests and population
+  ---
+  duration_ms: 3079.2225
+  type: 'test'
+  ...
+# Subtest: expanded map has connected activity clearings and safe normal/major spawns at edges
+ok 168 - expanded map has connected activity clearings and safe normal/major spawns at edges
+  ---
+  duration_ms: 13449.2121
+  type: 'test'
+  ...
+# {"actors":20,"cpuMedianMs":6.0919999999996435,"cpuP95Ms":23.011600000000726,"cpuMaxMs":131.89979999999923,"gpuMeasured":false}
+# {"actors":60,"cpuMedianMs":10.485099999999875,"cpuP95Ms":15.867699999998877,"cpuMaxMs":39.356799999999566,"gpuMeasured":false}
+# {"actors":100,"cpuMedianMs":14.017500000001746,"cpuP95Ms":19.449100000001636,"cpuMaxMs":30.058100000002014,"gpuMeasured":false}
+# Subtest: spatial broad phase never drops exact neighbors, including moving across negative cells
+ok 169 - spatial broad phase never drops exact neighbors, including moving across negative cells
+  ---
+  duration_ms: 38.3938
+  type: 'test'
+  ...
+# Subtest: each stage fills its local target with a weak majority, bounded threats and no backlog
+ok 170 - each stage fills its local target with a weak majority, bounded threats and no backlog
+  ---
+  duration_ms: 530.5432
+  type: 'test'
+  ...
+# Subtest: weak pursuers die to one base sword hit and award exactly one death; retirement awards none
+ok 171 - weak pursuers die to one base sword hit and award exactly one death; retirement awards none
+  ---
+  duration_ms: 37.2779
+  type: 'test'
+  ...
+# Subtest: one hundred weak bodies and warnings use three shared meshes and reset without stale instances
+ok 172 - one hundred weak bodies and warnings use three shared meshes and reset without stale instances
+  ---
+  duration_ms: 83.6585
+  type: 'test'
+  ...
+# Subtest: real-map CPU load samples at 20, 60 and 100 actors remain finite and within collision bounds
+ok 173 - real-map CPU load samples at 20, 60 and 100 actors remain finite and within collision bounds
+  ---
+  duration_ms: 23096.8022
+  type: 'test'
+  ...
+# Subtest: staff fingers wrap at separate heights and every book layer shares rigid weights
+ok 174 - staff fingers wrap at separate heights and every book layer shares rigid weights
+  ---
+  duration_ms: 257.0203
+  type: 'test'
+  ...
+# Subtest: hood extends onto the shoulders and its lower vertices are anchored to the torso
+ok 175 - hood extends onto the shoulders and its lower vertices are anchored to the torso
+  ---
+  duration_ms: 216.2151
+  type: 'test'
+  ...
+# Subtest: exported mage skins animate finite vertices and cloned rigs remain independent
+ok 176 - exported mage skins animate finite vertices and cloned rigs remain independent
+  ---
+  duration_ms: 512.0324
+  type: 'test'
+  ...
+# Subtest: stoles and stitched borders stay within eight millimetres of the robe surface
+ok 177 - stoles and stitched borders stay within eight millimetres of the robe surface
+  ---
+  duration_ms: 256.8801
+  type: 'test'
+  ...
+# Subtest: Mage requires a starting affinity, has 80 HP, and level 2 offers upgrades without choosing the element again
+ok 178 - Mage requires a starting affinity, has 80 HP, and level 2 offers upgrades without choosing the element again
+  ---
+  duration_ms: 126.0514
+  type: 'test'
+  ...
+# Subtest: Mage bolts travel before hitting, use the target rather than camera direction, and preserve their cast loadout
+ok 179 - Mage bolts travel before hitting, use the target rather than camera direction, and preserve their cast loadout
+  ---
+  duration_ms: 13.8149
+  type: 'test'
+  ...
+# Subtest: bolts strike the first intervening enemy, do not pierce, and stop at walls even after launch
+ok 180 - bolts strike the first intervening enemy, do not pierce, and stop at walls even after launch
+  ---
+  duration_ms: 26.3498
+  type: 'test'
+  ...
+# Subtest: every fourth released orb consumes three persistent charges and hits a nearby group once each
+ok 181 - every fourth released orb consumes three persistent charges and hits a nearby group once each
+  ---
+  duration_ms: 15.1514
+  type: 'test'
+  ...
+# Subtest: missed projectiles expire and ending a run clears all spells and area actions
+ok 182 - missed projectiles expire and ending a run clears all spells and area actions
+  ---
+  duration_ms: 27.1814
+  type: 'test'
+  ...
+# Subtest: Cataclysm has a warning, stays at the original target position, and starts its full cooldown after three pulses
+ok 183 - Cataclysm has a warning, stays at the original target position, and starts its full cooldown after three pulses
+  ---
+  duration_ms: 34.9558
+  type: 'test'
+  ...
+# Subtest: Cataclysm waits for the current cast and cannot harm enemies behind a wall or in their spawn warning
+ok 184 - Cataclysm waits for the current cast and cannot harm enemies behind a wall or in their spawn warning
+  ---
+  duration_ms: 69.2018
+  type: 'test'
+  ...
+# Subtest: Mage masteries change Cataclysm independently and snapshot the chosen rank and mastery
+ok 185 - Mage masteries change Cataclysm independently and snapshot the chosen rank and mastery
+  ---
+  duration_ms: 17.5275
+  type: 'test'
+  ...
+# Subtest: Mage fire refreshes the strongest burn without stacking; Water only pushes mastered Cataclysm from its center
+ok 186 - Mage fire refreshes the strongest burn without stacking; Water only pushes mastered Cataclysm from its center
+  ---
+  duration_ms: 9.724
+  type: 'test'
+  ...
+# Subtest: level-up and shop pauses freeze Mage projectiles, charges, area and clocks; fresh expeditions are isolated
+ok 187 - level-up and shop pauses freeze Mage projectiles, charges, area and clocks; fresh expeditions are isolated
+  ---
+  duration_ms: 83.1704
+  type: 'test'
+  ...
+# Subtest: Mage models and spell representation survive repeated class switches without leftover actors
+ok 188 - Mage models and spell representation survive repeated class switches without leftover actors
+  ---
+  duration_ms: 1451.7702
+  type: 'test'
+  ...
+# Subtest: Mage audio routes cast and Cataclysm separately from Warrior cues
+ok 189 - Mage audio routes cast and Cataclysm separately from Warrior cues
+  ---
+  duration_ms: 16.3763
+  type: 'test'
+  ...
+# Subtest: Mage fire clears three approaching soldiers with its normal 80 HP
+ok 190 - Mage fire clears three approaching soldiers with its normal 80 HP
+  ---
+  duration_ms: 25.4698
+  type: 'test'
+  ...
+# Subtest: Mage water clears three approaching soldiers with its normal 80 HP
+ok 191 - Mage water clears three approaching soldiers with its normal 80 HP
+  ---
+  duration_ms: 12.6706
+  type: 'test'
+  ...
+# Subtest: warrior laboratory can rewind real animation, pause and recover from fading
+ok 192 - warrior laboratory can rewind real animation, pause and recover from fading
+  ---
+  duration_ms: 206.0984
+  type: 'test'
+  ...
+# Subtest: mage laboratory can rewind real animation, pause and recover from fading
+ok 193 - mage laboratory can rewind real animation, pause and recover from fading
+  ---
+  duration_ms: 179.1882
+  type: 'test'
+  ...
+# Subtest: archer laboratory can rewind real animation, pause and recover from fading
+ok 194 - archer laboratory can rewind real animation, pause and recover from fading
+  ---
+  duration_ms: 122.4133
+  type: 'test'
+  ...
+# Subtest: W follows camera heading; D remains perpendicular and diagonal speed is capped
+ok 195 - W follows camera heading; D remains perpendicular and diagonal speed is capped
+  ---
+  duration_ms: 2.0433
+  type: 'test'
+  ...
+# Subtest: one second of walking covers 5 metres and stops immediately after release
+ok 196 - one second of walking covers 5 metres and stops immediately after release
+  ---
+  duration_ms: 5.2333
+  type: 'test'
+  ...
+# Subtest: thin wall stops a large displacement without tunnelling
+ok 197 - thin wall stops a large displacement without tunnelling
+  ---
+  duration_ms: 0.8953
+  type: 'test'
+  ...
+# Subtest: diagonal contact slides along the wall rather than stopping the tangent
+ok 198 - diagonal contact slides along the wall rather than stopping the tangent
+  ---
+  duration_ms: 0.5178
+  type: 'test'
+  ...
+# Subtest: a circular body can round an exposed corner without penetrating
+ok 199 - a circular body can round an exposed corner without penetrating
+  ---
+  duration_ms: 1.2798
+  type: 'test'
+  ...
+# Subtest: concave wall junction and map limits cannot trap the body inside solids
+ok 200 - concave wall junction and map limits cannot trap the body inside solids
+  ---
+  duration_ms: 8.0095
+  type: 'test'
+  ...
+# Subtest: rotation takes the short path across ±PI and camera angle is independent
+ok 201 - rotation takes the short path across ±PI and camera angle is independent
+  ---
+  duration_ms: 1.2039
+  type: 'test'
+  ...
+# Subtest: two fingers remain independent when either is released or cancelled
+ok 202 - two fingers remain independent when either is released or cancelled
+  ---
+  duration_ms: 2.408
+  type: 'test'
+  ...
+# Subtest: a third finger cannot steal movement and crossing screen halves keeps ownership
+ok 203 - a third finger cannot steal movement and crossing screen halves keeps ownership
+  ---
+  duration_ms: 3.5967
+  type: 'test'
+  ...
+# Subtest: joystick deadzone prevents drift; clearing removes keys and both pointers
+ok 204 - joystick deadzone prevents drift; clearing removes keys and both pointers
+  ---
+  duration_ms: 0.9431
+  type: 'test'
+  ...
+# Subtest: audio activates only on gesture, pause cancels voices and world sounds cannot queue in menus
+ok 205 - audio activates only on gesture, pause cancels voices and world sounds cannot queue in menus
+  ---
+  duration_ms: 3.0324
+  type: 'test'
+  ...
+# Subtest: audio throttles mass hits, caps voices and handles mute, volume and unavailable audio
+ok 206 - audio throttles mass hits, caps voices and handles mute, volume and unavailable audio
+  ---
+  duration_ms: 1.347
+  type: 'test'
+  ...
+# Subtest: audio feedback signals unique capture and danger changes without repeating every frame
+ok 207 - audio feedback signals unique capture and danger changes without repeating every frame
+  ---
+  duration_ms: 831.417
+  type: 'test'
+  ...
+# Subtest: projectile guidance rejects distant, receding, missing and wall-blocked trajectories
+ok 208 - projectile guidance rejects distant, receding, missing and wall-blocked trajectories
+  ---
+  duration_ms: 1.1821
+  type: 'test'
+  ...
+# Subtest: HUD refresh is bounded while explicit paused renders remain immediate
+ok 209 - HUD refresh is bounded while explicit paused renders remain immediate
+  ---
+  duration_ms: 0.4707
+  type: 'test'
+  ...
+# Subtest: late capture never replaces a scheduled large wave with its smaller reinforcement request
+ok 210 - late capture never replaces a scheduled large wave with its smaller reinforcement request
+  ---
+  duration_ms: 1540.3476
+  type: 'test'
+  ...
+# Subtest: opening the merchant at 6:00 cannot delay the final transition or retain normal hordes
+ok 211 - opening the merchant at 6:00 cannot delay the final transition or retain normal hordes
+  ---
+  duration_ms: 1588.7662
+  type: 'test'
+  ...
+# Subtest: only unique enemy deaths drop essence, and an orb is collected only once
+ok 212 - only unique enemy deaths drop essence, and an orb is collected only once
+  ---
+  duration_ms: 2.9746
+  type: 'test'
+  ...
+# Subtest: absorption, attraction, range and walls govern physical collection
+ok 213 - absorption, attraction, range and walls govern physical collection
+  ---
+  duration_ms: 1.1682
+  type: 'test'
+  ...
+# Subtest: multiple levels preserve excess XP and queue distinct choices
+ok 214 - multiple levels preserve excess XP and queue distinct choices
+  ---
+  duration_ms: 2.9046
+  type: 'test'
+  ...
+# Subtest: choices exclude maximized upgrades, support fewer than three and compensate exhaustion
+ok 215 - choices exclude maximized upgrades, support fewer than three and compensate exhaustion
+  ---
+  duration_ms: 2.4242
+  type: 'test'
+  ...
+# Subtest: modern general upgrades affect live stats and vitality heals only its increment
+ok 216 - modern general upgrades affect live stats and vitality heals only its increment
+  ---
+  duration_ms: 852.6107
+  type: 'test'
+  ...
+# Subtest: damage upgrades multiply both real sword hits and whirlwind pulses
+ok 217 - damage upgrades multiply both real sword hits and whirlwind pulses
+  ---
+  duration_ms: 587.4917
+  type: 'test'
+  ...
+# Subtest: pending choices freeze the run including clocks, enemies, drops and cooldowns
+ok 218 - pending choices freeze the run including clocks, enemies, drops and cooldowns
+  ---
+  duration_ms: 1188.6463
+  type: 'test'
+  ...
+# Subtest: simultaneous lethal damage and available level XP resolve to defeat without resurrection
+ok 219 - simultaneous lethal damage and available level XP resolve to defeat without resurrection
+  ---
+  duration_ms: 1151.3478
+  type: 'test'
+  ...
+# Subtest: clearing ordinary enemies never ends the timed run or skips pending choices
+ok 220 - clearing ordinary enemies never ends the timed run or skips pending choices
+  ---
+  duration_ms: 1524.8792
+  type: 'test'
+  ...
+# Subtest: reinforcement warning prevents targeting, movement and damage until complete
+ok 221 - reinforcement warning prevents targeting, movement and damage until complete
+  ---
+  duration_ms: 393.93
+  type: 'test'
+  ...
+# Subtest: a fresh run and essence view reset every transient progression resource
+ok 222 - a fresh run and essence view reset every transient progression resource
+  ---
+  duration_ms: 1269.0738
+  type: 'test'
+  ...
+# Subtest: both classes use four-slot progression, develop all levels, and reject double choices
+ok 223 - both classes use four-slot progression, develop all levels, and reject double choices
+  ---
+  duration_ms: 257.8048
+  type: 'test'
+  ...
+# Subtest: mage:orb: both level-ten paths produce real combat effects
+ok 224 - mage:orb: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 349.8155
+  type: 'test'
+  ...
+# Subtest: mage:cataclysm: both level-ten paths produce real combat effects
+ok 225 - mage:cataclysm: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 218.9603
+  type: 'test'
+  ...
+# Subtest: mage:arcane-lances: both level-ten paths produce real combat effects
+ok 226 - mage:arcane-lances: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 143.4344
+  type: 'test'
+  ...
+# Subtest: mage:guardian-orbs: both level-ten paths produce real combat effects
+ok 227 - mage:guardian-orbs: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 117.7945
+  type: 'test'
+  ...
+# Subtest: mage:detonation: both level-ten paths produce real combat effects
+ok 228 - mage:detonation: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 189.6098
+  type: 'test'
+  ...
+# Subtest: mage:runic-beam: both level-ten paths produce real combat effects
+ok 229 - mage:runic-beam: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 232.3882
+  type: 'test'
+  ...
+# Subtest: mage:nova: both level-ten paths produce real combat effects
+ok 230 - mage:nova: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 207.4124
+  type: 'test'
+  ...
+# Subtest: mage:fragments: both level-ten paths produce real combat effects
+ok 231 - mage:fragments: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 212.1702
+  type: 'test'
+  ...
+# Subtest: mage:mirror: both level-ten paths produce real combat effects
+ok 232 - mage:mirror: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 225.465
+  type: 'test'
+  ...
+# Subtest: archer:arrow: both level-ten paths produce real combat effects
+ok 233 - archer:arrow: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 200.621
+  type: 'test'
+  ...
+# Subtest: archer:rain: both level-ten paths produce real combat effects
+ok 234 - archer:rain: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 212.6187
+  type: 'test'
+  ...
+# Subtest: archer:fan-volley: both level-ten paths produce real combat effects
+ok 235 - archer:fan-volley: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 226.23
+  type: 'test'
+  ...
+# Subtest: archer:siege-shot: both level-ten paths produce real combat effects
+ok 236 - archer:siege-shot: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 108.8398
+  type: 'test'
+  ...
+# Subtest: archer:ricochet: both level-ten paths produce real combat effects
+ok 237 - archer:ricochet: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 130.3203
+  type: 'test'
+  ...
+# Subtest: archer:spike-trap: both level-ten paths produce real combat effects
+ok 238 - archer:spike-trap: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 369.6465
+  type: 'test'
+  ...
+# Subtest: archer:return-arrows: both level-ten paths produce real combat effects
+ok 239 - archer:return-arrows: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 257.8305
+  type: 'test'
+  ...
+# Subtest: archer:hunting-beacon: both level-ten paths produce real combat effects
+ok 240 - archer:hunting-beacon: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 130.3608
+  type: 'test'
+  ...
+# Subtest: archer:stakes: both level-ten paths produce real combat effects
+ok 241 - archer:stakes: both level-ten paths produce real combat effects
+  ---
+  duration_ms: 147.427
+  type: 'test'
+  ...
+# Subtest: skill hits carry each primary and support; derived shots do not recursively apply statuses
+ok 242 - skill hits carry each primary and support; derived shots do not recursively apply statuses
+  ---
+  duration_ms: 339.7606
+  type: 'test'
+  ...
+# Subtest: walls prevent remote skill targeting and projectile damage for both classes
+ok 243 - walls prevent remote skill targeting and projectile damage for both classes
+  ---
+  duration_ms: 82.7669
+  type: 'test'
+  ...
+# Subtest: initial skills coexist with basics and cancellation clears clocks, marks and views
+ok 244 - initial skills coexist with basics and cancellation clears clocks, marks and views
+  ---
+  duration_ms: 107.8634
+  type: 'test'
+  ...
+# Subtest: mirror echoes never grant arcane charges or copy empowered explosions
+ok 245 - mirror echoes never grant arcane charges or copy empowered explosions
+  ---
+  duration_ms: 102.9406
+  type: 'test'
+  ...
+# Subtest: non-basic archer shots do not grant Precision; return arrows traverse both full legs
+ok 246 - non-basic archer shots do not grant Precision; return arrows traverse both full legs
+  ---
+  duration_ms: 76.1184
+  type: 'test'
+  ...
+# Subtest: beacon modifies incoming damage only for marked enemies; traps use a separate slow
+ok 247 - beacon modifies incoming damage only for marked enemies; traps use a separate slow
+  ---
+  duration_ms: 97.972
+  type: 'test'
+  ...
+# Subtest: normal-health encounters clear with every class and primary affinity
+ok 248 - normal-health encounters clear with every class and primary affinity
+  ---
+  duration_ms: 314.8646
+  type: 'test'
+  ...
+# Subtest: parameter bounds cover basic, area, projectile and duration branches
+ok 249 - parameter bounds cover basic, area, projectile and duration branches
+  ---
+  duration_ms: 68.3755
+  type: 'test'
+  ...
+# Subtest: twelve immutable relics, four slots, no duplicates, eligibility follows either affinity
+ok 250 - twelve immutable relics, four slots, no duplicates, eligibility follows either affinity
+  ---
+  duration_ms: 7.9522
+  type: 'test'
+  ...
+# Subtest: pure seal and concord require their respective builds; pure seal prevents a second affinity
+ok 251 - pure seal and concord require their respective builds; pure seal prevents a second affinity
+  ---
+  duration_ms: 3.0655
+  type: 'test'
+  ...
+# Subtest: second affinity starts at level five, costs a choice, upgrades to III and cannot add a third or replace the primary
+ok 252 - second affinity starts at level five, costs a choice, upgrades to III and cannot add a third or replace the primary
+  ---
+  duration_ms: 51.9569
+  type: 'test'
+  ...
+# Subtest: all 36 ordered mixed class builds clear a small encounter with one primary mastery and bounded effects
+ok 253 - all 36 ordered mixed class builds clear a small encounter with one primary mastery and bounded effects
+  ---
+  duration_ms: 1649.8548
+  type: 'test'
+  ...
+# Subtest: direct damage is not doubled by mixing; Fire primary burn is 70%, support burns are weaker and never recursively proc
+ok 254 - direct damage is not doubled by mixing; Fire primary burn is 70%, support burns are weaker and never recursively proc
+  ---
+  duration_ms: 117.7434
+  type: 'test'
+  ...
+# Subtest: support Earth affects following damage only; Water/Fire coexist and Air respects resistance and shared protection
+ok 255 - support Earth affects following damage only; Water/Fire coexist and Air respects resistance and shared protection
+  ---
+  duration_ms: 39.5928
+  type: 'test'
+  ...
+# Subtest: stat relics apply once, respect movement limits and keep technique slots independent
+ok 256 - stat relics apply once, respect movement limits and keep technique slots independent
+  ---
+  duration_ms: 25.9036
+  type: 'test'
+  ...
+# Subtest: iron medallion combines multiplicatively with Guard and consumes only post-mitigation barrier capacity
+ok 257 - iron medallion combines multiplicatively with Guard and consumes only post-mitigation barrier capacity
+  ---
+  duration_ms: 14.0165
+  type: 'test'
+  ...
+# Subtest: renewal heals once for simultaneous kills, cooldown freezes with no steps and never resurrects a dead hero
+ok 258 - renewal heals once for simultaneous kills, cooldown freezes with no steps and never resurrects a dead hero
+  ---
+  duration_ms: 52.2533
+  type: 'test'
+  ...
+# Subtest: element relics modify primary and support states without stacking indefinitely
+ok 259 - element relics modify primary and support states without stacking indefinitely
+  ---
+  duration_ms: 55.0093
+  type: 'test'
+  ...
+# Subtest: relic rewards are deterministic, unique, pause the world, consume no level and can be salvaged exactly once
+ok 260 - relic rewards are deterministic, unique, pause the world, consume no level and can be salvaged exactly once
+  ---
+  duration_ms: 77.8602
+  type: 'test'
+  ...
+# Subtest: full inventory offers only salvage; queued rewards cannot equip duplicates and death cancels rewards
+ok 261 - full inventory offers only salvage; queued rewards cannot equip duplicates and death cancels rewards
+  ---
+  duration_ms: 2.9877
+  type: 'test'
+  ...
+# Subtest: real chest interaction replaces coins with a choice; replaying E cannot duplicate it
+ok 262 - real chest interaction replaces coins with a choice; replaying E cannot duplicate it
+  ---
+  duration_ms: 35.8998
+  type: 'test'
+  ...
+# Subtest: capture grants its coins and one relic choice without repeating the reward
+ok 263 - capture grants its coins and one relic choice without repeating the reward
+  ---
+  duration_ms: 211.392
+  type: 'test'
+  ...
+# Subtest: shop relic stock is seeded, finite and atomic: invalid/stale/full/ineligible purchases never charge coins
+ok 264 - shop relic stock is seeded, finite and atomic: invalid/stale/full/ineligible purchases never charge coins
+  ---
+  duration_ms: 32.8129
+  type: 'test'
+  ...
+# Subtest: projectiles preserve the old affinity/relic snapshot across choices; restart resets both inventories
+ok 265 - projectiles preserve the old affinity/relic snapshot across choices; restart resets both inventories
+  ---
+  duration_ms: 70.7838
+  type: 'test'
+  ...
+# Subtest: HUD summary and secondary aura show two affinities but only one mastery
+ok 266 - HUD summary and secondary aura show two affinities but only one mastery
+  ---
+  duration_ms: 89.7224
+  type: 'test'
+  ...
+# Subtest: catalog has four immutable techniques per class, three ranks, no Armored entries
+ok 267 - catalog has four immutable techniques per class, three ranks, no Armored entries
+  ---
+  duration_ms: 31.442
+  type: 'test'
+  ...
+# Subtest: queued level gates use the choice level, reject foreign/forged choices, and never equip four
+ok 268 - queued level gates use the choice level, reject foreign/forged choices, and never equip four
+  ---
+  duration_ms: 503.5109
+  type: 'test'
+  ...
+# Subtest: learning consumes one level, upgrading keeps its slot and requires levels five/seven
+ok 269 - learning consumes one level, upgrading keeps its slot and requires levels five/seven
+  ---
+  duration_ms: 1.1141
+  type: 'test'
+  ...
+# Subtest: Warrior Barrido reaches lateral targets while Estocada extends reach and snapshots both
+ok 270 - Warrior Barrido reaches lateral targets while Estocada extends reach and snapshots both
+  ---
+  duration_ms: 25.2092
+  type: 'test'
+  ...
+# Subtest: Guardia firme reduces melee and projectile damage before consuming the Earth barrier
+ok 271 - Guardia firme reduces melee and projectile damage before consuming the Earth barrier
+  ---
+  duration_ms: 18.2242
+  type: 'test'
+  ...
+# Subtest: Giro prolongado adds the correct pulses to every mastery and starts cooldown after its new duration
+ok 272 - Giro prolongado adds the correct pulses to every mastery and starts cooldown after its new duration
+  ---
+  duration_ms: 203.0886
+  type: 'test'
+  ...
+# Subtest: Eco arcano releases a delayed weaker bolt without extra charges, empowered area, or duplicated Earth guard
+ok 273 - Eco arcano releases a delayed weaker bolt without extra charges, empowered area, or duplicated Earth guard
+  ---
+  duration_ms: 65.0976
+  type: 'test'
+  ...
+# Subtest: Resonancia widens only the empowered blast, respects walls and keeps launch values
+ok 274 - Resonancia widens only the empowered blast, respects walls and keeps launch values
+  ---
+  duration_ms: 8.0036
+  type: 'test'
+  ...
+# Subtest: Concentración/Cadencia shorten only basic launch intervals with bounded projectile counts
+ok 275 - Concentración/Cadencia shorten only basic launch intervals with bounded projectile counts
+  ---
+  duration_ms: 142.9494
+  type: 'test'
+  ...
+# Subtest: Convergencia and Lluvia extensa multiply mastered area radius and preserve center and pulse count
+ok 276 - Convergencia and Lluvia extensa multiply mastered area radius and preserve center and pulse count
+  ---
+  duration_ms: 135.586
+  type: 'test'
+  ...
+# Subtest: Abanico sends two angled arrows, snapshots damage and never grants or removes Precision for side hits/misses
+ok 277 - Abanico sends two angled arrows, snapshots damage and never grants or removes Precision for side hits/misses
+  ---
+  duration_ms: 18.5154
+  type: 'test'
+  ...
+# Subtest: Punta larga combines with Precisión and Air mastery but still stops at walls
+ok 278 - Punta larga combines with Precisión and Air mastery but still stops at walls
+  ---
+  duration_ms: 5.7704
+  type: 'test'
+  ...
+# Subtest: technique echoes and fans remain bounded and delayed shots cannot bypass walls
+ok 279 - technique echoes and fans remain bounded and delayed shots cannot bypass walls
+  ---
+  duration_ms: 40.2313
+  type: 'test'
+  ...
+# Subtest: modern Mage projectiles freeze in menus and clear on death
+ok 280 - modern Mage projectiles freeze in menus and clear on death
+  ---
+  duration_ms: 53.7476
+  type: 'test'
+  ...
+# Subtest: catalog and summaries expose ranks, occupied slots, gated upgrades and the omitted fourth technique
+ok 281 - catalog and summaries expose ranks, occupied slots, gated upgrades and the omitted fourth technique
+  ---
+  duration_ms: 13.0707
+  type: 'test'
+  ...
+# Subtest: delayed echo is not drawn before release and disposes with the Mage view
+ok 282 - delayed echo is not drawn before release and disposes with the Mage view
+  ---
+  duration_ms: 79.9841
+  type: 'test'
+  ...
+# Subtest: all expeditions enable modern progression while Warrior retains its own arsenal
+ok 283 - all expeditions enable modern progression while Warrior retains its own arsenal
+  ---
+  duration_ms: 293.2252
+  type: 'test'
+  ...
+# Subtest: real level choices acquire four skills and grow branches while preserving rank caps, pause and unique purchases
+ok 284 - real level choices acquire four skills and grow branches while preserving rank caps, pause and unique purchases
+  ---
+  duration_ms: 275.7
+  type: 'test'
+  ...
+# Subtest: every Warrior attack and both level-ten paths execute finite damage or protection
+ok 285 - every Warrior attack and both level-ten paths execute finite damage or protection
+  ---
+  duration_ms: 1733.7442
+  type: 'test'
+  ...
+# Subtest: all skill/element pairs apply their primary and support without recursive effects
+ok 286 - all skill/element pairs apply their primary and support without recursive effects
+  ---
+  duration_ms: 1255.9931
+  type: 'test'
+  ...
+# Subtest: sword continues during whirlwind, multiple actions coexist, and a launched action keeps its build
+ok 287 - sword continues during whirlwind, multiple actions coexist, and a launched action keeps its build
+  ---
+  duration_ms: 19.4416
+  type: 'test'
+  ...
+# Subtest: walls prevent target selection, projectiles and remote damage through a solid
+ok 288 - walls prevent target selection, projectiles and remote damage through a solid
+  ---
+  duration_ms: 185.8811
+  type: 'test'
+  ...
+# Subtest: stat formulas respect cooldown, range and duration caps across all tree paths
+ok 289 - stat formulas respect cooldown, range and duration caps across all tree paths
+  ---
+  duration_ms: 13.6255
+  type: 'test'
+  ...
+# Subtest: modern shop and relic sync share four stat ranks and fifteen-point vitality, reset starts empty
+ok 290 - modern shop and relic sync share four stat ranks and fifteen-point vitality, reset starts empty
+  ---
+  duration_ms: 94.5619
+  type: 'test'
+  ...
+# Subtest: procedural arsenal view follows domain state and clears objects on reset
+ok 291 - procedural arsenal view follows domain state and clears objects on reset
+  ---
+  duration_ms: 44.6518
+  type: 'test'
+  ...
+# Subtest: modern Warrior clears a close encounter with normal health in every primary affinity
+ok 292 - modern Warrior clears a close encounter with normal health in every primary affinity
+  ---
+  duration_ms: 102.5075
+  type: 'test'
+  ...
+# Subtest: chain exposure applies after its own damage and its visual lasts through the action
+ok 293 - chain exposure applies after its own damage and its visual lasts through the action
+  ---
+  duration_ms: 23.6531
+  type: 'test'
+  ...
+# Subtest: breaking retaliation starts its cooldown immediately and emits one wave
+ok 294 - breaking retaliation starts its cooldown immediately and emits one wave
+  ---
+  duration_ms: 17.6876
+  type: 'test'
+  ...
+# Subtest: warrior GLB keeps sword attached, poses finite and clones independent
+ok 295 - warrior GLB keeps sword attached, poses finite and clones independent
+  ---
+  duration_ms: 224.3737
+  type: 'test'
+  ...
+# Subtest: a cleave grants exactly one stack and one damage multiplier to all targets
+ok 296 - a cleave grants exactly one stack and one damage multiplier to all targets
+  ---
+  duration_ms: 56.1139
+  type: 'test'
+  ...
+# Subtest: successive basic hits ramp to four stacks, cap at +20%, and refresh at the cap
+ok 297 - successive basic hits ramp to four stacks, cap at +20%, and refresh at the cap
+  ---
+  duration_ms: 48.2731
+  type: 'test'
+  ...
+# Subtest: a miss grants no stack; after three seconds without a new basic hit all stacks expire
+ok 298 - a miss grants no stack; after three seconds without a new basic hit all stacks expire
+  ---
+  duration_ms: 12.7586
+  type: 'test'
+  ...
+# Subtest: the damage bonus is fixed at swing start, even if stacks expire during its windup
+ok 299 - the damage bonus is fixed at swing start, even if stacks expire during its windup
+  ---
+  duration_ms: 6.8296
+  type: 'test'
+  ...
+# Subtest: Torbellino activates on one target, replaces the basic attack and emits six unique pulses
+ok 300 - Torbellino activates on one target, replaces the basic attack and emits six unique pulses
+  ---
+  duration_ms: 14.2555
+  type: 'test'
+  ...
+# Subtest: pulses neither gain nor refresh Ímpetu and their damage does not inherit its bonus
+ok 301 - pulses neither gain nor refresh Ímpetu and their damage does not inherit its bonus
+  ---
+  duration_ms: 19.5033
+  type: 'test'
+  ...
+# Subtest: ready Torbellino waits behind a wall and keeps its charge without a target
+ok 302 - ready Torbellino waits behind a wall and keeps its charge without a target
+  ---
+  duration_ms: 40.5253
+  type: 'test'
+  ...
+# Subtest: every pulse rechecks walls and reach; leaving range does not bank extra pulses
+ok 303 - every pulse rechecks walls and reach; leaving range does not bank extra pulses
+  ---
+  duration_ms: 28.9397
+  type: 'test'
+  ...
+# Subtest: cooldown starts after completion and reactivates only after the full 20 seconds
+ok 304 - cooldown starts after completion and reactivates only after the full 20 seconds
+  ---
+  duration_ms: 96.3778
+  type: 'test'
+  ...
+# Subtest: a current sword swing completes before the ready skill takes over
+ok 305 - a current sword swing completes before the ready skill takes over
+  ---
+  duration_ms: 6.7998
+  type: 'test'
+  ...
+# Subtest: movement remains full speed during the spin and its visual facing does not turn the camera/body
+ok 306 - movement remains full speed during the spin and its visual facing does not turn the camera/body
+  ---
+  duration_ms: 3.4769
+  type: 'test'
+  ...
+# Subtest: pause gating freezes active skill, stacks, cooldown and enemy preparation
+ok 307 - pause gating freezes active skill, stacks, cooldown and enemy preparation
+  ---
+  duration_ms: 8.467
+  type: 'test'
+  ...
+# Subtest: death cancels the remaining pulses and a restart clears all warrior-kit state
+ok 308 - death cancels the remaining pulses and a restart clears all warrior-kit state
+  ---
+  duration_ms: 23.6784
+  type: 'test'
+  ...
+1..308
+# tests 308
+# suites 0
+# pass 308
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 38830.6482

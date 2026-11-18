@@ -1,0 +1,20 @@
+### Result
+{"recovered":{"engine":"three.js r187","frame":"6169","cameraDistance":"12.00","obstructed":"false","yaw":"0.012","pitch":"0.288","playerX":"4.749","playerZ":"-7.567","hp":"90","kills":"9","encounter":"running","impetus":"3","whirlwind":"false","level":"1","xp":"1","wave":"16","stage":"waves","seed":"513268327","classId":"archer","affinity":"","mastery":"false","coins":"6","openedChests":"0","captureProgress":"0.00","captureState":"idle","shopping":"false"},"far":{"engine":"three.js r187","frame":"6358","cameraDistance":"18.00","obstructed":"false","yaw":"0.012","pitch":"0.288","playerX":"4.749","playerZ":"-7.567","hp":"90","kills":"11","encounter":"running","impetus":"3","whirlwind":"false","level":"1","xp":"1","wave":"16","stage":"waves","seed":"513268327","classId":"archer","affinity":"","mastery":"false","coins":"6","openedChests":"0","captureProgress":"0.00","captureState":"idle","shopping":"false"},"desired":"18"}
+### Ran Playwright code
+```js
+await (async (page) => {
+ await page.getByRole('button',{name:'Continuar',exact:true}).click();
+ await page.mouse.move(-300,450,{steps:20});
+ await page.waitForTimeout(900);
+ const recovered=await page.locator('#world').evaluate(el=>({...el.dataset}));
+ for(let i=0;i<10;i++) await page.mouse.wheel(0,220);
+ await page.waitForTimeout(1200);
+ const far=await page.locator('#world').evaluate(el=>({...el.dataset}));
+ const desired=await page.locator('#distance').inputValue();
+ for(let i=0;i<6;i++) await page.mouse.wheel(0,-220);
+ await page.waitForTimeout(350);
+ await page.keyboard.press('Escape');
+ return {recovered,far,desired};
+}
+)(page);
+```

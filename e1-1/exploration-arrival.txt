@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: warrior: south arrival, rewards, expanded ground and reinforcement ring are usable
+ok 1 - warrior: south arrival, rewards, expanded ground and reinforcement ring are usable
+  ---
+  duration_ms: 6946.9087
+  type: 'test'
+  ...
+# Subtest: mage: south arrival, rewards, expanded ground and reinforcement ring are usable
+ok 2 - mage: south arrival, rewards, expanded ground and reinforcement ring are usable
+  ---
+  duration_ms: 7274.0198
+  type: 'test'
+  ...
+# Subtest: archer: south arrival, rewards, expanded ground and reinforcement ring are usable
+ok 3 - archer: south arrival, rewards, expanded ground and reinforcement ring are usable
+  ---
+  duration_ms: 6262.8619
+  type: 'test'
+  ...
+# Subtest: coins collect once by proximity and supplies wait at full health
+ok 4 - coins collect once by proximity and supplies wait at full health
+  ---
+  duration_ms: 25.3316
+  type: 'test'
+  ...
+# Subtest: walls block automatic collection, discovery and contextual interaction
+ok 5 - walls block automatic collection, discovery and contextual interaction
+  ---
+  duration_ms: 17.3329
+  type: 'test'
+  ...
+# Subtest: chests are unique rewards; sources preserve charges at full HP and exhaust visibly
+ok 6 - chests are unique rewards; sources preserve charges at full HP and exhaust visibly
+  ---
+  duration_ms: 15.3141
+  type: 'test'
+  ...
+# Subtest: interaction targeting is deterministic, prefers unused objects and rechecks range
+ok 7 - interaction targeting is deterministic, prefers unused objects and rechecks range
+  ---
+  duration_ms: 10.7445
+  type: 'test'
+  ...
+# Subtest: normal deaths leave collectible currency once; withdrawal and boss deaths do not
+ok 8 - normal deaths leave collectible currency once; withdrawal and boss deaths do not
+  ---
+  duration_ms: 29.5708
+  type: 'test'
+  ...
+# Subtest: discovery remembers visited destinations but limits guidance to three nearby points
+ok 9 - discovery remembers visited destinations but limits guidance to three nearby points
+  ---
+  duration_ms: 3.2643
+  type: 'test'
+  ...
+# Subtest: paused choices freeze pickups and queued interactions; lethal hits take priority over healing
+ok 10 - paused choices freeze pickups and queued interactions; lethal hits take priority over healing
+  ---
+  duration_ms: 10.3131
+  type: 'test'
+  ...
+# Subtest: reward state and balance reset while the same seed reproduces placement
+ok 11 - reward state and balance reset while the same seed reproduces placement
+  ---
+  duration_ms: 32.5105
+  type: 'test'
+  ...
+# Subtest: actual map placements are reproducible, separated and reachable with player clearance
+ok 12 - actual map placements are reproducible, separated and reachable with player clearance
+  ---
+  duration_ms: 2530.9425
+  type: 'test'
+  ...
+# Subtest: rendered props reflect used states and release objects and shared resources on restart
+ok 13 - rendered props reflect used states and release objects and shared resources on restart
+  ---
+  duration_ms: 3.2812
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 21207.1298

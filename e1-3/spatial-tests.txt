@@ -1,0 +1,268 @@
+TAP version 13
+# Captura y compra: 67.95 s, 30 monedas antes de comprar, saldo 12; simulación sin GPU.
+# Subtest: capture warns, pauses progress outside the circle and pays only on completion
+ok 1 - capture warns, pauses progress outside the circle and pays only on completion
+  ---
+  duration_ms: 2.0859
+  type: 'test'
+  ...
+# Subtest: capture cannot progress across walls and incomplete objectives close at the final transition
+ok 2 - capture cannot progress across walls and incomplete objectives close at the final transition
+  ---
+  duration_ms: 0.41
+  type: 'test'
+  ...
+# Subtest: run credits the capture once, never a core, and the boss deadline takes priority
+ok 3 - run credits the capture once, never a core, and the boss deadline takes priority
+  ---
+  duration_ms: 1395.6062
+  type: 'test'
+  ...
+# Subtest: capture uses one shared wave budget, bounded cadence and the global enemy cap
+ok 4 - capture uses one shared wave budget, bounded cadence and the global enemy cap
+  ---
+  duration_ms: 1211.0534
+  type: 'test'
+  ...
+# Subtest: entering the merchant freezes combat, projectiles, capture and the director until explicitly closed
+ok 5 - entering the merchant freezes combat, projectiles, capture and the director until explicitly closed
+  ---
+  duration_ms: 406.6985
+  type: 'test'
+  ...
+# Subtest: merchant cannot open remotely or through a pending upgrade
+ok 6 - merchant cannot open remotely or through a pending upgrade
+  ---
+  duration_ms: 374.7524
+  type: 'test'
+  ...
+# Subtest: purchases reject stale clicks, insufficient funds, full health and exhausted stock
+ok 7 - purchases reject stale clicks, insufficient funds, full health and exhausted stock
+  ---
+  duration_ms: 749.4543
+  type: 'test'
+  ...
+# Subtest: shop upgrades share rank caps and immediately affect combat, maximum health and movement
+ok 8 - shop upgrades share rank caps and immediately affect combat, maximum health and movement
+  ---
+  duration_ms: 727.1989
+  type: 'test'
+  ...
+# Subtest: closing or restarting invalidates shop clicks and resets stock, capture and economy
+ok 9 - closing or restarting invalidates shop clicks and resets stock, capture and economy
+  ---
+  duration_ms: 770.157
+  type: 'test'
+  ...
+# Subtest: actual-map expedition can capture then physically reach the merchant and purchase with its reward
+ok 10 - actual-map expedition can capture then physically reach the merchant and purchase with its reward
+  ---
+  duration_ms: 23460.3919
+  type: 'test'
+  ...
+# Subtest: merchant and capture views update state without accumulating geometry across resets
+ok 11 - merchant and capture views update state without accumulating geometry across resets
+  ---
+  duration_ms: 3.6955
+  type: 'test'
+  ...
+# Subtest: warrior: south arrival, rewards, expanded ground and reinforcement ring are usable
+ok 12 - warrior: south arrival, rewards, expanded ground and reinforcement ring are usable
+  ---
+  duration_ms: 11269.7516
+  type: 'test'
+  ...
+# Subtest: mage: south arrival, rewards, expanded ground and reinforcement ring are usable
+ok 13 - mage: south arrival, rewards, expanded ground and reinforcement ring are usable
+  ---
+  duration_ms: 9768.0049
+  type: 'test'
+  ...
+# Subtest: archer: south arrival, rewards, expanded ground and reinforcement ring are usable
+ok 14 - archer: south arrival, rewards, expanded ground and reinforcement ring are usable
+  ---
+  duration_ms: 9458.325
+  type: 'test'
+  ...
+# Superficie libre muestreada: 71014 m²; sector anterior sin su antigua valla: 2161 m²; razón 32.86.
+# Expansión: 342 apariciones seguras para tres tamaños, 15 destinos y cuatro bordes.
+# Circuito transitable: 15 destinos; tramo máximo 43.1 s a velocidad base.
+# Subtest: offscreen candidates are preferred; visible fallback retains warning and safe distance
+ok 15 - offscreen candidates are preferred; visible fallback retains warning and safe distance
+  ---
+  duration_ms: 879.412
+  type: 'test'
+  ...
+# Subtest: unsafe or disconnected spawn rings are deferred without a later wave backlog
+ok 16 - unsafe or disconnected spawn rings are deferred without a later wave backlog
+  ---
+  duration_ms: 837.3899
+  type: 'test'
+  ...
+# Subtest: only persistently distant unseen normals retire; visibility resets grace and rewards survive
+ok 17 - only persistently distant unseen normals retire; visibility resets grace and rewards survive
+  ---
+  duration_ms: 1186.0854
+  type: 'test'
+  ...
+# Subtest: local replenishment follows a relocated player while respecting rests and population
+ok 18 - local replenishment follows a relocated player while respecting rests and population
+  ---
+  duration_ms: 1331.7875
+  type: 'test'
+  ...
+# Subtest: expanded map has connected activity clearings and safe normal/major spawns at edges
+ok 19 - expanded map has connected activity clearings and safe normal/major spawns at edges
+  ---
+  duration_ms: 10426.9341
+  type: 'test'
+  ...
+# Subtest: coins collect once by proximity and supplies wait at full health
+ok 20 - coins collect once by proximity and supplies wait at full health
+  ---
+  duration_ms: 29.3557
+  type: 'test'
+  ...
+# Subtest: walls block automatic collection, discovery and contextual interaction
+ok 21 - walls block automatic collection, discovery and contextual interaction
+  ---
+  duration_ms: 21.251
+  type: 'test'
+  ...
+# Subtest: chests are unique rewards; sources preserve charges at full HP and exhaust visibly
+ok 22 - chests are unique rewards; sources preserve charges at full HP and exhaust visibly
+  ---
+  duration_ms: 17.3197
+  type: 'test'
+  ...
+# Subtest: interaction targeting is deterministic, prefers unused objects and rechecks range
+ok 23 - interaction targeting is deterministic, prefers unused objects and rechecks range
+  ---
+  duration_ms: 12.2182
+  type: 'test'
+  ...
+# Subtest: normal deaths leave collectible currency once; withdrawal and boss deaths do not
+ok 24 - normal deaths leave collectible currency once; withdrawal and boss deaths do not
+  ---
+  duration_ms: 41.6478
+  type: 'test'
+  ...
+# Subtest: discovery remembers visited destinations but limits guidance to three nearby points
+ok 25 - discovery remembers visited destinations but limits guidance to three nearby points
+  ---
+  duration_ms: 6.7691
+  type: 'test'
+  ...
+# Subtest: paused choices freeze pickups and queued interactions; lethal hits take priority over healing
+ok 26 - paused choices freeze pickups and queued interactions; lethal hits take priority over healing
+  ---
+  duration_ms: 17.4022
+  type: 'test'
+  ...
+# Subtest: reward state and balance reset while the same seed reproduces placement
+ok 27 - reward state and balance reset while the same seed reproduces placement
+  ---
+  duration_ms: 48.7419
+  type: 'test'
+  ...
+# Subtest: actual map placements are reproducible, separated and reachable with player clearance
+ok 28 - actual map placements are reproducible, separated and reachable with player clearance
+  ---
+  duration_ms: 4416.9033
+  type: 'test'
+  ...
+# Subtest: rendered props reflect used states and release objects and shared resources on restart
+ok 29 - rendered props reflect used states and release objects and shared resources on restart
+  ---
+  duration_ms: 6.7362
+  type: 'test'
+  ...
+# Subtest: seed 1: roadside rewards remain discoverable and approachable
+ok 30 - seed 1: roadside rewards remain discoverable and approachable
+  ---
+  duration_ms: 616.8576
+  type: 'test'
+  ...
+# Subtest: seed 2: roadside rewards remain discoverable and approachable
+ok 31 - seed 2: roadside rewards remain discoverable and approachable
+  ---
+  duration_ms: 506.8066
+  type: 'test'
+  ...
+# Subtest: seed 7: roadside rewards remain discoverable and approachable
+ok 32 - seed 7: roadside rewards remain discoverable and approachable
+  ---
+  duration_ms: 487.8574
+  type: 'test'
+  ...
+# Subtest: seed 19: roadside rewards remain discoverable and approachable
+ok 33 - seed 19: roadside rewards remain discoverable and approachable
+  ---
+  duration_ms: 398.9174
+  type: 'test'
+  ...
+# Subtest: seed 43: roadside rewards remain discoverable and approachable
+ok 34 - seed 43: roadside rewards remain discoverable and approachable
+  ---
+  duration_ms: 424.0826
+  type: 'test'
+  ...
+# Subtest: seed 77: roadside rewards remain discoverable and approachable
+ok 35 - seed 77: roadside rewards remain discoverable and approachable
+  ---
+  duration_ms: 445.8841
+  type: 'test'
+  ...
+# Subtest: seed 256: roadside rewards remain discoverable and approachable
+ok 36 - seed 256: roadside rewards remain discoverable and approachable
+  ---
+  duration_ms: 415.0551
+  type: 'test'
+  ...
+# Subtest: seed 9173: roadside rewards remain discoverable and approachable
+ok 37 - seed 9173: roadside rewards remain discoverable and approachable
+  ---
+  duration_ms: 459.3321
+  type: 'test'
+  ...
+# Subtest: local reinforcement rings remain populated at all landmarks and activities for normal, elite and boss sizes
+ok 38 - local reinforcement rings remain populated at all landmarks and activities for normal, elite and boss sizes
+  ---
+  duration_ms: 3173.9114
+  type: 'test'
+  ...
+# Subtest: director rejects a previously valid spawn when a persistent prop occupies it
+ok 39 - director rejects a previously valid spawn when a persistent prop occupies it
+  ---
+  duration_ms: 1614.9639
+  type: 'test'
+  ...
+# Subtest: capture ground, loot and supplies do not suppress the horde; the flag and used props do
+ok 40 - capture ground, loot and supplies do not suppress the horde; the flag and used props do
+  ---
+  duration_ms: 201.9828
+  type: 'test'
+  ...
+# Ruta main: 43.30 s a 5 m/s, sin combate.
+# Ruta west: 62.40 s a 5 m/s, sin combate.
+# Ruta east: 60.30 s a 5 m/s, sin combate.
+# Ruta pasture: 22.20 s a 5 m/s, sin combate.
+# Ruta crossing: 24.65 s a 5 m/s, sin combate.
+# Ruta ruins: 18.65 s a 5 m/s, sin combate.
+# Ruta east-tower: 17.50 s a 5 m/s, sin combate.
+# 4212 muestras de centro y laterales libres en siete rutas.
+# Subtest: all six sectors have spatial territories and the route network joins the arrival and fifteen landmarks
+ok 41 - all six sectors have spatial territories and the route network joins the arrival and fifteen landmarks
+  ---
+  duration_ms: 2516.4569
+  type: 'test'
+  ...
+1..41
+# tests 41
+# suites 0
+# pass 41
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 31599.6327
