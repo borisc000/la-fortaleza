@@ -1,0 +1,54 @@
+name: Despliegue de prueba
+
+# Solo manual: publica el build en GitHub Pages (la URL es accesible para cualquiera que la tenga).
+# Requiere activar Pages con origen "GitHub Actions" en Settings → Pages.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: game
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: game/.nvmrc
+          cache: npm
+          cache-dependency-path: game/package-lock.json
+
+      - run: npm ci
+
+      - name: Build para Pages
+        run: npm run build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: game/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
