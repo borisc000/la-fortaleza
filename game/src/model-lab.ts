@@ -34,7 +34,7 @@ function seek(time: number) {
   current?.animation?.seek(animationMode(), animationTime);
   updatePlayback();
 }
-const storageKey = 'fortaleza:model-review:v1'; let notes: Record<string, string> = {};
+const storageKey = 'fortaleza:model-review:v1'; const notes: Record<string, string> = {};
 try { const data: unknown = JSON.parse(localStorage.getItem(storageKey) ?? '{}'); if (data && typeof data === 'object' && !Array.isArray(data)) for (const [k,v] of Object.entries(data)) if (typeof v === 'string') notes[k] = v; } catch { el('saved').textContent = 'Almacenamiento no disponible. Puedes exportar tus notas.'; }
 function setWire(enabled: boolean) {
   // Keep the owned materials used by hit/fade animation instead of detached clones.

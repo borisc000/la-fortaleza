@@ -2,7 +2,6 @@ import { RELICS, RELIC_IDS } from '../content/relics.ts';
 import { syncLoadout } from './loadout.ts';
 import { SHOP_OFFERS } from '../content/activities.ts';
 import type { OfferId, ShopOffer } from '../content/activities.ts';
-import { UPGRADES } from '../content/progression.ts';
 import type { Progression } from './progression.ts';
 import type { Exploration } from './exploration.ts';
 import type { Combat } from './combat.ts';

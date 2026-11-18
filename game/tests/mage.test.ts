@@ -2,7 +2,7 @@ import { TRAINING_EXPEDITION } from './support/training-expedition.ts';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { MAGE, MAGE_KIT as K } from '../src/content/classes/mage.ts';
+import { MAGE, } from '../src/content/classes/mage.ts';
 import { WARRIOR } from '../src/content/classes/warrior.ts';
 import { classRuntime, MAGE_RUNTIME } from '../src/domain/classes.ts';
 import { MageKit } from '../src/domain/classes/mage-kit.ts';

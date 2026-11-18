@@ -3,7 +3,7 @@ import type { DamageTone } from './damage-labels.ts';
 import { createHordeView } from './horde.ts';
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { SOLDIER, WHIRLWIND, IMPETUS } from '../content/combat.ts';
+import { WHIRLWIND, IMPETUS } from '../content/combat.ts';
 import { WARRIOR } from '../content/classes/warrior.ts';
 import type { ClassDefinition } from '../content/class-definition.ts';
 import type { Combat, CombatEvent, Enemy } from '../domain/combat.ts';

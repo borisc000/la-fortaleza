@@ -10,7 +10,6 @@ import { SOLDIER } from '../src/content/combat.ts';
 import { createCombatView } from '../src/rendering/combat.ts';
 import { Run } from '../src/domain/run.ts';
 import { Navigation } from '../src/domain/navigation.ts';
-import { createEssenceView } from '../src/rendering/essence.ts';
 
 test('the actual fortress builds with fallback materials and every viewpoint has a safe camera', () => {
   const material = new THREE.MeshStandardMaterial();

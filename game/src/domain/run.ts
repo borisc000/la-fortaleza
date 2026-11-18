@@ -9,7 +9,7 @@ import type { Body, Bounds, Point, Solid } from './movement.ts';
 import { SOLDIER } from '../content/combat.ts';
 import { EXPEDITION, OPENING_GUARD_OFFSETS } from '../content/expedition.ts';
 import type { ExpeditionLayout } from '../content/expedition.ts';
-import { PROGRESSION, UPGRADES } from '../content/progression.ts';
+import { PROGRESSION, } from '../content/progression.ts';
 import { CAMPAIGN, WAVES, LOCAL_HORDE } from '../content/campaign.ts';
 import { ENEMIES } from '../content/enemies.ts';
 import type { ClassId, ClassDefinition } from '../content/class-definition.ts';

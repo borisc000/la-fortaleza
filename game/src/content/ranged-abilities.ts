@@ -28,7 +28,7 @@ export function rangedParameters(s: AbilityState, stats: GeneralRanks = {}) {
   const d = abilityData(s.id), id = s.id.split(':')[1], b = s.branches, m = s.mutation, f = s.finisher;
   const basic = id === 'orb' || id === 'arrow';
   const area = ['cataclysm', 'guardian-orbs', 'detonation', 'nova', 'fragments', 'rain', 'spike-trap', 'hunting-beacon'].includes(id);
-  let flat = ['cataclysm', 'detonation', 'rain'].includes(id) ? .25 * b.expansion : id === 'nova' ? .3 * b.expansion : id === 'hunting-beacon' ? .4 * b.expansion : id === 'guardian-orbs' && m === 0 ? .8 : id === 'fragments' ? .3 * b.specialization : id === 'spike-trap' ? .2 * b.specialization : id === 'arrow' ? .75 * b.specialization : id === 'siege-shot' ? b.specialization : 0;
+  const flat = ['cataclysm', 'detonation', 'rain'].includes(id) ? .25 * b.expansion : id === 'nova' ? .3 * b.expansion : id === 'hunting-beacon' ? .4 * b.expansion : id === 'guardian-orbs' && m === 0 ? .8 : id === 'fragments' ? .3 * b.specialization : id === 'spike-trap' ? .2 * b.specialization : id === 'arrow' ? .75 * b.specialization : id === 'siege-shot' ? b.specialization : 0;
   let radius = (d.radius + flat + (area || id === 'stakes' ? 0 : (stats.reach ?? 0) * .4)) * (area ? 1 + (stats.area ?? 0) * .04 : 1);
   if (id === 'cataclysm') radius *= (m === 0 ? .8 : 1) * (f === 1 ? 1.35 : 1);
   if (id === 'rain') radius *= m === 0 ? 1.3 : m === 1 ? .8 : 1;

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { Combat } from '../src/domain/combat.ts';
-import { HERO_COMBAT, IMPETUS, WHIRLWIND, SOLDIER } from '../src/content/combat.ts';
+import { HERO_COMBAT, IMPETUS, SOLDIER } from '../src/content/combat.ts';
 import { PLAYER } from '../src/content/config.ts';
 import { stepMovement } from '../src/domain/movement.ts';
 import { PreviewState } from '../src/app/state.ts';

@@ -1,0 +1,43 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "includes": ["src/**", "tests/**", "audits/**/*.ts", "*.ts", "*.json", "!package-lock.json"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 120
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "arrowParentheses": "asNeeded"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": {
+        // The domain uses `!` deliberately where content guarantees a value.
+        "noNonNullAssertion": "off",
+        // CSS is organised by component; specificity order is reviewed by eye.
+        "noDescendingSpecificity": "off"
+      },
+      "complexity": {
+        // Reduced-motion overrides need !important.
+        "noImportantStyles": "off"
+      },
+      "suspicious": {
+        // Lazy loading with `cache ??= load()` and weighted rolls `(roll -= weight) < 0` are intentional.
+        "noAssignInExpressions": "off",
+        // Short arrow bodies in forEach are idiomatic here.
+        "useIterableCallbackReturn": "off"
+      }
+    }
+  },
+  "assist": {
+    "enabled": false
+  }
+}
