@@ -1,5 +1,5 @@
-# Texto: finales de línea normalizados en el repositorio
-* text=auto
+# Texto: LF en el repositorio y en la copia de trabajo (Biome exige LF también en Windows)
+* text=auto eol=lf
 
 # Fuentes de arte y capturas pesadas: Git LFS
 *.blend filter=lfs diff=lfs merge=lfs -text
