@@ -10,14 +10,15 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: game
+
 jobs:
   verificar:
     name: Typecheck, pruebas y build
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-    defaults:
-      run:
-        working-directory: game
+    timeout-minutes: 15
     steps:
       # Sin LFS: el juego y las pruebas solo usan game/public, que está en git normal.
       - uses: actions/checkout@v4
@@ -36,7 +37,7 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Pruebas
+      - name: Pruebas rápidas
         run: npm test
 
       - name: Build
@@ -48,3 +49,27 @@ jobs:
           name: dist
           path: game/dist
           retention-days: 7
+
+  # Partidas completas simuladas (unos 20 minutos). Solo en main o a mano,
+  # para no gastar minutos de Actions en cada push de una PR.
+  simulacion:
+    name: Simulaciones de partida completa
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: game/.nvmrc
+          cache: npm
+          cache-dependency-path: game/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Simulaciones
+        run: npm run test:sim

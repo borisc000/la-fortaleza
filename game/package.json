@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "build": "npm run typecheck && vite build",
     "preview": "vite preview --host 127.0.0.1 --port 4183 --strictPort",
-    "test": "node --experimental-strip-types --test tests/*.test.ts"
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "test:sim": "node --experimental-strip-types --test tests/simulation/*.test.ts"
   },
   "dependencies": {
     "three": "0.187.0"
