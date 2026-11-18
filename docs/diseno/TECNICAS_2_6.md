@@ -48,4 +48,4 @@ HUD con tres espacios y rangos; tarjetas de aprendizaje/mejora; catálogo desple
 
 Catálogo y cifras en `game/src/content/techniques.ts`; elegibilidad y rangos en `Progression`; ejecución en kits de clase y mitigación en `Combat`. Los nuevos resúmenes se construyen desde el estado real. No se calcula daño en renderizado. Sin recursos externos nuevos ni nuevos controles manuales.
 
-Ver [verificación](VERIFICACION_2_6.md). Siguiente: **2.7 · Reliquias y doble afinidad**. Se mantienen cuatro fases, 42 subfases, 6/9 entregas de fase 2 y 23 subfases futuras.
+Ver [verificación](../verificaciones/VERIFICACION_2_6.md). Siguiente: **2.7 · Reliquias y doble afinidad**. Se mantienen cuatro fases, 42 subfases, 6/9 entregas de fase 2 y 23 subfases futuras.

@@ -4,7 +4,7 @@ Fecha: 2026-11-01 · Aplicación 0.2.5.
 
 ## Alcance
 
-Doce combinaciones seleccionables, Tierra/Aire del Mago y Arquero, cuatro primeras maestrías adicionales, HUD y representación. Reglas en [AFINIDADES_2_5.md](AFINIDADES_2_5.md). No se implementan técnicas de 2.6 ni doble afinidad de 2.7.
+Doce combinaciones seleccionables, Tierra/Aire del Mago y Arquero, cuatro primeras maestrías adicionales, HUD y representación. Reglas en [AFINIDADES_2_5.md](../diseno/AFINIDADES_2_5.md). No se implementan técnicas de 2.6 ni doble afinidad de 2.7.
 
 ## Comprobaciones automatizadas
 

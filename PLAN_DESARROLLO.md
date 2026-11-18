@@ -2,7 +2,7 @@
 
 **4 fases · 49 subfases · Versión 0.11 · 2026-11-04**
 
-Fuente de alcance: [DISENO_MVP.md](DISENO_MVP.md). Estado real: [ESTADO.md](ESTADO.md).
+Fuente de alcance: [DISENO_MVP.md](docs/diseno/DISENO_MVP.md). Estado real: [ESTADO.md](ESTADO.md).
 
 Las **1.1 y 1.2 están definidas**. **1.3–1.10 y las inserciones 1.9.1–1.9.3 están implementadas**, sin bloquear el avance por revisión técnica interactiva del agente pendiente. Las 2.1–2.7 incorporan tres clases, doce combinaciones principales, doce técnicas, doce reliquias y doble afinidad; ver VERIFICACION_2_7.md. Quedan **22 subfases futuras**, dos en fase 2 y diez en cada fase posterior; la revisión manual de 1.10 sigue pendiente. Los controles vigentes son WASD, cámara en tercera persona girada con ratón y combate completamente automático; PC primero y celular horizontal.
 
@@ -14,7 +14,7 @@ Se retira la antigua 2.4 (Acorazado). Las antiguas 2.5–2.10 pasan a 2.4–2.9:
 
 ## Ampliación vigente — combate masivo y elecciones
 
-Se insertan **2.7.1–2.7.6 antes de 2.8**, sin renumerar entregas existentes. Regla del usuario: cada oportunidad permite competir entre estadísticas, mejorar habilidades y aprender habilidades de clase; no se desbloquea una habilidad obligatoria a los 30–45 segundos. Hasta cuatro habilidades automáticas contando la inicial como propuesta de trabajo. El catálogo y migración están definidos en [HABILIDADES_2_7_1.md](HABILIDADES_2_7_1.md): ocho habilidades por clase, nivel 10, cuatro ramas de tres rangos y dos hitos excluyentes. Básico y pasiva aparte. R manual pendiente, fuera de esta implementación. Cámara, mapa y densidad se revisan juntos. [Alcance y valores de prueba](COMBATE_MASIVO_2_7.md).
+Se insertan **2.7.1–2.7.6 antes de 2.8**, sin renumerar entregas existentes. Regla del usuario: cada oportunidad permite competir entre estadísticas, mejorar habilidades y aprender habilidades de clase; no se desbloquea una habilidad obligatoria a los 30–45 segundos. Hasta cuatro habilidades automáticas contando la inicial como propuesta de trabajo. El catálogo y migración están definidos en [HABILIDADES_2_7_1.md](docs/diseno/HABILIDADES_2_7_1.md): ocho habilidades por clase, nivel 10, cuatro ramas de tres rangos y dos hitos excluyentes. Básico y pasiva aparte. R manual pendiente, fuera de esta implementación. Cámara, mapa y densidad se revisan juntos. [Alcance y valores de prueba](docs/diseno/COMBATE_MASIVO_2_7.md).
 
 La antigua 2.7.3 se sustituye por **2.7.3a y 2.7.3b**, por petición del usuario. Ambas entregadas; 2.7.4 y 2.7.5 también implementadas. 2.7.6 integrada con balance inicial. Siguiente 2.8. Total vigente: **49 subfases y 22 futuras**.
 
@@ -22,10 +22,10 @@ La antigua 2.7.3 se sustituye por **2.7.3a y 2.7.3b**, por petición del usuario
 
 ### Trabajo de escenario definido el 11 de noviembre de 2026
 
-Antes de retomar 2.8 se establece el [plan de Los dominios exteriores](PLAN_DOMINIOS_EXTERIORES.md), con fases E0–E6 y cuatro subfases por fase. **E0 completada**: [evaluación y plano](EVALUACION_DOMINIOS_E0.md) definen 280 × 260 m, llegada sur y seis sectores. **E1.1 completada:** límites y llegada implementados, con [verificación](VERIFICACION_E1_1.md). **E1.2 completada:** rutas y seis sectores construidos con geometría sencilla, con [verificación](VERIFICACION_E1_2.md). **E1.3 completada:** interacciones y apariciones adaptadas, con [verificación](VERIFICACION_E1_3.md). **E1.4 completada:** recorridos con combate, límites y cámara revisados, con [evidencias](VERIFICACION_E1_4.md). Sigue E2.1, puerta y torres como muestra de acabado; después, materiales, terreno, sectores, integración de encuentros y cierre. E2–E6 pendientes. Este plan específico conserva la numeración y los contadores del MVP.
+Antes de retomar 2.8 se establece el [plan de Los dominios exteriores](docs/diseno/PLAN_DOMINIOS_EXTERIORES.md), con fases E0–E6 y cuatro subfases por fase. **E0 completada**: [evaluación y plano](docs/diseno/EVALUACION_DOMINIOS_E0.md) definen 280 × 260 m, llegada sur y seis sectores. **E1.1 completada:** límites y llegada implementados, con [verificación](docs/verificaciones/VERIFICACION_E1_1.md). **E1.2 completada:** rutas y seis sectores construidos con geometría sencilla, con [verificación](docs/verificaciones/VERIFICACION_E1_2.md). **E1.3 completada:** interacciones y apariciones adaptadas, con [verificación](docs/verificaciones/VERIFICACION_E1_3.md). **E1.4 completada:** recorridos con combate, límites y cámara revisados, con [evidencias](docs/verificaciones/VERIFICACION_E1_4.md). Sigue E2.1, puerta y torres como muestra de acabado; después, materiales, terreno, sectores, integración de encuentros y cierre. E2–E6 pendientes. Este plan específico conserva la numeración y los contadores del MVP.
 
 - Orden de referencia: secuencial. Dentro de una subfase se pueden agrupar tareas compatibles.
-- Inserción tras 1.9: **1.9.1 → 1.9.2 → 1.9.3 → 1.10**. Se conservan los identificadores posteriores; cada inserción cuenta como una entrega adicional. Reglas detalladas en [EXPANSION_1_9.md](EXPANSION_1_9.md).
+- Inserción tras 1.9: **1.9.1 → 1.9.2 → 1.9.3 → 1.10**. Se conservan los identificadores posteriores; cada inserción cuenta como una entrega adicional. Reglas detalladas en [EXPANSION_1_9.md](docs/diseno/EXPANSION_1_9.md).
 - La fase 2 depende del cierre del núcleo de fase 1; fase 3 del sistema de clases y configuraciones; fase 4 del ciclo completo.
 - Cada cierre registra qué se implementó, cómo se verificó y qué falta.
 - Rendimiento, controles táctiles, claridad y pruebas de reglas se trabajan desde que aparece el sistema correspondiente. La fase 4 los consolida.
@@ -36,67 +36,67 @@ Antes de retomar 2.8 se establece el [plan de Los dominios exteriores](PLAN_DOMI
 **Alcance:** Guerrero, Fuego y Agua, exterior ampliado de la fortaleza, hordas alrededor del jugador y primeras interacciones de exploración, dentro de un ciclo completo de prueba.
 
 ### 1.1 · Contrato del prototipo y arquitectura
-- **Estado:** definición completada en [CONTRATO_1_1.md](CONTRATO_1_1.md). Controles elegidos expresamente por el usuario; reglas y cifras iniciales documentadas para validar al implementar.
+- **Estado:** definición completada en [CONTRATO_1_1.md](docs/diseno/CONTRATO_1_1.md). Controles elegidos expresamente por el usuario; reglas y cifras iniciales documentadas para validar al implementar.
 - **Trabajo:** convertir las hipótesis del diseño en reglas implementables; definir movimiento, selección de objetivos, daño, estados, recarga y configuración de partida. Elegir orientación y dispositivos de referencia; fijar presupuesto de rendimiento y estructura de módulos.
 - **Entrega y cierre:** decisiones concretas, alcance de la primera partida y comprobaciones previstas. Identificar qué código se puede reutilizar sin modificar prototipos anteriores.
 
 ### 1.2 · Dirección artística
-- **Estado:** definición completada. Estilo común aceptado; imagen 3 como referencia operativa. Muestra de Agua, paleta, encuadre y especificación del enemigo documentados; recursos 3D todavía por producir/seleccionar. Ver [DIRECCION_ARTISTICA_1_2.md](DIRECCION_ARTISTICA_1_2.md).
+- **Estado:** definición completada. Estilo común aceptado; imagen 3 como referencia operativa. Muestra de Agua, paleta, encuadre y especificación del enemigo documentados; recursos 3D todavía por producir/seleccionar. Ver [DIRECCION_ARTISTICA_1_2.md](docs/diseno/DIRECCION_ARTISTICA_1_2.md).
 - **Trabajo:** definir Guerrero, enemigo inicial, muralla y terreno exterior; establecer proporciones, paleta, materiales, encuadre de tercera persona detrás del héroe y lenguaje visual para Fuego y Agua. Revisar recursos disponibles y su procedencia.
 - **Entrega y cierre:** referencia visual seleccionada que sirva para implementar. La oscuridad ambiental mantiene claras las amenazas y el personaje.
 
 ### 1.3 · Base web, escena y cámara
 - **Trabajo:** crear el proyecto independiente, integrar Three.js y TypeScript, carga de recursos, bucle de juego, escena exterior y cámara de perspectiva. Incorporar giro con ratón, obstrucciones y diagnóstico básico de rendimiento.
 - **Entrega y cierre:** escena visible y estable en navegador, con errores de carga tratados y medición inicial registrada.
-- **Avance 2026-10-31:** implementada y aceptada visualmente por el usuario. Se continúa por instrucción expresa; las pruebas técnicas no realizadas se conservan en [VERIFICACION_1_3.md](VERIFICACION_1_3.md), sin bloquear 1.4 ni exigir otra aprobación de la escena.
+- **Avance 2026-10-31:** implementada y aceptada visualmente por el usuario. Se continúa por instrucción expresa; las pruebas técnicas no realizadas se conservan en [VERIFICACION_1_3.md](docs/verificaciones/VERIFICACION_1_3.md), sin bloquear 1.4 ni exigir otra aprobación de la escena.
 
 ### 1.4 · Movimiento y controles
 - **Trabajo:** WASD relativo a cámara, joystick izquierdo y arrastre derecho independientes, desplazamiento independiente de framerate, colisiones y límites de escenario. Gestionar captura de ratón y evitar entradas retenidas al perder foco.
 - **Entrega y cierre:** desplazamiento fiable cerca de muros y obstáculos. Interactuar con la interfaz no mueve accidentalmente al personaje.
-- **Avance 2026-10-31:** implementada en versión 0.1.4. Compilación y 20 pruebas correctas, incluidos 10.800 pasos por geometría real y propiedad independiente de los dos dedos. Registro y límites de comprobación en [VERIFICACION_1_4.md](VERIFICACION_1_4.md). Siguiente contenido: 1.5, combate básico.
+- **Avance 2026-10-31:** implementada en versión 0.1.4. Compilación y 20 pruebas correctas, incluidos 10.800 pasos por geometría real y propiedad independiente de los dos dedos. Registro y límites de comprobación en [VERIFICACION_1_4.md](docs/verificaciones/VERIFICACION_1_4.md). Siguiente contenido: 1.5, combate básico.
 
 ### 1.5 · Combate básico
 - **Trabajo:** enemigo perseguidor, selección de blanco estable, espadazo automático, detección de impactos, vida, daño, muerte y señales de impacto.
 - **Entrega y cierre:** el Guerrero combate mientras se mueve; un impacto no se acredita varias veces por error y las muertes no duplican recompensas.
-- **Avance 2026-10-31:** versión 0.1.5 con encuentro fijo de cinco perseguidores, navegación alrededor de obstáculos, selección estable, arcos y preparación, daño, muerte, resultado y reinicio. 35 pruebas correctas; ver [VERIFICACION_1_5.md](VERIFICACION_1_5.md). Todavía no hay experiencia ni recompensas económicas; se garantiza emisión única de muerte y baja para su integración posterior.
+- **Avance 2026-10-31:** versión 0.1.5 con encuentro fijo de cinco perseguidores, navegación alrededor de obstáculos, selección estable, arcos y preparación, daño, muerte, resultado y reinicio. 35 pruebas correctas; ver [VERIFICACION_1_5.md](docs/verificaciones/VERIFICACION_1_5.md). Todavía no hay experiencia ni recompensas económicas; se garantiza emisión única de muerte y baja para su integración posterior.
 
 ### 1.6 · Kit completo del Guerrero
 - **Trabajo:** Ímpetu, golpes potenciados y Torbellino automático con recarga y condición de objetivo válido. Incorporar animación y señales de disponibilidad, sin botón de combate.
 - **Entrega y cierre:** la pasiva se reconoce, Torbellino se activa automáticamente también contra un único objetivo, no consume recarga sin objetivo y la pausa congela correctamente las acciones.
-- **Avance 2026-10-31:** versión 0.1.6 con cuatro acumulaciones de Ímpetu, multiplicador por espadazo, expiración y Torbellino automático de seis pulsos. Indicadores de pasiva y recarga, giro del personaje sin girar cámara y animación provisional. 48 pruebas correctas, incluida pausa, muros, objetivo único y recarga completa. Ver [VERIFICACION_1_6.md](VERIFICACION_1_6.md).
+- **Avance 2026-10-31:** versión 0.1.6 con cuatro acumulaciones de Ímpetu, multiplicador por espadazo, expiración y Torbellino automático de seis pulsos. Indicadores de pasiva y recarga, giro del personaje sin girar cámara y animación provisional. 48 pruebas correctas, incluida pausa, muros, objetivo único y recarga completa. Ver [VERIFICACION_1_6.md](docs/verificaciones/VERIFICACION_1_6.md).
 
 ### 1.7 · Experiencia y elecciones
-- **Avance 2026-10-31:** versión 0.1.7. Cristales, recogida con obstáculos, exceso de experiencia conservado, cola de niveles, tarjetas pausadas y cuatro mejoras de tres rangos. Tres grupos de prueba (20 soldados) permiten llegar al nivel 4. Reinicio completo, derrota prioritaria y recompensa de reserva si no quedan opciones. 61 pruebas correctas; ver [VERIFICACION_1_7.md](VERIFICACION_1_7.md). La elección Fuego/Agua del nivel 2 se integra en 1.8 con sus efectos; esta entrega ofrece mejoras generales desde el nivel 2.
+- **Avance 2026-10-31:** versión 0.1.7. Cristales, recogida con obstáculos, exceso de experiencia conservado, cola de niveles, tarjetas pausadas y cuatro mejoras de tres rangos. Tres grupos de prueba (20 soldados) permiten llegar al nivel 4. Reinicio completo, derrota prioritaria y recompensa de reserva si no quedan opciones. 61 pruebas correctas; ver [VERIFICACION_1_7.md](docs/verificaciones/VERIFICACION_1_7.md). La elección Fuego/Agua del nivel 2 se integra en 1.8 con sus efectos; esta entrega ofrece mejoras generales desde el nivel 2.
 - **Trabajo:** esencia, recogida, niveles, pausa de elección, tres opciones y aplicación de mejoras. Manejar varios niveles ganados de una vez y límites de opciones disponibles.
 - **Entrega y cierre:** cada elección se aplica una sola vez; se puede seguir una progresión durante la partida y retomar el combate sin entradas accidentales.
 
 ### 1.8 · Fuego, Agua y primeras maestrías
-- **Avance 2026-10-31:** versión 0.1.8. Afinidad al nivel 2, rangos I–III, quemadura, Empapado, empuje, explosión/salpicadura sin recursión, núcleo provisional al despejar el segundo grupo y elección de maestría independiente. Cuarto grupo para probarla. Cámara sigue el mouse sin arrastrar, captura al entrar/continuar y alternativa sin botones si falla. 82 pruebas correctas y build; ver [VERIFICACION_1_8.md](VERIFICACION_1_8.md).
+- **Avance 2026-10-31:** versión 0.1.8. Afinidad al nivel 2, rangos I–III, quemadura, Empapado, empuje, explosión/salpicadura sin recursión, núcleo provisional al despejar el segundo grupo y elección de maestría independiente. Cuarto grupo para probarla. Cámara sigue el mouse sin arrastrar, captura al entrar/continuar y alternativa sin botones si falla. 82 pruebas correctas y build; ver [VERIFICACION_1_8.md](docs/verificaciones/VERIFICACION_1_8.md).
 - **Trabajo:** quemadura, oleaje/salpicadura y estado empapado según reglas de 1.1; afinidad, requisitos y dos maestrías del Guerrero. Usar un disparador provisional de núcleo hasta integrar el élite en 1.9.
 - **Entrega y cierre:** Fuego y Agua cambian el comportamiento del Guerrero y su definitiva. Agua no utiliza congelación como sustituto de identidad.
 
 ### 1.9 · Ciclo de partida y amenazas
-- **Avance 2026-10-31:** versión 0.1.9. Director de seis minutos con respiros y límite de población; ballestero con virote, cargador con rumbo fijado, élite con núcleo/8 esencias y jefe con barrido/golpe al suelo/andanada. Transición limpia, espera al élite pendiente, victoria solo por muerte del jefe y derrota prioritaria. HUD, anticipaciones, recogible dorado, resultados y semilla nueva al reiniciar. 101 pruebas correctas y build; ver [VERIFICACION_1_9.md](VERIFICACION_1_9.md).
+- **Avance 2026-10-31:** versión 0.1.9. Director de seis minutos con respiros y límite de población; ballestero con virote, cargador con rumbo fijado, élite con núcleo/8 esencias y jefe con barrido/golpe al suelo/andanada. Transición limpia, espera al élite pendiente, victoria solo por muerte del jefe y derrota prioritaria. HUD, anticipaciones, recogible dorado, resultados y semilla nueva al reiniciar. 101 pruebas correctas y build; ver [VERIFICACION_1_9.md](docs/verificaciones/VERIFICACION_1_9.md).
 - **Trabajo:** completar tres enemigos, un élite, jefe preliminar, recorrido de prueba de seis minutos antes del jefe, núcleo de maestría, victoria, derrota y reinicio. Toda la partida sucede en la sección exterior de prueba.
 - **Entrega y cierre:** empezar, mejorar, transformarse y terminar funciona sin herramientas de desarrollo. Reiniciar limpia las entidades y poderes de la partida anterior.
 
 ### 1.9.1 · Mapa amplio y hordas alrededor del jugador
-- **Estado:** implementada y ampliada de nuevo por petición del usuario en aplicación 0.1.13. Territorio 212 × 192 m, doce zonas conectadas, guía de objetivos, refuerzos a 11–23 m con preferencia fuera de vista, reposición local y retirada de normales lejanos sin premios. 106 pruebas y build correctos; ver [VERIFICACION_1_9_1.md](VERIFICACION_1_9_1.md). Revisión visual/GPU pendiente.
+- **Estado:** implementada y ampliada de nuevo por petición del usuario en aplicación 0.1.13. Territorio 212 × 192 m, doce zonas conectadas, guía de objetivos, refuerzos a 11–23 m con preferencia fuera de vista, reposición local y retirada de normales lejanos sin premios. 106 pruebas y build correctos; ver [VERIFICACION_1_9_1.md](docs/verificaciones/VERIFICACION_1_9_1.md). Revisión visual/GPU pendiente.
 - **Trabajo:** ampliar la superficie transitable con caminos, claros, ruinas, muralla y referencias visibles; reservar emplazamientos para interacciones. Sustituir posiciones de refuerzo ligadas al escenario pequeño por candidatos en una franja alrededor de la posición actual del jugador, con distancia segura, acceso navegable y preferencia por fuera de vista. Regular población local y global; retirar normales muy lejanos fuera de vista sin bajas ni recompensas, conservando élites, jefe y recogibles importantes. Evitar generar el mapa entero lleno de enemigos.
 - **Entrega y cierre:** explorar distintas zonas mantiene presión cercana sin apariciones sobre el héroe, dentro de sólidos o sin ruta. Comprobar bordes, rincones y desplazamiento continuo; aplazar refuerzos si no hay posición segura. Preservar seis minutos más jefe, progresión y núcleo accesible. El mapa debe sentirse más extenso por sus recorridos y referencias, no solo por ampliar el suelo.
 
 ### 1.9.2 · Recogibles, interacción y orientación
-- **Estado:** implementada en aplicación 0.1.14. Monedas, suministros, ocho cofres y cuatro fuentes; E/botón táctil, estados usados, descubrimiento y saldo temporal. Ver [VERIFICACION_1_9_2.md](VERIFICACION_1_9_2.md). Revisión visual/GPU pendiente.
+- **Estado:** implementada en aplicación 0.1.14. Monedas, suministros, ocho cofres y cuatro fuentes; E/botón táctil, estados usados, descubrimiento y saldo temporal. Ver [VERIFICACION_1_9_2.md](docs/verificaciones/VERIFICACION_1_9_2.md). Revisión visual/GPU pendiente.
 - **Trabajo:** base común de puntos interactivos y estados disponibles/usados, recogida por proximidad, señalización y acciones contextuales. Incorporar suministros de curación y moneda de expedición, un cofre y una fuente; distribuirlos en emplazamientos válidos con variación reproducible. PC: E para interactuar; móvil: botón contextual. Mantener ataques y habilidades automáticos.
 - **Entrega y cierre:** recoger, abrir y usar producen efectos distintos y útiles; ninguna recompensa se duplica. Marcadores orientan hacia destinos descubiertos sin saturar la pantalla. El reinicio limpia usos y moneda; pausa, interfaz y captura del ratón se coordinan sin movimientos involuntarios.
 
 ### 1.9.3 · Primera captura y tienda de expedición
-- **Estado:** implementada en aplicación 0.1.15. Captura de 25 s tras aviso de 3 s, recompensa única de 25 monedas y mercader con cuatro ofertas limitadas y pausa completa. Reglas económicas ajustables, sin atribuir aprobación de cifras al usuario. Ver [VERIFICACION_1_9_3.md](VERIFICACION_1_9_3.md). Revisión visual/GPU pendiente.
+- **Estado:** implementada en aplicación 0.1.15. Captura de 25 s tras aviso de 3 s, recompensa única de 25 monedas y mercader con cuatro ofertas limitadas y pausa completa. Reglas económicas ajustables, sin atribuir aprobación de cifras al usuario. Ver [VERIFICACION_1_9_3.md](docs/verificaciones/VERIFICACION_1_9_3.md). Revisión visual/GPU pendiente.
 - **Trabajo:** un punto capturable permaneciendo en un área mientras llegan enemigos, con progreso y recompensa única; una tienda provisional con moneda exclusiva de la partida, existencias limitadas y compras de suministros/mejoras generales. Pausar el mundo al abrir la tienda y reanudar explícitamente. Compartir el presupuesto de enemigos entre captura y director normal.
 - **Entrega y cierre:** recorrer el mapa permite decidir entre seguir avanzando, resistir por una recompensa o gastar recursos. No existe compra sin saldo, premio repetible ni horda duplicada por eventos. El núcleo de maestría sigue procediendo del élite y el jefe sigue siendo la condición de victoria. Capturas y tiendas son opcionales.
 
 ### 1.10 · Pulido y revisión del núcleo ampliado
-- **Estado:** pulido inicial implementado en 0.1.16. Audio, HUD, avisos, correcciones del director y pausa, comprobaciones automáticas y auditoría económica. Revisión visual/auditiva, pruebas manuales de dificultad y GPU pendientes por acceso de navegador desactivado. No equivale al cierre de esas comprobaciones. Ver [VERIFICACION_1_10.md](VERIFICACION_1_10.md).
+- **Estado:** pulido inicial implementado en 0.1.16. Audio, HUD, avisos, correcciones del director y pausa, comprobaciones automáticas y auditoría económica. Revisión visual/auditiva, pruebas manuales de dificultad y GPU pendientes por acceso de navegador desactivado. No equivale al cierre de esas comprobaciones. Ver [VERIFICACION_1_10.md](docs/verificaciones/VERIFICACION_1_10.md).
 - **Trabajo:** HUD, pausa y pérdida de foco, audio esencial, anticipaciones enemigas, dificultad, controles y rendimiento inicial. Revisar densidad local, distancias de recorrido, orientación, economía provisional y presión durante capturas. Realizar pruebas manuales de ambas configuraciones, explorando y omitiendo objetivos opcionales.
 - **Entrega y cierre:** versión jugable con evidencias y problemas conocidos. No ampliar clases mientras siga habiendo problemas importantes de control, legibilidad o respuesta al impacto.
 
@@ -107,57 +107,57 @@ Antes de retomar 2.8 se establece el [plan de Los dominios exteriores](PLAN_DOMI
 **Alcance:** tres clases iniciales, cuatro elementos, habilidades adquiribles/mejorables, cámara y mapa ampliados y combate contra hordas densas. Trece entregas implementadas y 2.7.1 definida: 14/16 entregables de definición/implementación.
 
 ### 2.1 · Estructura compartida de clases
-- **Estado:** implementada en 0.2.1. Datos inmutables, kit/efectos del Guerrero separados del motor, estadísticas y presentación conectadas por clase. Tres trazas previas idénticas y prueba de kit independiente. Ver [VERIFICACION_2_1.md](VERIFICACION_2_1.md) y [arquitectura](ARQUITECTURA_CLASES_2_1.md).
+- **Estado:** implementada en 0.2.1. Datos inmutables, kit/efectos del Guerrero separados del motor, estadísticas y presentación conectadas por clase. Tres trazas previas idénticas y prueba de kit independiente. Ver [VERIFICACION_2_1.md](docs/verificaciones/VERIFICACION_2_1.md) y [arquitectura](docs/diseno/ARQUITECTURA_CLASES_2_1.md).
 - **Trabajo:** organizar estadísticas, armas, pasivas, definitivas, técnicas y efectos en contratos y datos compartidos. Adaptar Guerrero sin introducir abstracciones que todavía no tengan uso.
 - **Entrega y cierre:** Guerrero conserva su comportamiento y se puede incorporar otra clase sin duplicar el ciclo de partida.
 
 ### 2.2 · Mago
-- **Estado:** implementada en 0.2.2: selección de clase/afinidad inicial, proyectiles, Acumulación arcana, Cataclismo y maestrías Fuego/Agua. Modelo y efectos provisionales propios. Ver [diseño implementado](MAGO_2_2.md) y [verificación](VERIFICACION_2_2.md). Revisión visual y balance humano pendientes.
+- **Estado:** implementada en 0.2.2: selección de clase/afinidad inicial, proyectiles, Acumulación arcana, Cataclismo y maestrías Fuego/Agua. Modelo y efectos provisionales propios. Ver [diseño implementado](docs/diseno/MAGO_2_2.md) y [verificación](docs/verificaciones/VERIFICACION_2_2.md). Revisión visual y balance humano pendientes.
 - **Trabajo:** ataque elemental desde el comienzo, Acumulación arcana y Cataclismo. Conectar la selección temprana de afinidad; implementar primero Fuego y Agua.
 - **Entrega y cierre:** Mago jugable, con daño a distancia y área reconocibles, y capaz de terminar la partida.
 
 ### 2.3 · Arquero
-- **Estado:** implementada en 0.2.3: flechas, Precisión, penetración de hasta tres enemigos, lluvia automática, afinidad Fuego/Agua en nivel 2 y maestrías. Modelo y efectos propios provisionales. Ver [reglas](ARQUERO_2_3.md) y [verificación](VERIFICACION_2_3.md). Revisión visual y balance humano pendientes.
+- **Estado:** implementada en 0.2.3: flechas, Precisión, penetración de hasta tres enemigos, lluvia automática, afinidad Fuego/Agua en nivel 2 y maestrías. Modelo y efectos propios provisionales. Ver [reglas](docs/diseno/ARQUERO_2_3.md) y [verificación](docs/verificaciones/VERIFICACION_2_3.md). Revisión visual y balance humano pendientes.
 - **Trabajo:** flechas, precisión, penetración, Lluvia de flechas y animaciones; integrar Fuego y Agua disponibles.
 - **Entrega y cierre:** posicionarse para atravesar enemigos aporta valor; los disparos y su selección de objetivo son consistentes.
 
 ### 2.4 · Tierra y Aire
-- **Estado:** implementada en 0.2.4 para Guerrero. Cuatro afinidades elegibles, Quebranto, coraza limitada, ondas sísmicas, alcance/empuje/atracción con resistencias y colisiones. Maestrías iniciales y representación propia. Mago/Arquero mantienen Fuego/Agua hasta 2.5. Ver [reglas](TIERRA_AIRE_2_4.md) y [verificación](VERIFICACION_2_4.md).
+- **Estado:** implementada en 0.2.4 para Guerrero. Cuatro afinidades elegibles, Quebranto, coraza limitada, ondas sísmicas, alcance/empuje/atracción con resistencias y colisiones. Maestrías iniciales y representación propia. Mago/Arquero mantienen Fuego/Agua hasta 2.5. Ver [reglas](docs/diseno/TIERRA_AIRE_2_4.md) y [verificación](docs/verificaciones/VERIFICACION_2_4.md).
 - **Trabajo:** implementar impacto/protección/quebranto para Tierra y ráfagas/empuje/remolinos para Aire. Fijar límites y resistencia a control. Darles una primera integración en Guerrero.
 - **Entrega y cierre:** los dos elementos funcionan con identidad propia y sin romper colisiones, navegación o posición de enemigos.
 
 ### 2.5 · Afinidades de las tres clases
-- **Estado:** implementada en 0.2.5: Tierra/Aire en Mago y Arquero, doce combinaciones seleccionables, cuatro maestrías nuevas, HUD y representación diferenciados. Ver [reglas](AFINIDADES_2_5.md) y [verificación](VERIFICACION_2_5.md). Balance humano y revisión visual pendientes.
+- **Estado:** implementada en 0.2.5: Tierra/Aire en Mago y Arquero, doce combinaciones seleccionables, cuatro maestrías nuevas, HUD y representación diferenciados. Ver [reglas](docs/diseno/AFINIDADES_2_5.md) y [verificación](docs/verificaciones/VERIFICACION_2_5.md). Balance humano y revisión visual pendientes.
 - **Trabajo:** completar la expresión de Fuego, Agua, Tierra y Aire en ataques y pasivas de todas las clases; separar efectos comunes de comportamientos específicos.
 - **Entrega y cierre:** 12 combinaciones básicas comprobadas. Agua y Aire se distinguen por comportamiento y representación, no únicamente por color.
 
 ### 2.6 · Técnicas y espacios de configuración
-- **Estado:** implementada en 0.2.6: doce técnicas, tres espacios, rangos I–III con requisitos de nivel 3/5/7, ofertas elegibles, exclusión de la cuarta, catálogo y resumen. Ver [reglas](TECNICAS_2_6.md) y [verificación](VERIFICACION_2_6.md). Revisión visual y balance humano pendientes.
+- **Estado:** implementada en 0.2.6: doce técnicas, tres espacios, rangos I–III con requisitos de nivel 3/5/7, ofertas elegibles, exclusión de la cuarta, catálogo y resumen. Ver [reglas](docs/diseno/TECNICAS_2_6.md) y [verificación](docs/verificaciones/VERIFICACION_2_6.md). Revisión visual y balance humano pendientes.
 - **Trabajo:** definir e implementar cuatro técnicas por clase y tres espacios equipables. Añadir niveles, requisitos, mejoras y exclusiones cuando correspondan.
 - **Entrega y cierre:** 12 técnicas funcionales; los límites se cumplen y elegir unas posibilidades implica renunciar a otras.
 
 ### 2.7 · Reliquias y doble afinidad
-- **Estado:** implementada en 0.2.7: doce reliquias, cuatro espacios, recompensas de cofres/captura, tienda y segundo elemento de apoyo desde nivel 5. Una maestría principal, límites y efectos sin recursión. Ver [reglas](RELIQUIAS_AFINIDADES_2_7.md) y [verificación](VERIFICACION_2_7.md). Balance humano y revisión visual pendientes.
+- **Estado:** implementada en 0.2.7: doce reliquias, cuatro espacios, recompensas de cofres/captura, tienda y segundo elemento de apoyo desde nivel 5. Una maestría principal, límites y efectos sin recursión. Ver [reglas](docs/diseno/RELIQUIAS_AFINIDADES_2_7.md) y [verificación](docs/verificaciones/VERIFICACION_2_7.md). Balance humano y revisión visual pendientes.
 - **Trabajo:** catálogo de 12 reliquias, cuatro espacios, dos elementos como máximo e interacciones básicas. Integrar recompensas de cofres, capturas y ofertas de tienda con elegibilidad y límites de equipo; sustituir gradualmente sus premios provisionales. Resolver orden de efectos y evitar cadenas recursivas ilimitadas.
 - **Entrega y cierre:** configuraciones puras y mixtas completas; las descripciones corresponden a los efectos reales y los límites se respetan.
 
 ### 2.7.1 · Elecciones y repertorios de habilidades
-- **Estado:** definición completada en [HABILIDADES_2_7_1.md](HABILIDADES_2_7_1.md). Veinticuatro habilidades, cuatro espacios, nivel 10, dieciséis opciones de desarrollo por árbol y migración de las doce técnicas. Doce familias generales más Temple exclusivo del Guerrero. Reglas de ofertas, topes y criterios de implementación documentados. Aplicación 0.2.7 sin cambios; siguiente 2.7.2.
+- **Estado:** definición completada en [HABILIDADES_2_7_1.md](docs/diseno/HABILIDADES_2_7_1.md). Veinticuatro habilidades, cuatro espacios, nivel 10, dieciséis opciones de desarrollo por árbol y migración de las doce técnicas. Doce familias generales más Temple exclusivo del Guerrero. Reglas de ofertas, topes y criterios de implementación documentados. Aplicación 0.2.7 sin cambios; siguiente 2.7.2.
 - **Trabajo:** definir catálogo por clase, cuatro espacios contando la habilidad inicial, rangos, requisitos y ofertas entre estadísticas/aprender/mejorar. Mantener esencia como vía de niveles; tiempo como referencia de ritmo, sin premios de habilidad programados. Resolver la migración de cada una de las doce técnicas y su convivencia con afinidades, reliquias y maestría.
 - **Entrega y cierre:** reglas implementables, tabla de habilidades y migración, ejemplos de elecciones con espacios libres/llenos y configuraciones con pocas habilidades. Distinguir cifras de prueba y decisiones confirmadas; no hace falta otra autorización genérica para definirlas.
 
 ### 2.7.2 · Cámara y espacio para hordas
-- **Estado:** implementada en app 0.2.8; ver [verificación](VERIFICACION_2_7_2.md). Integración del Guerrero entregada en 2.7.3b.
+- **Estado:** implementada en app 0.2.8; ver [verificación](docs/verificaciones/VERIFICACION_2_7_2.md). Integración del Guerrero entregada en 2.7.3b.
 - **Trabajo:** alejar y elevar el encuadre por defecto, conservar rueda y giro sin arrastrar, ampliar territorio con claros/caminos anchos y destinos. Probar aproximadamente 260 × 240 m y distancia de cámara 11–12 con máximo 16–18. Ajustar aparición según encuadre, obstáculos y rutas. Evaluar modelos tras el cambio de cámara.
 - **Entrega y cierre:** más campo visible y espacio transitable, destinos accesibles y apariciones seguras. Cifras ajustadas con evidencia; sin atribuir inspección visual o rendimiento no medidos.
 
 ### 2.7.3a · Esqueleto común de habilidades
-- **Estado:** implementado como módulos de dominio y pruebas; integrado al Guerrero en 0.2.9 mediante 2.7.3b. Ver [BASE_HABILIDADES_2_7_3A.md](BASE_HABILIDADES_2_7_3A.md).
+- **Estado:** implementado como módulos de dominio y pruebas; integrado al Guerrero en 0.2.9 mediante 2.7.3b. Ver [BASE_HABILIDADES_2_7_3A.md](docs/diseno/BASE_HABILIDADES_2_7_3A.md).
 - **Trabajo:** catálogo e IDs, configuración por clase, cuatro espacios, nivel 10, ramas/hitos, ofertas reproducibles y tiempos independientes. Establecer contrato de integración con progresión, combate y UI.
 - **Entrega y cierre:** operaciones legales y revisiones, instantáneas, garantías de oportunidad, pausa y reinicio comprobados. Ocho pruebas correctas; 54 trayectorias de árboles y 600 ofertas. Sin atribuir efectos de ataques aún no conectados.
 
 ### 2.7.3b · Guerrero completo e integración jugable
-- **Estado:** implementada en 0.2.9; ver [entrega](GUERRERO_HABILIDADES_2_7_3B.md) y [verificación](VERIFICACION_2_7_3B.md).
+- **Estado:** implementada en 0.2.9; ver [entrega](docs/diseno/GUERRERO_HABILIDADES_2_7_3B.md) y [verificación](docs/verificaciones/VERIFICACION_2_7_3B.md).
 - **Trabajo:** conectar el esqueleto con Run/Progression/Combat y los menús; datos y efectos reales de las ocho habilidades, básico hasta 10, estadísticas, afinidades y tienda. Migrar las técnicas del Guerrero; implementar HUD de cuatro espacios/recargas, animación y resultados.
 - **Entrega y cierre:** configuraciones de pocas habilidades desarrolladas y cuatro intermedias jugables. Topes, recargas, estados elementales, colisiones, pausa y reinicio integrados; revisión visual y pruebas de combate documentadas. Mago/Arquero conservan su sistema actual hasta 2.7.4.
 
@@ -172,7 +172,7 @@ Antes de retomar 2.8 se establece el [plan de Los dominios exteriores](PLAN_DOMI
 - **Entrega y cierre:** presión sigue al jugador, hay rutas de escape y grupos que pueden barrerse. Registrar carga máxima probada, CPU/GPU y límites; no declarar rendimiento a partir de simulaciones sin GPU. Mantener muertes/premios únicos y apariciones seguras.
 
 ### 2.7.6 · Ritmo y claridad del combate masivo
-- **Estado:** implementada en 0.2.12 con balance inicial. Ver [reglas](RITMO_2_7_6.md) y [evidencia y límites](VERIFICACION_2_7_6.md).
+- **Estado:** implementada en 0.2.12 con balance inicial. Ver [reglas](docs/diseno/RITMO_2_7_6.md) y [evidencia y límites](docs/verificaciones/VERIFICACION_2_7_6.md).
 - **Trabajo:** ajustar experiencia por enemigo, frecuencia de elecciones, pesos de ofertas, daño, moneda y costes para la nueva densidad. Revisar cuatro recargas, indicadores, partículas, audio y avisos enemigos; recorridos de exploración, captura y jefe con vida normal.
 - **Entrega y cierre:** crecer pronto sin forzar habilidades nuevas; configuraciones con pocas habilidades mejoradas y cuatro equipadas comprobadas. Registrar balance humano, mediciones y pendientes. No cerrar por campañas con vida artificialmente ampliada. Definitiva R sigue pendiente salvo decisión explícita.
 
@@ -291,4 +291,4 @@ Antes de retomar 2.8 se establece el [plan de Los dominios exteriores](PLAN_DOMI
 
 ## Idea narrativa para después
 
-[Campaña por eras y etapas](IDEA_CAMPANA_ERAS.md), registrada el 2026-11-02: cada era reúne tres a cinco etapas. Era I: establecer el reino recuperando exterior, interior y defendiendo la fortaleza. El escenario actual puede representar su primera etapa. Es una propuesta futura; no añade implementación ni cambia los recuentos del plan. Próxima entrega técnica: 2.7.3.
+[Campaña por eras y etapas](docs/diseno/IDEA_CAMPANA_ERAS.md), registrada el 2026-11-02: cada era reúne tres a cinco etapas. Era I: establecer el reino recuperando exterior, interior y defendiendo la fortaleza. El escenario actual puede representar su primera etapa. Es una propuesta futura; no añade implementación ni cambia los recuentos del plan. Próxima entrega técnica: 2.7.3.

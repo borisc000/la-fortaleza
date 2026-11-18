@@ -45,7 +45,7 @@ El test de construcción se ejecuta en Node, sin contexto WebGL. **No prueba el 
 
 La herramienta de navegador informa: «Local browser use is disabled in Work settings». El usuario indicó que lo habilitaría. Las comprobaciones posteriores, incluida una sesión recién inicializada, siguen mostrando el ajuste desactivado. No se usaron Playwright externo, depuración remota ni otra ruta para eludirlo.
 
-El proyecto puede abrirse manualmente en http://127.0.0.1:5183/ mientras el servidor esté activo. Si se detiene, seguir [game/README.md](game/README.md).
+El proyecto puede abrirse manualmente en http://127.0.0.1:5183/ mientras el servidor esté activo. Si se detiene, seguir [game/README.md](../../game/README.md).
 
 ## Comprobaciones técnicas pendientes, sin bloquear el avance autorizado
 

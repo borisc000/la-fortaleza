@@ -4,7 +4,7 @@ Fecha: 2026-11-01 · Aplicación 0.2.7.
 
 ## Alcance y comprobaciones
 
-Reglas implementadas en [RELIQUIAS_AFINIDADES_2_7.md](RELIQUIAS_AFINIDADES_2_7.md). **246/246 pruebas únicas correctas, cero fallos**: 227 fuera de `world.test.ts` y 19 del mapa real. No se suman las ejecuciones iniciales repetidas.
+Reglas implementadas en [RELIQUIAS_AFINIDADES_2_7.md](../diseno/RELIQUIAS_AFINIDADES_2_7.md). **246/246 pruebas únicas correctas, cero fallos**: 227 fuera de `world.test.ts` y 19 del mapa real. No se suman las ejecuciones iniciales repetidas.
 
 - Diecisiete pruebas nuevas: catálogo de doce reliquias, requisitos, cuatro espacios, duplicados, bloqueo por pureza, rangos del apoyo, máximo de dos elementos y una maestría.
 - Las 36 combinaciones ordenadas de clase/principal/apoyo se ejercitan en encuentros pequeños con vida normal. No equivalen a 36 campañas completas ni prueban balance humano.

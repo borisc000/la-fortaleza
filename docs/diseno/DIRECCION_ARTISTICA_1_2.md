@@ -49,7 +49,7 @@ Luz nublada difusa con contraste suficiente entre suelo, personaje y enemigos. A
 - **Tierra, para fase 2:** fragmentos de roca y polvo breve; distinguir las rocas ofensivas del suelo.
 - **Aire, para fase 2:** trazos pálidos, deformación y movimiento de hojas/polvo; sin rayos eléctricos como identidad principal.
 
-Fuego se referencia en imagen 3; Agua en [04-explanada-agua.png](arte/04-explanada-agua.png). Inspección estática: la segunda conserva el encuadre, el Guerrero, los enemigos y el ambiente; reemplaza el fuego del arma por líquido azulado y gotas, conservando las antorchas cálidas. El brillo del borde resulta intenso: al implementar, priorizar volumen líquido y espuma sobre trazos finos para que no se lea como electricidad. La legibilidad en movimiento y en pantalla pequeña sigue pendiente de prueba real.
+Fuego se referencia en imagen 3; Agua en [04-explanada-agua.png](../../arte/04-explanada-agua.png). Inspección estática: la segunda conserva el encuadre, el Guerrero, los enemigos y el ambiente; reemplaza el fuego del arma por líquido azulado y gotas, conservando las antorchas cálidas. El brillo del borde resulta intenso: al implementar, priorizar volumen líquido y espuma sobre trazos finos para que no se lea como electricidad. La legibilidad en movimiento y en pantalla pequeña sigue pendiente de prueba real.
 
 ### Paleta de trabajo y encuadre
 
@@ -92,12 +92,12 @@ Orden real en que aparecieron en el chat:
 
 | Opción visible | Dirección | Archivo |
 |---|---|---|
-| 1 | Puerta de hierro | [01-puerta-de-hierro.png](arte/01-puerta-de-hierro.png) |
-| 2 | Muralla entre árboles | [02-muralla-entre-arboles.png](arte/02-muralla-entre-arboles.png) |
-| 3 | Explanada del bastión | [03-explanada-del-bastion.png](arte/03-explanada-del-bastion.png) |
+| 1 | Puerta de hierro | [01-puerta-de-hierro.png](../../arte/01-puerta-de-hierro.png) |
+| 2 | Muralla entre árboles | [02-muralla-entre-arboles.png](../../arte/02-muralla-entre-arboles.png) |
+| 3 | Explanada del bastión | [03-explanada-del-bastion.png](../../arte/03-explanada-del-bastion.png) |
 
 Las tres propuestas mantienen tercera persona, armadura media, cielo nublado y no muertos medievales. Los resultados representan un acabado artístico aspiracional. El tamaño del héroe en cuadro es mayor que la proporción solicitada en los prompts; distancia/FOV se ajustarán con la dirección elegida, sin presentar estas imágenes como mediciones exactas de cámara. La complejidad de vegetación, geometría distante y reflejos se adaptará al presupuesto real del juego.
 
-La edición complementaria de Agua falló primero por revocación del permiso de red. Al volver a estar disponible la herramienta integrada, se repitió y se obtuvo [04-explanada-agua.png](arte/04-explanada-agua.png), conservada en el proyecto. No se utilizó otro servicio.
+La edición complementaria de Agua falló primero por revocación del permiso de red. Al volver a estar disponible la herramienta integrada, se repitió y se obtuvo [04-explanada-agua.png](../../arte/04-explanada-agua.png), conservada en el proyecto. No se utilizó otro servicio.
 
 Se cierra el entregable de definición de 1.2: estilo aceptado, referencia operativa, muestras elementales, especificación de enemigo, paleta y recursos por producir. La muestra adicional no tiene todavía valoración expresa del usuario; no se atribuye aprobación específica. No se ha iniciado 1.3 ni verificado arte dentro de un juego. Siguiente subfase: base web, escena y cámara.

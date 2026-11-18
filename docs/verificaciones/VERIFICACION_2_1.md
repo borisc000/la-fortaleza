@@ -4,7 +4,7 @@ Fecha: **2026-11-01** · Aplicación **0.2.1** · Siguiente: **2.2, Mago**.
 
 ## Entrega
 
-Datos de clase separados de la ejecución de habilidades y de los sistemas comunes. Guerrero usa su definición inmutable, un `WarriorKit` nuevo por partida y efectos elementales registrados con su clase. El motor común conserva enemigos, daño, muerte y recompensas; `Run` conserva director, progresión, exploración, tienda y objetivos. Vida, armadura, movimiento, radio, nombres y maestrías se obtienen de la definición. Arquitectura y pasos de ampliación en [ARQUITECTURA_CLASES_2_1.md](ARQUITECTURA_CLASES_2_1.md).
+Datos de clase separados de la ejecución de habilidades y de los sistemas comunes. Guerrero usa su definición inmutable, un `WarriorKit` nuevo por partida y efectos elementales registrados con su clase. El motor común conserva enemigos, daño, muerte y recompensas; `Run` conserva director, progresión, exploración, tienda y objetivos. Vida, armadura, movimiento, radio, nombres y maestrías se obtienen de la definición. Arquitectura y pasos de ampliación en [ARQUITECTURA_CLASES_2_1.md](../diseno/ARQUITECTURA_CLASES_2_1.md).
 
 Esta entrega es principalmente interna: continúa disponible únicamente el Guerrero. No cambia el balance, mapa, cámara, precios ni controles, ni introduce un selector que ofrezca clases incompletas. No se incorporaron recursos artísticos, sonidos ni dependencias nuevos.
 

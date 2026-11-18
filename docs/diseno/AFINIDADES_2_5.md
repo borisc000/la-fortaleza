@@ -51,4 +51,4 @@ Daño, armadura, estados, colisiones y recompensas se resuelven en el dominio. E
 
 Las doce combinaciones tienen una primera maestría. **2.8 sigue pendiente** para revisar el catálogo con las técnicas de 2.6 y la doble afinidad de 2.7, completar presentación y probar sus interacciones. No se implementan aquí técnicas equipables ni un segundo elemento.
 
-Ver [verificación](VERIFICACION_2_5.md). Próxima subfase: **2.6 · Técnicas y espacios de configuración**.
+Ver [verificación](../verificaciones/VERIFICACION_2_5.md). Próxima subfase: **2.6 · Técnicas y espacios de configuración**.

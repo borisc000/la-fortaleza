@@ -8,13 +8,13 @@ Adoptar **280 × 260 m** como objetivo de E1, ampliar 10 m en cada lateral y 20 
 
 El problema principal encontrado es la repetición y falta de jerarquía espacial. Aumentar solo los límites prolongaría ese problema. La ampliación debe acompañarse de redistribución, superficies más naturales, hitos reconocibles y colocación de actividades.
 
-Plano comparativo [PNG](e0/plano.png), [SVG](e0/plano.svg) y [HTML](e0/plano.html). Coordenadas de propuesta en [JSON](e0/propuesta.json). Las áreas de color son guías de composición, no límites de movimiento.
+Plano comparativo [PNG](../verificaciones/evidencias/e0/plano.png), [SVG](../verificaciones/evidencias/e0/plano.svg) y [HTML](../verificaciones/evidencias/e0/plano.html). Coordenadas de propuesta en [JSON](../verificaciones/evidencias/e0/propuesta.json). Las áreas de color son guías de composición, no límites de movimiento.
 
 ## E0.1 — Inventario y evidencia del estado actual
 
 Se inspeccionaron el escenario completo en el laboratorio y dieciséis puntos de vista, incluyendo el inicio y los quince hitos, con los recursos reales y la cámara de tercera persona de 12 m. Una página de auditoría reutiliza `createWorld`, materiales, modelo del Guerrero y cámara del juego para obtener encuadres reproducibles. No sustituye una campaña completa. También se inició una partida normal de Guerrero y se caminó hacia el sur con enemigos activos.
 
-Capturas representativas [entrada](e0/actual-entrada.png), [sur](e0/actual-sur.png), [combate real](e0/actual-combate.png) y [conjunto en laboratorio](e0/actual-conjunto.png). El recorrido visual completo está guardado en `../../work/e0-zone-0.png` a `e0-zone-15.png`.
+Capturas representativas [entrada](../verificaciones/evidencias/e0/actual-entrada.png), [sur](../verificaciones/evidencias/e0/actual-sur.png), [combate real](../verificaciones/evidencias/e0/actual-combate.png) y [conjunto en laboratorio](../verificaciones/evidencias/e0/actual-conjunto.png). El recorrido visual completo está guardado en `../../work/e0-zone-0.png` a `e0-zone-15.png`.
 
 | Aspecto | Hallazgo | Consecuencia de diseño |
 |---|---|---|
@@ -29,7 +29,7 @@ Capturas representativas [entrada](e0/actual-entrada.png), [sur](e0/actual-sur.p
 
 ### Mediciones espaciales
 
-Fuente reproducible [spatial.json](e0/spatial.json), semilla de exploración 9173, geometría de colisión real y velocidad base del Guerrero de 5 m/s. Se usaron materiales de respaldo solo en el análisis sin renderizado; la geometría de obstáculos es la misma. Las capturas sí usan las texturas y modelos cargados.
+Fuente reproducible [spatial.json](../verificaciones/evidencias/e0/spatial.json), semilla de exploración 9173, geometría de colisión real y velocidad base del Guerrero de 5 m/s. Se usaron materiales de respaldo solo en el análisis sin renderizado; la geometría de obstáculos es la misma. Las capturas sí usan las texturas y modelos cargados.
 
 - Área actual 62.400 m²; límites X −128 a 132, Z −20 a 220.
 - 805 cajas de obstáculos de cámara/entorno y 542 sólidos relevantes para movimiento.
@@ -51,7 +51,7 @@ Fuente reproducible [spatial.json](e0/spatial.json), semilla de exploración 917
 
 Circuito de comparación para futuras entregas: inicio → Cruce del sur → Encrucijada del exilio → Gran explanada del sur → Campos del asedio → Camino de los molinos → Campamento abandonado → inicio. Resultado **518,75 m y 103,75 s**, sin atasco. El recorrido sigue navegación de distancia corta y puede cortar por los claros; no representa seguir estrictamente el pavimento. El JSON conserva sus muestras de posición.
 
-La partida real confirmó desplazamiento desde (0, 7) a aproximadamente (−6,07, 44,60), con ocho segundos de tecla S, cámara despejada, vida completa, dos bajas y población local activa. El tiempo de tecla y el de simulación pueden diferir ligeramente. Registro [game-check.json](e0/game-check.json).
+La partida real confirmó desplazamiento desde (0, 7) a aproximadamente (−6,07, 44,60), con ocho segundos de tecla S, cámara despejada, vida completa, dos bajas y población local activa. El tiempo de tecla y el de simulación pueden diferir ligeramente. Registro [game-check.json](../verificaciones/evidencias/e0/game-check.json).
 
 ### Referencia de rendimiento
 
@@ -66,7 +66,7 @@ Chrome local, imagen renderizada de 1440 × 900, DPR 1, cámara de 12 m, sombras
 | Explanada sur | 0 | 93,7 | 12,5 ms | 93 | 141.172 |
 | Explanada sur | 100 | 96,0 | 13,4 ms | 94 | 177.972 |
 
-Las pequeñas diferencias entre muestras son ruido de ejecución, no una mejora por añadir enemigos. Los intervalos incluyen trabajo del navegador y sincronización de presentación; no miden tiempo de GPU. Resultados completos en [performance.json](e0/performance.json).
+Las pequeñas diferencias entre muestras son ruido de ejecución, no una mejora por añadir enemigos. Los intervalos incluyen trabajo del navegador y sincronización de presentación; no miden tiempo de GPU. Resultados completos en [performance.json](../verificaciones/evidencias/e0/performance.json).
 
 El diagnóstico de una ventana de la partida real mostró 93,7 FPS, p95 14,4 ms, 21 enemigos, 643 llamadas y 181.860 triángulos. Incluye sistemas y representaciones que no están en la prueba sintética. No comparar directamente ambas cargas. No se probó móvil físico, partida completa ni configuraciones de cuatro habilidades.
 

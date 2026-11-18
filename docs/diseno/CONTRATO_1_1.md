@@ -25,7 +25,7 @@ Se sustituye la propuesta anterior de definitiva manual y cámara elevada. El t�
 
 Construcción distribuida entre 1.3 y 1.10:
 
-**Actualización de alcance 2026-10-31:** el usuario pidió ampliar el mapa y generar hordas alrededor del jugador, con recogibles, capturas y tiendas. Se insertan 1.9.1–1.9.3 antes de 1.10; ver [EXPANSION_1_9.md](EXPANSION_1_9.md). La sección exterior pequeña descrita abajo corresponde al prototipo hasta 1.9 y será ampliada. El combate continúa automático; la interacción contextual con el entorno es independiente. Las 1.9.1–1.9.3 están implementadas en aplicación 0.1.15; recogibles, captura territorial y mercader con pausa completa. Reglas y resultados en [VERIFICACION_1_9_3.md](VERIFICACION_1_9_3.md).
+**Actualización de alcance 2026-10-31:** el usuario pidió ampliar el mapa y generar hordas alrededor del jugador, con recogibles, capturas y tiendas. Se insertan 1.9.1–1.9.3 antes de 1.10; ver [EXPANSION_1_9.md](EXPANSION_1_9.md). La sección exterior pequeña descrita abajo corresponde al prototipo hasta 1.9 y será ampliada. El combate continúa automático; la interacción contextual con el entorno es independiente. Las 1.9.1–1.9.3 están implementadas en aplicación 0.1.15; recogibles, captura territorial y mercader con pausa completa. Reglas y resultados en [VERIFICACION_1_9_3.md](../verificaciones/VERIFICACION_1_9_3.md).
 
 - Guerrero con espada, Ímpetu y Torbellino automático.
 - Fuego y Agua; una afinidad para esta primera porción de prueba. La segunda afinidad se implementa en 2.7 (antes 2.8; plan reajustado al aplazar Acorazado).

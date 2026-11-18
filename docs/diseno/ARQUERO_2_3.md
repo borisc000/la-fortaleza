@@ -57,4 +57,4 @@ Datos en `game/src/content/classes/archer.ts`; reglas en `domain/classes/archer-
 
 El motor común conserva vida, protección, muertes y recompensas. Las pausas de mejoras y tienda congelan flechas, Precisión, lluvia y reloj. Derrota/victoria cancelan acciones; reiniciar crea un kit nuevo y conserva solo la clase seleccionada. El HUD muestra cargas, límite de blancos y tiempo de racha; los sonidos distinguen arco y lluvia.
 
-Ver [VERIFICACION_2_3.md](VERIFICACION_2_3.md). Próxima entrega según el plan reajustado: **2.4 · Tierra y Aire**.
+Ver [VERIFICACION_2_3.md](../verificaciones/VERIFICACION_2_3.md). Próxima entrega según el plan reajustado: **2.4 · Tierra y Aire**.

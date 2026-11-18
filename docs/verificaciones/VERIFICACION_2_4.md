@@ -4,7 +4,7 @@ Fecha: 2026-11-01 · Aplicación 0.2.4.
 
 ## Implementado
 
-Cuatro afinidades elegibles para Guerrero, Quebranto, coraza de capacidad finita, ondas sísmicas de maestría, alcance/empuje de Aire, atracción y maestría de vendaval. Indicadores, símbolos, geometrías y sonidos propios. Mago y Arquero siguen limitados a Fuego/Agua según el alcance de 2.4. Ver [TIERRA_AIRE_2_4.md](TIERRA_AIRE_2_4.md).
+Cuatro afinidades elegibles para Guerrero, Quebranto, coraza de capacidad finita, ondas sísmicas de maestría, alcance/empuje de Aire, atracción y maestría de vendaval. Indicadores, símbolos, geometrías y sonidos propios. Mago y Arquero siguen limitados a Fuego/Agua según el alcance de 2.4. Ver [TIERRA_AIRE_2_4.md](../diseno/TIERRA_AIRE_2_4.md).
 
 ## Comprobaciones
 

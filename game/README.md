@@ -1,12 +1,12 @@
 > Estado vigente: **E1 completada, aplicación 0.2.15; siguiente E2.1 antes de 2.8**. Las tres clases tienen ocho habilidades, cuatro espacios y niveles hasta 10. Plan: 49 subfases, 22 futuras.
 
-Ver [ritmo y economía 2.7.6](../RITMO_2_7_6.md).
+Ver [ritmo y economía 2.7.6](../docs/diseno/RITMO_2_7_6.md).
 
 # La Fortaleza — Los dominios exteriores 0.2.15
 
-Nombre provisional. Prototipo del [MVP](../README.md), realizado con Three.js y TypeScript. Guerrero con ocho habilidades automáticas, cuatro espacios y espada independiente, niveles hasta 10 y ramas. Las tres clases usan los nuevos árboles. Doce reliquias, apoyo elemental opcional y una maestría principal. Mapa de 280 × 260 m; cámara inicial 12 m y rueda 4–18. Acorazado aplazado; hordas densas integradas y primer ajuste de ritmo, economía y claridad integrado; balance humano prolongado pendiente. [Entrega y límites](../HORDAS_2_7_5.md).
+Nombre provisional. Prototipo del [MVP](../README.md), realizado con Three.js y TypeScript. Guerrero con ocho habilidades automáticas, cuatro espacios y espada independiente, niveles hasta 10 y ramas. Las tres clases usan los nuevos árboles. Doce reliquias, apoyo elemental opcional y una maestría principal. Mapa de 280 × 260 m; cámara inicial 12 m y rueda 4–18. Acorazado aplazado; hordas densas integradas y primer ajuste de ritmo, economía y claridad integrado; balance humano prolongado pendiente. [Entrega y límites](../docs/diseno/HORDAS_2_7_5.md).
 
-Llegada sur (20, 205), con guardia y primeras recompensas próximas. Seis sectores y siete rutas ya implementados. Interacciones al margen de los caminos y apariciones separadas de sus huellas. Recorridos con combate y cámara verificados en E1.4. Sigue E2.1, puerta y dos torres. Ver [cierre E1](../VERIFICACION_E1_4.md).
+Llegada sur (20, 205), con guardia y primeras recompensas próximas. Seis sectores y siete rutas ya implementados. Interacciones al margen de los caminos y apariciones separadas de sus huellas. Recorridos con combate y cámara verificados en E1.4. Sigue E2.1, puerta y dos torres. Ver [cierre E1](../docs/verificaciones/VERIFICACION_E1_4.md).
 
 ## Abrir en el PC
 
@@ -21,15 +21,15 @@ Abrir http://127.0.0.1:5183/ en un navegador con WebGL 2 y aceleración gráfica
 
 ## Controles de esta entrega
 
-- **Equipo y apoyo:** hasta cuatro reliquias distintas, sin reemplazo en esta expedición. Cofres permiten tomar una reliquia compatible o monedas; el puesto añade un premio y el mercader tres ofertas. Desde nivel 5, en niveles impares, puede aparecer otra afinidad o su mejora hasta III. El principal conserva el kit y la única maestría; el apoyo añade estados/control. Sello de pureza bloquea la segunda afinidad. [Catálogo y reglas](../RELIQUIAS_AFINIDADES_2_7.md).
+- **Equipo y apoyo:** hasta cuatro reliquias distintas, sin reemplazo en esta expedición. Cofres permiten tomar una reliquia compatible o monedas; el puesto añade un premio y el mercader tres ofertas. Desde nivel 5, en niveles impares, puede aparecer otra afinidad o su mejora hasta III. El principal conserva el kit y la única maestría; el apoyo añade estados/control. Sello de pureza bloquea la segunda afinidad. [Catálogo y reglas](../docs/diseno/RELIQUIAS_AFINIDADES_2_7.md).
 
-- **Habilidades automáticas:** ocho por clase, cuatro espacios contando la inicial y básico aparte. Aprende, mejora hasta nivel 10 o elige estadísticas. Las ramas cambian alcance, proyectiles, penetración, duración y recarga; hitos excluyentes en niveles 5 y 10. [Entrega](../MAGO_ARQUERO_2_7_4.md).
+- **Habilidades automáticas:** ocho por clase, cuatro espacios contando la inicial y básico aparte. Aprende, mejora hasta nivel 10 o elige estadísticas. Las ramas cambian alcance, proyectiles, penetración, duración y recarga; hitos excluyentes en niveles 5 y 10. [Entrega](../docs/diseno/MAGO_ARQUERO_2_7_4.md).
 
 - **Clase y afinidad:** selecciona Guerrero, Mago o Arquero antes de entrar. El Mago elige entre los cuatro elementos desde el comienzo. Desde pausa/resultados puedes volver al selector iniciando una nueva expedición.
-- **Arquero automático:** 90 de vida, alcance de 12 m y flechas rápidas. Precisión permite atravesar dos blancos tras dos aciertos y tres tras tres; fallar o pasar 4 s sin acertar rompe la racha. Lluvia automática: cuatro descargas y recarga de 16 s desde el final. Fuego quema; Agua salpica una vez por flecha. [Detalles y maestrías](../ARQUERO_2_3.md).
+- **Arquero automático:** 90 de vida, alcance de 12 m y flechas rápidas. Precisión permite atravesar dos blancos tras dos aciertos y tres tras tres; fallar o pasar 4 s sin acertar rompe la racha. Lluvia automática: cuatro descargas y recarga de 16 s desde el final. Fuego quema; Agua salpica una vez por flecha. [Detalles y maestrías](../docs/diseno/ARQUERO_2_3.md).
 - **Mago automático:** 80 de vida, orbes a 10 m y cada cuarto disparo +60 % de daño en área. Cataclismo marca una zona fija, avisa y libera tres pulsos; recarga 14 s desde el final. Todo sin botones de combate.
-- **Nuevas afinidades:** Mago/Tierra crea coraza con el cuarto lanzamiento; Mago/Aire empuja con proyectiles y atrae con Cataclismo. Arquero/Tierra aplica Quebranto e ignora armadura; Arquero/Aire aumenta alcance, velocidad y blancos atravesados. [Rangos y maestrías](../AFINIDADES_2_5.md).
-- **Afinidades del Mago:** Fuego quema y Agua ralentiza. Rangos II/III añaden 10/20 % de daño. Maestrías: Erupción mayor suma dos pulsos; Marea creciente amplía el radio y empuja. [Valores completos](../MAGO_2_2.md).
+- **Nuevas afinidades:** Mago/Tierra crea coraza con el cuarto lanzamiento; Mago/Aire empuja con proyectiles y atrae con Cataclismo. Arquero/Tierra aplica Quebranto e ignora armadura; Arquero/Aire aumenta alcance, velocidad y blancos atravesados. [Rangos y maestrías](../docs/diseno/AFINIDADES_2_5.md).
+- **Afinidades del Mago:** Fuego quema y Agua ralentiza. Rangos II/III añaden 10/20 % de daño. Maestrías: Erupción mayor suma dos pulsos; Marea creciente amplía el radio y empuja. [Valores completos](../docs/diseno/MAGO_2_2.md).
 - **Entrar en el territorio:** inicia explícitamente el encuentro; antes de pulsarlo los enemigos no avanzan.
 - **WASD:** caminar respecto al rumbo horizontal de la cámara, a 5 m/s de base (hasta 6,5 con mejoras); Arquero: 5,2–6,7 m/s. Las diagonales no aceleran. El héroe gira hacia donde se desplaza.
 - **Táctil horizontal:** joystick flotante al tocar la mitad izquierda; arrastre en la derecha para mirar. Cada dedo conserva su función aunque cruce de lado. Soltar o cancelar uno no cancela el otro.
@@ -92,7 +92,7 @@ npm run preview
 
 La última orden sirve `dist/` en http://127.0.0.1:4183/. Compilar no publica el proyecto. La advertencia de tamaño del paquete se debe principalmente al motor Three.js; se registra para optimización posterior.
 
-Consultar [VERIFICACION_2_7.md](../VERIFICACION_2_7.md) y los registros históricos anteriores. Los FPS del panel son una muestra reciente de intervalos de `requestAnimationFrame`; p95 mide el intervalo de fotograma, no tiempo de GPU. Se reinicia la ventana de muestreo al pausar. No extrapolar las pruebas de simulación a rendimiento de hordas o teléfonos físicos. El límite de población no es una medición de FPS.
+Consultar [VERIFICACION_2_7.md](../docs/verificaciones/VERIFICACION_2_7.md) y los registros históricos anteriores. Los FPS del panel son una muestra reciente de intervalos de `requestAnimationFrame`; p95 mide el intervalo de fotograma, no tiempo de GPU. Se reinicia la ventana de muestreo al pausar. No extrapolar las pruebas de simulación a rendimiento de hordas o teléfonos físicos. El límite de población no es una medición de FPS.
 
 ## Recursos y límites
 
@@ -121,8 +121,8 @@ El jugador usa un cuerpo circular de radio 0,4 m. Las colisiones cubren murallas
 
 ## Hordas 2.7.5
 
-Mayoría de no muertos frágiles, objetivos locales de 20/40/60/90 y límite provisional de 100 vivos. Avisos y recompensas únicos, captura con presupuesto compartido. Ver [entrega](../HORDAS_2_7_5.md) y [verificación](../VERIFICACION_2_7_6.md).
+Mayoría de no muertos frágiles, objetivos locales de 20/40/60/90 y límite provisional de 100 vivos. Avisos y recompensas únicos, captura con presupuesto compartido. Ver [entrega](../docs/diseno/HORDAS_2_7_5.md) y [verificación](../docs/verificaciones/VERIFICACION_2_7_6.md).
 
 ## Laboratorio de modelos
 
-Abrir [Atelier](http://127.0.0.1:5183/model-lab.html) con el servidor iniciado. Catálogo de 16 modelos/conjuntos, giro, zoom, malla, iluminación y notas por modelo exportables. [Alcance y verificación](../LABORATORIO_MODELOS.md).
+Abrir [Atelier](http://127.0.0.1:5183/model-lab.html) con el servidor iniciado. Catálogo de 16 modelos/conjuntos, giro, zoom, malla, iluminación y notas por modelo exportables. [Alcance y verificación](../docs/diseno/LABORATORIO_MODELOS.md).

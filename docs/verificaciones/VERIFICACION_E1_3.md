@@ -28,8 +28,8 @@ Revisión visual en navegador a 1440 × 900 con recursos reales: llegada, fuente
 
 ## Evidencias y reproducción
 
-- [Antes](e1-3/before.json), [después](e1-3/after.json), [pruebas espaciales](e1-3/spatial-tests.txt), [director y campaña](e1-3/director-tests.txt), [build](e1-3/build.txt), [navegador](e1-3/browser.txt).
-- Capturas: [llegada](game/output/playwright/e13-arrival.png), [fuente](game/output/playwright/e13-field.png), [mercader](game/output/playwright/e13-shop.png), [captura](game/output/playwright/e13-capture.png), [abadía](game/output/playwright/e13-abbey.png), [molinos](game/output/playwright/e13-mill.png), [partida](game/output/playwright/e13-game.png).
+- [Antes](evidencias/e1-3/before.json), [después](evidencias/e1-3/after.json), [pruebas espaciales](evidencias/e1-3/spatial-tests.txt), [director y campaña](evidencias/e1-3/director-tests.txt), [build](evidencias/e1-3/build.txt), [navegador](evidencias/e1-3/browser.txt).
+- Capturas: [llegada](../../game/output/playwright/e13-arrival.png), [fuente](../../game/output/playwright/e13-field.png), [mercader](../../game/output/playwright/e13-shop.png), [captura](../../game/output/playwright/e13-capture.png), [abadía](../../game/output/playwright/e13-abbey.png), [molinos](../../game/output/playwright/e13-mill.png), [partida](../../game/output/playwright/e13-game.png).
 - `node --experimental-strip-types audits/e13-fit.ts` reproduce el muestreo espacial y de cámara con materiales de sustitución; el navegador verifica los recursos reales.
 - `/audits/e0.html?objects=1` añade las interacciones de la semilla 19 y destinos de inspección a la auditoría existente. Sin el parámetro se conserva su referencia de carga. La herramienta no simula IA, habilidades ni combate y no forma parte de las entradas de producción.
 

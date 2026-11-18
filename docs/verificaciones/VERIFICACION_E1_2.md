@@ -44,7 +44,7 @@ Es una entrega de distribución con geometría sencilla. Los edificios, árboles
 
 Los tiempos laterales corresponden al desvío, no a una vuelta cerrada completa: el circuito se cierra regresando por el eje principal. Las mediciones usan pasos de 0,05 s y tolerancia de 0,15 m por muestra. No son tiempos de una partida con enemigos.
 
-Resultados: [pruebas espaciales y actividades](e1-2/spatial-tests.txt), [mundo y cámara](e1-2/world-tests.txt), [compilación](e1-2/build.txt), [comprobación de partida en navegador](e1-2/browser.txt).
+Resultados: [pruebas espaciales y actividades](evidencias/e1-2/spatial-tests.txt), [mundo y cámara](evidencias/e1-2/world-tests.txt), [compilación](evidencias/e1-2/build.txt), [comprobación de partida en navegador](evidencias/e1-2/browser.txt).
 
 Para repetir desde `game`:
 
@@ -58,9 +58,9 @@ node --experimental-strip-types --test --test-name-pattern 'the actual fortress|
 
 Chrome local, cámara de juego a 12 m. Revisadas llegada, campos, molino, abadía, bosque, campamento, puerta y vista general del laboratorio. La auditoría cargó los recursos de escena sin fallos; conserva el aviso 404 conocido del favicon. Ajustados contraste del suelo y arbolado occidental tras revisar las capturas.
 
-- [Llegada](game/output/playwright/e12-arrival.png), [campos y molino](game/output/playwright/e12-field.png).
-- [Abadía](game/output/playwright/e12-abbey.png), [bosque](game/output/playwright/e12-wood.png), [campamento](game/output/playwright/e12-camp.png).
-- [Conjunto en laboratorio](game/output/playwright/e12-overview.png), [inicio en partida](game/output/playwright/e12-game.png).
+- [Llegada](../../game/output/playwright/e12-arrival.png), [campos y molino](../../game/output/playwright/e12-field.png).
+- [Abadía](../../game/output/playwright/e12-abbey.png), [bosque](../../game/output/playwright/e12-wood.png), [campamento](../../game/output/playwright/e12-camp.png).
+- [Conjunto en laboratorio](../../game/output/playwright/e12-overview.png), [inicio en partida](../../game/output/playwright/e12-game.png).
 
 No se repitieron las campañas completas con jefe de E1.1: esta entrega valida distribución, recorrido, colocación y controles con comprobaciones dirigidas. La revisión consolidada de combate con tres clases y la comparación de rendimiento quedan en E1.4. No se atribuye verificación en teléfono físico ni un nuevo resultado de FPS.
 

@@ -47,4 +47,4 @@ La explosión del cuarto orbe es parte de la pasiva, disponible para ambos eleme
 
 Contenido en `game/src/content/classes/mage.ts`; decisiones de combate en `domain/classes/mage-kit.ts`; estados elementales en `mage-effects.ts`. El motor compartido conserva daño, protección, muerte y recompensa únicos. Representación en `rendering/mage.ts` y `mage-spells.ts`.
 
-Las pausas por mejoras y tienda congelan proyectiles, habilidad, cargas y reloj. Derrota/victoria cancelan hechizos. No se cambian mapa, encuentros, economía ni reglas del Guerrero. Validación y límites en [VERIFICACION_2_2.md](VERIFICACION_2_2.md). Próxima entrega: **2.3, Arquero**.
+Las pausas por mejoras y tienda congelan proyectiles, habilidad, cargas y reloj. Derrota/victoria cancelan hechizos. No se cambian mapa, encuentros, economía ni reglas del Guerrero. Validación y límites en [VERIFICACION_2_2.md](../verificaciones/VERIFICACION_2_2.md). Próxima entrega: **2.3, Arquero**.

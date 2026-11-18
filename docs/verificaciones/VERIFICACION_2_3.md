@@ -4,7 +4,7 @@ Fecha: 2026-11-01 · Aplicación 0.2.3.
 
 ## Entrega
 
-Arquero seleccionable, flechas físicas desde el inicio, afinidad en nivel 2, Precisión y penetración, Lluvia de flechas y maestrías de Fuego/Agua. Modelo, animaciones y efectos provisionales propios. Se sigue el plan original por instrucción expresa; no se añaden subfases de pulido. Reglas en [ARQUERO_2_3.md](ARQUERO_2_3.md).
+Arquero seleccionable, flechas físicas desde el inicio, afinidad en nivel 2, Precisión y penetración, Lluvia de flechas y maestrías de Fuego/Agua. Modelo, animaciones y efectos provisionales propios. Se sigue el plan original por instrucción expresa; no se añaden subfases de pulido. Reglas en [ARQUERO_2_3.md](../diseno/ARQUERO_2_3.md).
 
 ## Comprobaciones
 

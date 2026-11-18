@@ -53,4 +53,4 @@ El impacto aplica su daño una vez, resuelve el efecto principal y luego el apoy
 
 El HUD y resultados muestran ambos elementos, una maestría principal y los cuatro espacios de reliquias. El menú de elecciones incluye inventario con descripciones; la tienda muestra el equipo actual. Un segundo aro distingue visualmente la afinidad de apoyo, manteniendo una sola corona de maestría. Representación procedural provisional, pendiente de revisión visual interactiva.
 
-Se mantienen mapa de 212 × 192 m, seis minutos más jefe, controles y dependencias. Ver [verificación](VERIFICACION_2_7.md). La siguiente subfase es **2.8: doce maestrías**, para revisar sus interacciones con técnicas, apoyo y reliquias y completar su presentación.
+Se mantienen mapa de 212 × 192 m, seis minutos más jefe, controles y dependencias. Ver [verificación](../verificaciones/VERIFICACION_2_7.md). La siguiente subfase es **2.8: doce maestrías**, para revisar sus interacciones con técnicas, apoyo y reliquias y completar su presentación.

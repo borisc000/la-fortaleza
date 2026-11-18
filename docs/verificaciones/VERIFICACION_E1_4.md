@@ -44,10 +44,10 @@ No se encontraron bloqueos estructurales en los recorridos muestreados. Se manti
 
 ## Evidencias y reproducción
 
-- [Resumen](e1-4/summary.json), [Guerrero](e1-4/warrior.json), [Mago](e1-4/mage.json), [Arquero](e1-4/archer.json), [límites](e1-4/boundaries.json).
-- [Pruebas de controles](e1-4/controls-tests.txt), [compilación](e1-4/build.txt), [consola](e1-4/console.txt), [recuperación y zoom](e1-4/camera-recovery.txt).
-- Llegada ante la puerta: [Guerrero](game/output/playwright/e14-warrior-gate.png), [Mago](game/output/playwright/e14-mage-gate.png), [Arquero](game/output/playwright/e14-archer-gate.png).
-- [Horda al mirar atrás](game/output/playwright/e14-archer-wall.png), [combate en explanada](game/output/playwright/e14-archer-combat.png), [zoom cercano](game/output/playwright/e14-warrior-camera.png).
+- [Resumen](evidencias/e1-4/summary.json), [Guerrero](evidencias/e1-4/warrior.json), [Mago](evidencias/e1-4/mage.json), [Arquero](evidencias/e1-4/archer.json), [límites](evidencias/e1-4/boundaries.json).
+- [Pruebas de controles](evidencias/e1-4/controls-tests.txt), [compilación](evidencias/e1-4/build.txt), [consola](evidencias/e1-4/console.txt), [recuperación y zoom](evidencias/e1-4/camera-recovery.txt).
+- Llegada ante la puerta: [Guerrero](../../game/output/playwright/e14-warrior-gate.png), [Mago](../../game/output/playwright/e14-mage-gate.png), [Arquero](../../game/output/playwright/e14-archer-gate.png).
+- [Horda al mirar atrás](../../game/output/playwright/e14-archer-wall.png), [combate en explanada](../../game/output/playwright/e14-archer-combat.png), [zoom cercano](../../game/output/playwright/e14-warrior-camera.png).
 
 Desde `game`: `node --experimental-strip-types audits/e14-traverse.ts warrior` (también `mage` y `archer`), `node --experimental-strip-types audits/e14-boundaries.ts`, `node --experimental-strip-types --test tests/camera.test.ts tests/controls.test.ts tests/movement.test.ts` y `npm run build`.
 

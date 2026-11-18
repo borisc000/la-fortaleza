@@ -4,7 +4,7 @@ Fecha: 2026-11-01 · Aplicación 0.2.2 · Entrega autorizada: «Sigue con lo sig
 
 ## Implementado
 
-Mago disponible junto al Guerrero en el selector inicial. Afinidad Fuego/Agua antes del combate; ataque a distancia, pasiva de cuatro disparos, Cataclismo fijo y dos maestrías. Túnica/báculo, orbes, círculo de anticipación, HUD y sonidos procedurales propios. Cambio de clase desde pausa/resultados mediante nueva expedición. Reglas numéricas en [MAGO_2_2.md](MAGO_2_2.md).
+Mago disponible junto al Guerrero en el selector inicial. Afinidad Fuego/Agua antes del combate; ataque a distancia, pasiva de cuatro disparos, Cataclismo fijo y dos maestrías. Túnica/báculo, orbes, círculo de anticipación, HUD y sonidos procedurales propios. Cambio de clase desde pausa/resultados mediante nueva expedición. Reglas numéricas en [MAGO_2_2.md](../diseno/MAGO_2_2.md).
 
 ## Comprobaciones
 

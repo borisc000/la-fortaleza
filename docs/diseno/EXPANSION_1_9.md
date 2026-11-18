@@ -1,6 +1,6 @@
 # Ampliación tras 1.9: mapa, hordas y exploración
 
-Fecha: **2026-10-31**. Estado: **1.9.1–1.9.3 implementadas** en aplicación 0.1.15; pulido inicial **1.10 implementado en 0.1.16**, con revisión manual pendiente en [VERIFICACION_1_10.md](VERIFICACION_1_10.md). Captura y tienda verificadas en [VERIFICACION_1_9_3.md](VERIFICACION_1_9_3.md). Interacciones y reglas verificadas en [VERIFICACION_1_9_2.md](VERIFICACION_1_9_2.md). Resultado y valores elegidos en [VERIFICACION_1_9_1.md](VERIFICACION_1_9_1.md); lo siguiente conserva la propuesta de diseño y las entregas futuras.
+Fecha: **2026-10-31**. Estado: **1.9.1–1.9.3 implementadas** en aplicación 0.1.15; pulido inicial **1.10 implementado en 0.1.16**, con revisión manual pendiente en [VERIFICACION_1_10.md](../verificaciones/VERIFICACION_1_10.md). Captura y tienda verificadas en [VERIFICACION_1_9_3.md](../verificaciones/VERIFICACION_1_9_3.md). Interacciones y reglas verificadas en [VERIFICACION_1_9_2.md](../verificaciones/VERIFICACION_1_9_2.md). Resultado y valores elegidos en [VERIFICACION_1_9_1.md](../verificaciones/VERIFICACION_1_9_1.md); lo siguiente conserva la propuesta de diseño y las entregas futuras.
 
 ## Dirección solicitada
 

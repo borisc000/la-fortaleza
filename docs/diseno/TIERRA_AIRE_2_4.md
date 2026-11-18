@@ -36,4 +36,4 @@ Empujes y atracciones usan desplazamiento subdividido con colisiones y límites 
 
 Pausar por nivel/tienda congela estados, coraza y recargas. La muerte o retirada limpia Quebranto; el fin de partida cancela la coraza. Una expedición nueva comienza sin estados ni poderes heredados. Los efectos visuales son limitados y no aplican daño por sí mismos.
 
-El mapa, las reglas de Fuego/Agua y las clases a distancia mantienen su alcance previo. Comprobaciones y límites en [VERIFICACION_2_4.md](VERIFICACION_2_4.md). Siguiente: **2.5 · Afinidades de las tres clases**, completando Tierra/Aire en Mago y Arquero.
+El mapa, las reglas de Fuego/Agua y las clases a distancia mantienen su alcance previo. Comprobaciones y límites en [VERIFICACION_2_4.md](../verificaciones/VERIFICACION_2_4.md). Siguiente: **2.5 · Afinidades de las tres clases**, completando Tierra/Aire en Mago y Arquero.

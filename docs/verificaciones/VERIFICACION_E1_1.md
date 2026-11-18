@@ -19,12 +19,12 @@ No cambia la cámara de 12 m/rueda 4–18, escala de personajes, velocidad, pobl
 - Dentro de esa regresión: recorrido físico de los quince destinos (tramo más largo de 45,6 s a velocidad base), 342 apariciones seguras para tres tamaños de enemigo y una expedición que captura el puesto y llega caminando al mercader para comprar. El circuito histórico no equivale a las rutas nuevas pendientes de E1.2.
 - 10 pruebas de exploración y 3 de llegada correctas. Las de llegada comprueban las tres clases, semillas 1/19/9173, cinco guardias iniciales seguros, quince hitos accesibles, 33 objetos alcanzables, primeras recompensas próximas, captura alejada del inicio, cámara libre y ocho apariciones válidas en seis posiciones (inicio y franjas/bordes nuevos). Rayos verticales comprueban suelo visible bajo esos puntos. Límites de movimiento también comprobados.
 - 3 pruebas de curva de experiencia, monedas/suministros y etiquetas de daño correctas. Las arenas pequeñas de pruebas usan ahora una configuración explícita conservada en `tests/support/training-expedition.ts`; no dependen de las coordenadas del escenario real ni cambian sus expectativas para aceptar el traslado.
-- 8 pruebas seleccionadas del mundo correctas: geometría, cámara, desplazamiento, persecución, refuerzos y tres campañas completas desde la llegada sur (Guerrero, Mago y Arquero con Fuego). Las tres completaron captura, compra, cuatro habilidades y victoria contra el jefe. Resultado final: **332 pruebas seleccionadas correctas**, sin contar repeticiones de geometría y llegada. [Registro de mundo y campañas](e1-1/world.txt).
+- 8 pruebas seleccionadas del mundo correctas: geometría, cámara, desplazamiento, persecución, refuerzos y tres campañas completas desde la llegada sur (Guerrero, Mago y Arquero con Fuego). Las tres completaron captura, compra, cuatro habilidades y victoria contra el jefe. Resultado final: **332 pruebas seleccionadas correctas**, sin contar repeticiones de geometría y llegada. [Registro de mundo y campañas](evidencias/e1-1/world.txt).
 - TypeScript y compilación de juego y laboratorio correctos. Se mantiene el aviso conocido del paquete de más de 500 kB; no representa una medición de rendimiento.
 
 Las campañas de integración usan vida ampliada únicamente en la prueba para aislar el ciclo de juego. No se presentan como balance de supervivencia humana. Una primera ejecución general se interrumpió para separar las arenas de reglas del inicio real; una selección de pruebas con expresión negativa también se sustituyó por selección positiva explícita. Solo se contabilizan ejecuciones completas correctas.
 
-Resultados conservados: [regresión](e1-1/regression.txt), [exploración y llegada](e1-1/exploration-arrival.txt), [geometría final](e1-1/final-geometry.txt), [economía](e1-1/economy.txt) y [compilación](e1-1/build.txt).
+Resultados conservados: [regresión](evidencias/e1-1/regression.txt), [exploración y llegada](evidencias/e1-1/exploration-arrival.txt), [geometría final](evidencias/e1-1/final-geometry.txt), [economía](evidencias/e1-1/economy.txt) y [compilación](evidencias/e1-1/build.txt).
 
 Para repetir las comprobaciones específicas desde `game`:
 
@@ -41,10 +41,10 @@ Chrome local, 1440 × 900. Inicio de Guerrero, Mago Fuego y Arquero, cámara a 1
 
 Capturas inspeccionadas:
 
-- [Llegada del Guerrero](game/output/playwright/e11-arrival.png).
-- [Mago en combate](game/output/playwright/e11-mage.png).
-- [Arquero en combate](game/output/playwright/e11-archer.png).
-- [Borde suroeste](game/output/playwright/e11-southwest.png) y [sureste](game/output/playwright/e11-southeast.png), mirando hacia fuera desde la herramienta de auditoría. Suelo continuo, perímetro visible y colinas fuera de la zona caminable. Herramienta con cero fallos de recursos de escena; conserva el 404 conocido de `favicon.ico`.
+- [Llegada del Guerrero](../../game/output/playwright/e11-arrival.png).
+- [Mago en combate](../../game/output/playwright/e11-mage.png).
+- [Arquero en combate](../../game/output/playwright/e11-archer.png).
+- [Borde suroeste](../../game/output/playwright/e11-southwest.png) y [sureste](../../game/output/playwright/e11-southeast.png), mirando hacia fuera desde la herramienta de auditoría. Suelo continuo, perímetro visible y colinas fuera de la zona caminable. Herramienta con cero fallos de recursos de escena; conserva el 404 conocido de `favicon.ico`.
 
 Esta revisión breve no sustituye partidas completas manuales, teléfono físico ni una comparación de rendimiento bajo carga. E0 sigue siendo la referencia histórica; la comparación homogénea y el recorrido consolidado se completarán en E1.4/E6. No se atribuyen nuevas cifras de FPS a esta entrega.
 

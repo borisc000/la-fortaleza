@@ -4,7 +4,7 @@ Fecha: 2026-11-01 · Aplicación 0.2.6.
 
 ## Alcance y comprobaciones
 
-- Doce técnicas y tres espacios por expedición. Reglas en [TECNICAS_2_6.md](TECNICAS_2_6.md).
+- Doce técnicas y tres espacios por expedición. Reglas en [TECNICAS_2_6.md](../diseno/TECNICAS_2_6.md).
 - **210/210 pruebas fuera de `world.test.ts` correctas**, incluidas 16 nuevas de técnicas. Registro `../../work/tests-2-6-unit.log`.
 - Comprobados catálogo inmutable, tres rangos, requisitos por nivel en cola, rechazos de clase/elección inválida, las cuatro posibles exclusiones por clase, ocupación máxima, mejoras sin espacio adicional, estados al reiniciar y resumen de configuración.
 - Efectos probados en combate: arco/alcance, mitigación antes de coraza, duración y pulsos con las cuatro maestrías, eco retrasado sin cargas/área adicionales, radio de explosión con paredes, intervalos de disparo, radios de áreas, abanico sin alterar Precisión, penetración con Aire y paredes, pausa/muerte y representación en memoria sin GPU.

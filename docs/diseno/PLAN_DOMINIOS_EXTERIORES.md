@@ -1,6 +1,6 @@
 # Los dominios exteriores — revisión y producción del escenario
 
-Definido el 11 de noviembre de 2026. **E0 y E1 completadas; E2–E6 pendientes.** Diagnóstico, mediciones y decisiones en [evaluación E0](EVALUACION_DOMINIOS_E0.md); distribución en [plano](e0/plano.png).
+Definido el 11 de noviembre de 2026. **E0 y E1 completadas; E2–E6 pendientes.** Diagnóstico, mediciones y decisiones en [evaluación E0](EVALUACION_DOMINIOS_E0.md); distribución en [plano](../verificaciones/evidencias/e0/plano.png).
 
 ## Objetivo y alcance
 
@@ -8,7 +8,7 @@ Revisar la distribución del primer escenario, ampliarlo moderadamente y desarro
 
 Este es un plan específico del escenario. Los identificadores E0–E6 evitan confundirlo con las fases 1–4 del MVP. No se renumeran las entregas existentes ni se cambian sus contadores. Maestrías 2.8 queda como siguiente hito del plan general después de este trabajo de escenario.
 
-Referencias vigentes: [estado](ESTADO.md), [plan general](PLAN_DESARROLLO.md), [campaña por eras](IDEA_CAMPANA_ERAS.md) y [laboratorio](LABORATORIO_MODELOS.md).
+Referencias vigentes: [estado](../../ESTADO.md), [plan general](../../PLAN_DESARROLLO.md), [campaña por eras](IDEA_CAMPANA_ERAS.md) y [laboratorio](LABORATORIO_MODELOS.md).
 
 ## Punto de partida y ampliación propuesta
 
@@ -31,10 +31,10 @@ Conservar cámara libre, rueda, clases, progresión y combate automático. Las h
 
 ## E1 — Distribución jugable y ampliación moderada
 
-- **E1.1 · Límites y terreno base — completada.** [Entrega y verificación](VERIFICACION_E1_1.md). Implementar la extensión acordada en E0 y adaptar límites jugables, paisaje periférico y superficies caminables. Mantener la fortaleza como ancla espacial.
-- **E1.2 · Rutas y sectores — completada.** [Entrega y verificación](VERIFICACION_E1_2.md). Reorganizar caminos, conexiones laterales y claros con geometría sencilla. Dar identidad espacial a los sectores definidos en E0.
-- **E1.3 · Encaje funcional — completada.** [Entrega y verificación](VERIFICACION_E1_3.md). Adaptar regiones, aparición local de enemigos, ubicación válida de interacciones, navegación y colisiones a la nueva distribución. Conservar actividades existentes como referencias provisionales.
-- **E1.4 · Prueba de recorrido — completada.** [Registro y hallazgos](VERIFICACION_E1_4.md). Recorrer y combatir con las tres clases. Comprobar conexiones, tiempos, límites, visibilidad y ausencia de atascos o zonas accidentalmente inaccesibles. Ajustar cámara solo si la revisión lo justifica.
+- **E1.1 · Límites y terreno base — completada.** [Entrega y verificación](../verificaciones/VERIFICACION_E1_1.md). Implementar la extensión acordada en E0 y adaptar límites jugables, paisaje periférico y superficies caminables. Mantener la fortaleza como ancla espacial.
+- **E1.2 · Rutas y sectores — completada.** [Entrega y verificación](../verificaciones/VERIFICACION_E1_2.md). Reorganizar caminos, conexiones laterales y claros con geometría sencilla. Dar identidad espacial a los sectores definidos en E0.
+- **E1.3 · Encaje funcional — completada.** [Entrega y verificación](../verificaciones/VERIFICACION_E1_3.md). Adaptar regiones, aparición local de enemigos, ubicación válida de interacciones, navegación y colisiones a la nueva distribución. Conservar actividades existentes como referencias provisionales.
+- **E1.4 · Prueba de recorrido — completada.** [Registro y hallazgos](../verificaciones/VERIFICACION_E1_4.md). Recorrer y combatir con las tres clases. Comprobar conexiones, tiempos, límites, visibilidad y ausencia de atascos o zonas accidentalmente inaccesibles. Ajustar cámara solo si la revisión lo justifica.
 
 **Cierre:** mapa ampliado y redistribuido que sigue siendo jugable, con recorridos legibles y presión de combate comparable. Resolver aquí los cambios estructurales antes del detalle artístico.
 
