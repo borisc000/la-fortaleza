@@ -9,7 +9,13 @@ export function syncLoadout(progression: Progression, combat: Combat) {
   combat.damageMultiplier = progression.damageMultiplier;
   combat.loadout = progression.loadout;
   combat.techniques = progression.development ? {} : progression.techniques;
-  if (progression.development && (combat.heroKit instanceof WarriorArsenal || combat.heroKit instanceof RangedArsenal)) { combat.heroKit.abilities = progression.development.book.snapshot; combat.heroKit.stats = progression.development.ranks(progression); }
+  if (
+    progression.development &&
+    (combat.heroKit instanceof WarriorArsenal || combat.heroKit instanceof RangedArsenal)
+  ) {
+    combat.heroKit.abilities = progression.development.book.snapshot;
+    combat.heroKit.stats = progression.development.ranks(progression);
+  }
   combat.relics = progression.relics;
   if (heart) combat.increaseMaxHp(25);
 }

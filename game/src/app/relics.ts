@@ -2,7 +2,9 @@ import { RELICS } from '../content/relics.ts';
 import { ELEMENTS } from '../content/elements.ts';
 import type { Progression } from '../domain/progression.ts';
 
-export function relicSummary(p: Progression) { return `Reliquias ${p.relics.length}/4 · ${p.relics.length ? p.relics.map(id => RELICS[id].name).join(' · ') : 'Cuatro espacios libres'}`; }
+export function relicSummary(p: Progression) {
+  return `Reliquias ${p.relics.length}/4 · ${p.relics.length ? p.relics.map(id => RELICS[id].name).join(' · ') : 'Cuatro espacios libres'}`;
+}
 export function affinitySummary(p: Progression) {
   if (!p.element) return 'Afinidad · elige al nivel 2';
   const rank = ['', 'I', 'II', 'III'];

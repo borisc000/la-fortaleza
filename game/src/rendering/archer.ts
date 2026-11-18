@@ -7,15 +7,21 @@ let source: THREE.Group | undefined;
 let loading: Promise<void> | undefined;
 
 export function loadArcherAsset() {
-  return loading ??= new GLTFLoader().loadAsync(`${import.meta.env.BASE_URL}assets/models/archer-ranger.glb`)
-    .then(asset => { source = asset.scene; })
-    .catch(error => { loading = undefined; throw error; });
+  return (loading ??= new GLTFLoader()
+    .loadAsync(`${import.meta.env.BASE_URL}assets/models/archer-ranger.glb`)
+    .then(asset => {
+      source = asset.scene;
+    })
+    .catch(error => {
+      loading = undefined;
+      throw error;
+    }));
 }
 
 const up = new THREE.Vector3(0, 1, 0);
 const down = new THREE.Vector3(0, -1, 0);
-const upperLength = .297;
-const foreLength = .281;
+const upperLength = 0.297;
+const foreLength = 0.281;
 
 export function createArcher(template = source) {
   if (!template) return previousArcher();
@@ -42,71 +48,91 @@ export function createArcher(template = source) {
     if (!node) throw new Error(`Falta la articulación ${name} del Arquero`);
     return node;
   }
-  const torso = joint('Doublet'), head = joint('RangerHead');
-  const bow = joint('Longbow'), arrow = joint('NockedArrow');
+  const torso = joint('Doublet'),
+    head = joint('RangerHead');
+  const bow = joint('Longbow'),
+    arrow = joint('NockedArrow');
   const strings = [joint('CordTop'), joint('CordBottom')];
   const arms = ['Left', 'Right'].map(side => ({
-    sleeve: joint('Sleeve' + side), bracer: joint('Bracer' + side), glove: joint('Glove' + side),
+    sleeve: joint('Sleeve' + side),
+    bracer: joint('Bracer' + side),
+    glove: joint('Glove' + side),
     leg: joint('Leg' + side),
   }));
-  const grip = new THREE.Vector3(), nock = new THREE.Vector3(), cheek = new THREE.Vector3(.078, 1.656, -.067);
-  const restHand = new THREE.Vector3(), shoulder = new THREE.Vector3(), elbow = new THREE.Vector3();
-  const axis = new THREE.Vector3(), bend = new THREE.Vector3(), tip = new THREE.Vector3();
-  let stride = 0, gait = 0;
+  const grip = new THREE.Vector3(),
+    nock = new THREE.Vector3(),
+    cheek = new THREE.Vector3(0.078, 1.656, -0.067);
+  const restHand = new THREE.Vector3(),
+    shoulder = new THREE.Vector3(),
+    elbow = new THREE.Vector3();
+  const axis = new THREE.Vector3(),
+    bend = new THREE.Vector3(),
+    tip = new THREE.Vector3();
+  let stride = 0,
+    gait = 0;
 
   // Resolve each elbow from two fixed limb lengths so the bow grip and nock stay in the hands.
   function reach(index: number, hand: THREE.Vector3, draw: number) {
     const side = index === 0 ? -1 : 1;
     const arm = arms[index];
-    shoulder.set(side * .198, 1.44, 0).applyAxisAngle(up, torso.rotation.y);
+    shoulder.set(side * 0.198, 1.44, 0).applyAxisAngle(up, torso.rotation.y);
     axis.subVectors(hand, shoulder);
-    const distance = Math.max(.001, axis.length());
+    const distance = Math.max(0.001, axis.length());
     axis.divideScalar(distance);
     const along = (upperLength ** 2 - foreLength ** 2 + distance ** 2) / (2 * distance);
-    bend.set(side * (.6 + draw), -.28, .7 + draw);
+    bend.set(side * (0.6 + draw), -0.28, 0.7 + draw);
     bend.addScaledVector(axis, -bend.dot(axis)).normalize();
-    elbow.copy(shoulder).addScaledVector(axis, along)
+    elbow
+      .copy(shoulder)
+      .addScaledVector(axis, along)
       .addScaledVector(bend, Math.sqrt(Math.max(0, upperLength ** 2 - along ** 2)));
     arm.sleeve.position.copy(shoulder);
     arm.sleeve.quaternion.setFromUnitVectors(down, axis.subVectors(elbow, shoulder).normalize());
     arm.bracer.position.copy(elbow);
     arm.bracer.quaternion.setFromUnitVectors(down, axis.subVectors(hand, elbow).normalize());
     arm.glove.position.copy(hand);
-    arm.glove.rotation.z = index === 1 ? draw * 1.30 : bow.rotation.z;
+    arm.glove.rotation.z = index === 1 ? draw * 1.3 : bow.rotation.z;
   }
 
   function pose(draw: number, tension: number, nocked: boolean, released = false) {
     const swing = Math.sin(stride) * gait;
-    torso.rotation.y = -.94 * draw;
+    torso.rotation.y = -0.94 * draw;
     for (const [i, arm] of arms.entries()) {
       const side = i === 0 ? -1 : 1;
-      arm.leg.position.set(side * .113, .94, 0).applyAxisAngle(up, torso.rotation.y);
-      arm.leg.rotation.set(-side * swing * .42, torso.rotation.y * .6, side * .075 * draw, 'YXZ');
+      arm.leg.position.set(side * 0.113, 0.94, 0).applyAxisAngle(up, torso.rotation.y);
+      arm.leg.rotation.set(-side * swing * 0.42, torso.rotation.y * 0.6, side * 0.075 * draw, 'YXZ');
     }
-    head.rotation.y = -torso.rotation.y * .97;
-    grip.set(THREE.MathUtils.lerp(-.32, .020, draw), THREE.MathUtils.lerp(.948, 1.585, draw),
-      THREE.MathUtils.lerp(-.074 - swing * .055, -.652, draw));
+    head.rotation.y = -torso.rotation.y * 0.97;
+    grip.set(
+      THREE.MathUtils.lerp(-0.32, 0.02, draw),
+      THREE.MathUtils.lerp(0.948, 1.585, draw),
+      THREE.MathUtils.lerp(-0.074 - swing * 0.055, -0.652, draw),
+    );
     bow.position.copy(grip);
-    bow.rotation.z = -.20 + draw * .28;
+    bow.rotation.z = -0.2 + draw * 0.28;
     // Both halves terminate at the same point before, during and after a release.
-    nock.set(0, 0, .135).applyQuaternion(bow.quaternion).add(grip).lerp(cheek, tension);
+    nock.set(0, 0, 0.135).applyQuaternion(bow.quaternion).add(grip).lerp(cheek, tension);
     strings.forEach((string, i) => {
-      tip.set(0, i === 0 ? .62 : -.62, .135).applyQuaternion(bow.quaternion).add(grip);
+      tip
+        .set(0, i === 0 ? 0.62 : -0.62, 0.135)
+        .applyQuaternion(bow.quaternion)
+        .add(grip);
       string.position.copy(tip);
       axis.subVectors(nock, tip);
       string.scale.set(1, axis.length(), 1);
       string.quaternion.setFromUnitVectors(up, axis.normalize());
     });
     reach(0, grip, draw);
-    restHand.set(.32, .948, -.074 + swing * .055);
+    restHand.set(0.32, 0.948, -0.074 + swing * 0.055);
     // Meet the string as the bow rises. The drawing hand stays at the cheek upon release.
-    restHand.lerp(nock, THREE.MathUtils.smoothstep(draw, 0, .72));
+    restHand.lerp(nock, THREE.MathUtils.smoothstep(draw, 0, 0.72));
     if (released) restHand.lerp(cheek, Math.max(0, draw - tension) * draw);
     reach(1, restHand, draw);
     arrow.visible = nocked;
     if (nocked) {
       arrow.position.copy(nock);
-      tip.copy(grip); tip.y += .025;
+      tip.copy(grip);
+      tip.y += 0.025;
       arrow.quaternion.setFromUnitVectors(up, axis.subVectors(tip, nock).normalize());
     }
   }
@@ -120,29 +146,33 @@ export function createArcher(template = source) {
     },
     combatPose(age: number | undefined, flash: number, raining = false, precision = 0) {
       const { windup, duration } = ARCHER.basic;
-      let draw = 0, tension = 0;
+      let draw = 0,
+        tension = 0;
       if (raining) {
         draw = tension = 1;
       } else if (age !== undefined && age <= windup) {
         draw = THREE.MathUtils.smoothstep(age, 0, windup);
-        tension = THREE.MathUtils.smoothstep(draw, .55, 1);
+        tension = THREE.MathUtils.smoothstep(draw, 0.55, 1);
       } else if (age !== undefined) {
-        draw = 1 - THREE.MathUtils.smoothstep(age, windup + .035, duration);
-        tension = 1 - THREE.MathUtils.smoothstep(age, windup, windup + .025);
+        draw = 1 - THREE.MathUtils.smoothstep(age, windup + 0.035, duration);
+        tension = 1 - THREE.MathUtils.smoothstep(age, windup, windup + 0.025);
       }
       const released = !raining && age !== undefined && age >= windup;
-      pose(draw, tension, raining || (age !== undefined && !released && draw >= .72), released);
+      pose(draw, tension, raining || (age !== undefined && !released && draw >= 0.72), released);
       for (const material of materials.values()) {
         material.emissive.set(flash > 0 ? 0xac3927 : 0x626e40);
-        material.emissiveIntensity = flash > 0 ? flash : precision * .025;
+        material.emissiveIntensity = flash > 0 ? flash : precision * 0.025;
       }
     },
-    resetPose() { stride = gait = 0; pose(0, 0, false); },
+    resetPose() {
+      stride = gait = 0;
+      pose(0, 0, false);
+    },
     fade(opacity: number) {
       for (const material of materials.values()) {
         material.transparent = opacity < 1;
         material.opacity = opacity;
-        material.depthWrite = opacity > .5;
+        material.depthWrite = opacity > 0.5;
       }
     },
   };

@@ -13,10 +13,17 @@ for (const id of ['warrior', 'mage', 'archer'] as const) {
   test(`${id} laboratory can rewind real animation, pause and recover from fading`, async () => {
     const file = { warrior: 'warrior-veteran', mage: 'mage-slim', archer: 'archer-ranger' }[id];
     const bytes = await readFile(new URL(`../public/assets/models/${file}.glb`, import.meta.url));
-    const asset = await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), '');
+    const asset = await new GLTFLoader().parseAsync(
+      bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength),
+      '',
+    );
     const definition = classDefinition(id);
-    const view = id === 'warrior' ? createWarriorAsset(definition.basic, asset.scene)! :
-      id === 'mage' ? createMageAsset(asset.scene)! : createArcher(asset.scene);
+    const view =
+      id === 'warrior'
+        ? createWarriorAsset(definition.basic, asset.scene)!
+        : id === 'mage'
+          ? createMageAsset(asset.scene)!
+          : createArcher(asset.scene);
     const animation = createModelAnimation(view, definition);
     function matrices() {
       view.root.updateMatrixWorld(true);
@@ -35,16 +42,16 @@ for (const id of ['warrior', 'mage', 'archer'] as const) {
         }
       });
     }
-    animation.seek('walk', .4);
+    animation.seek('walk', 0.4);
     const walk = matrices();
-    animation.seek('walk', .4);
+    animation.seek('walk', 0.4);
     assert.deepEqual(matrices(), walk, 'paused time must not change the model');
     animation.seek('walk', 2);
-    animation.seek('walk', .4);
+    animation.seek('walk', 0.4);
     assert.deepEqual(matrices(), walk, 'rewind must reproduce the same pose');
-    animation.seek('walk', .4 + FRAME_STEP);
+    animation.seek('walk', 0.4 + FRAME_STEP);
     assert.notDeepEqual(matrices(), walk, 'one frame should advance walking');
-    assert.equal(animation.duration('attack'), definition.basic.duration + .5);
+    assert.equal(animation.duration('attack'), definition.basic.duration + 0.5);
     animation.seek('attack', definition.basic.windup);
     const attack = matrices();
     animation.seek('attack', animation.duration('attack'));
@@ -56,9 +63,9 @@ for (const id of ['warrior', 'mage', 'archer'] as const) {
     opacity(1);
     animation.seek('cast', 1);
     matrices();
-    animation.seek('hit', .1);
+    animation.seek('hit', 0.1);
     matrices();
-    animation.seek('walk', .4);
+    animation.seek('walk', 0.4);
     assert.deepEqual(matrices(), walk, 'switching modes must clear previous poses');
   });
 }

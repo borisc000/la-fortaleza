@@ -16,10 +16,16 @@ export function clockLabel(seconds: number) {
 
 /** Arrow word for a camera-relative bearing. */
 export function bearingWord(delta: number) {
-  return Math.abs(delta) < Math.PI / 6 ? '↑ delante' : Math.abs(delta) > Math.PI * 5 / 6 ? '↓ detrás' : delta > 0 ? '← izquierda' : '→ derecha';
+  return Math.abs(delta) < Math.PI / 6
+    ? '↑ delante'
+    : Math.abs(delta) > (Math.PI * 5) / 6
+      ? '↓ detrás'
+      : delta > 0
+        ? '← izquierda'
+        : '→ derecha';
 }
 
 /** Arrow alone for a camera-relative bearing. */
 export function bearingArrow(delta: number) {
-  return Math.abs(delta) < Math.PI / 6 ? '↑' : Math.abs(delta) > Math.PI * 5 / 6 ? '↓' : delta > 0 ? '←' : '→';
+  return Math.abs(delta) < Math.PI / 6 ? '↑' : Math.abs(delta) > (Math.PI * 5) / 6 ? '↓' : delta > 0 ? '←' : '→';
 }

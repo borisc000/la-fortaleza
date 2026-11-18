@@ -1,7 +1,15 @@
 import type { Element } from './elements.ts';
 
 export type ClassId = 'warrior' | 'mage' | 'archer' | 'armored';
-export type BasicAttackDefinition = Readonly<{ damage: number; range: number; arc: number; windup: number; active: number; duration: number; cooldown: number }>;
+export type BasicAttackDefinition = Readonly<{
+  damage: number;
+  range: number;
+  arc: number;
+  windup: number;
+  active: number;
+  duration: number;
+  cooldown: number;
+}>;
 export type ClassDefinition = Readonly<{
   id: ClassId;
   name: string;
@@ -11,7 +19,14 @@ export type ClassDefinition = Readonly<{
   basic: BasicAttackDefinition;
   passive: Readonly<{ id: string; name: string }>;
   skill: Readonly<{ id: string; name: string }>;
-  affinities: Readonly<Partial<Record<Element, Readonly<{ description: string; upgradeDescription: string; mastery: string; masteryDescription: string }>>>>;
+  affinities: Readonly<
+    Partial<
+      Record<
+        Element,
+        Readonly<{ description: string; upgradeDescription: string; mastery: string; masteryDescription: string }>
+      >
+    >
+  >;
 }>;
 export function classAffinity(definition: ClassDefinition, element: Element) {
   const affinity = definition.affinities[element];

@@ -5,9 +5,15 @@ import type { BasicAttackDefinition } from '../content/class-definition.ts';
 let source: THREE.Group | undefined;
 let loading: Promise<void> | undefined;
 export function loadWarriorAsset() {
-  return loading ??= new GLTFLoader().loadAsync(`${import.meta.env.BASE_URL}assets/models/warrior-veteran.glb`)
-    .then(asset => { source = asset.scene; })
-    .catch(error => { loading = undefined; throw error; });
+  return (loading ??= new GLTFLoader()
+    .loadAsync(`${import.meta.env.BASE_URL}assets/models/warrior-veteran.glb`)
+    .then(asset => {
+      source = asset.scene;
+    })
+    .catch(error => {
+      loading = undefined;
+      throw error;
+    }));
 }
 
 export function createWarriorAsset(basic: BasicAttackDefinition, template = source) {
@@ -35,11 +41,17 @@ export function createWarriorAsset(basic: BasicAttackDefinition, template = sour
     if (!node) throw new Error(`Falta la articulación ${name} del Guerrero`);
     return node;
   }
-  const torso = joint('Torso'), head = joint('Head'), sword = joint('Sword');
+  const torso = joint('Torso'),
+    head = joint('Head'),
+    sword = joint('Sword');
   const arms = ['Left', 'Right'].map(side => ({
-    upper: joint('Upper' + side), fore: joint('Fore' + side), hand: joint('Hand' + side), leg: joint('Leg' + side),
+    upper: joint('Upper' + side),
+    fore: joint('Fore' + side),
+    hand: joint('Hand' + side),
+    leg: joint('Leg' + side),
   }));
-  let stride = 0, gait = 0;
+  let stride = 0,
+    gait = 0;
   function rest() {
     const swing = Math.sin(stride) * gait;
     torso.rotation.set(0, 0, 0);
@@ -47,10 +59,10 @@ export function createWarriorAsset(basic: BasicAttackDefinition, template = sour
     sword.rotation.set(0, 0, 0);
     arms.forEach((arm, i) => {
       const sign = i === 0 ? -1 : 1;
-      arm.upper.rotation.set(sign * swing * .20, 0, sign * .18);
-      arm.fore.rotation.set(.09, 0, 0);
-      arm.hand.rotation.set(i === 1 ? -.42 : 0, 0, 0);
-      arm.leg.rotation.set(-sign * swing * .42, 0, sign * .035);
+      arm.upper.rotation.set(sign * swing * 0.2, 0, sign * 0.18);
+      arm.fore.rotation.set(0.09, 0, 0);
+      arm.hand.rotation.set(i === 1 ? -0.42 : 0, 0, 0);
+      arm.leg.rotation.set(-sign * swing * 0.42, 0, sign * 0.035);
     });
   }
   rest();
@@ -69,26 +81,29 @@ export function createWarriorAsset(basic: BasicAttackDefinition, template = sour
         const cut = THREE.MathUtils.smoothstep(time, basic.windup, basic.windup + basic.active);
         const recovery = 1 - THREE.MathUtils.smoothstep(time, basic.windup + basic.active, basic.duration);
         const lift = spinning ? 1 : windup * recovery;
-        const sweep = spinning ? .35 : (-.60 + cut * 1.25) * lift;
+        const sweep = spinning ? 0.35 : (-0.6 + cut * 1.25) * lift;
         torso.rotation.y = sweep;
-        head.rotation.y = -sweep * .7;
-        arms[1].upper.rotation.set(1.20 * lift, -.3 * lift, .18 - .65 * lift);
-        arms[1].fore.rotation.x = .09 + .55 * lift;
-        arms[1].hand.rotation.x = -.42 + .70 * lift;
-        arms[0].upper.rotation.set(.35 * lift, 0, -.18 - .30 * lift);
-        arms[0].fore.rotation.x = .09 + .65 * lift;
+        head.rotation.y = -sweep * 0.7;
+        arms[1].upper.rotation.set(1.2 * lift, -0.3 * lift, 0.18 - 0.65 * lift);
+        arms[1].fore.rotation.x = 0.09 + 0.55 * lift;
+        arms[1].hand.rotation.x = -0.42 + 0.7 * lift;
+        arms[0].upper.rotation.set(0.35 * lift, 0, -0.18 - 0.3 * lift);
+        arms[0].fore.rotation.x = 0.09 + 0.65 * lift;
       }
       for (const material of materials.values()) {
         material.emissive.set(flash > 0 ? 0xac3927 : 0x7c6e42);
-        material.emissiveIntensity = flash > 0 ? flash : impetus * .03;
+        material.emissiveIntensity = flash > 0 ? flash : impetus * 0.03;
       }
     },
-    resetPose() { stride = gait = 0; rest(); },
+    resetPose() {
+      stride = gait = 0;
+      rest();
+    },
     fade(opacity: number) {
       for (const material of materials.values()) {
         material.transparent = opacity < 1;
         material.opacity = opacity;
-        material.depthWrite = opacity > .5;
+        material.depthWrite = opacity > 0.5;
       }
     },
   };

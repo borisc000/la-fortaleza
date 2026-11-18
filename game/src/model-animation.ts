@@ -9,7 +9,7 @@ export function createModelAnimation(view: ReturnType<typeof createHeroView>, de
   let mode: AnimationMode | undefined;
   let frame = -1;
   function duration(next: AnimationMode) {
-    if (next === 'attack') return definition.basic.duration + .5;
+    if (next === 'attack') return definition.basic.duration + 0.5;
     if (next === 'hit') return 1;
     if (next === 'fade') return 1.5;
     return 3;
@@ -17,8 +17,8 @@ export function createModelAnimation(view: ReturnType<typeof createHeroView>, de
   function sample(next: AnimationMode, time: number, dt: number) {
     view.walk(dt, next === 'walk' ? 3 : 0);
     const age = next === 'attack' && time <= definition.basic.duration ? time : undefined;
-    const casting = next === 'cast' && time >= .3 && time < 2.2;
-    const flash = next === 'hit' ? Math.max(0, 1 - time / .3) : 0;
+    const casting = next === 'cast' && time >= 0.3 && time < 2.2;
+    const flash = next === 'hit' ? Math.max(0, 1 - time / 0.3) : 0;
     view.combatPose(age, flash, casting);
     view.fade(next === 'fade' ? Math.max(0, 1 - time / 1.2) : 1);
   }

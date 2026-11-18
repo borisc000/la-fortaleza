@@ -11,9 +11,17 @@ import { ARCHER } from '../content/classes/archer.ts';
 import { ArcherKit } from './classes/archer-kit.ts';
 import { ArcherEffects } from './classes/archer-effects.ts';
 
-export const ARCHER_RUNTIME: ClassRuntime = Object.freeze({ definition: ARCHER, createKit: () => new ArcherKit(), createEffects: (_bounds, solids) => new ArcherEffects(solids) });
+export const ARCHER_RUNTIME: ClassRuntime = Object.freeze({
+  definition: ARCHER,
+  createKit: () => new ArcherKit(),
+  createEffects: (_bounds, solids) => new ArcherEffects(solids),
+});
 
-export const MAGE_RUNTIME: ClassRuntime = Object.freeze({ definition: MAGE, createKit: () => new MageKit(), createEffects: (bounds, solids) => new MageEffects(bounds, solids) });
+export const MAGE_RUNTIME: ClassRuntime = Object.freeze({
+  definition: MAGE,
+  createKit: () => new MageKit(),
+  createEffects: (bounds, solids) => new MageEffects(bounds, solids),
+});
 
 export const WARRIOR_RUNTIME: ClassRuntime = Object.freeze({
   definition: WARRIOR,

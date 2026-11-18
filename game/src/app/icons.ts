@@ -2,7 +2,8 @@ import type { Element } from '../content/elements.ts';
 import { isElement } from '../content/elements.ts';
 
 /** Interface icons drawn for this project: 24 × 24 stroke paths, no external assets. */
-const circle = (x: number, y: number, r: number) => `M${x - r} ${y}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0`;
+const circle = (x: number, y: number, r: number) =>
+  `M${x - r} ${y}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0`;
 const SHIELD = 'M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z';
 const HEART = 'M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z';
 const ELEMENT_ICONS: Record<Element, string> = {
@@ -31,7 +32,8 @@ export const ABILITY_ICONS: Readonly<Record<string, string>> = {
   'mage:fragments': 'M7 3l2 5-3 1zM16 6l2 5-3 1zM10 13l2 5-3 1zM4 21h16',
   'mage:mirror': 'M12 3l6 9-6 9-6-9zM12 3v18',
   'archer:arrow': 'M4 20L20 4M20 4h-6M20 4v6M4 20l1-5M4 20l5-1',
-  'archer:rain': 'M7 3v9M7 12l-2-2.500M7 12l2-2.500M12 7v9M12 16l-2-2.500M12 16l2-2.500M17 3v9M17 12l-2-2.500M17 12l2-2.500M4 21h16',
+  'archer:rain':
+    'M7 3v9M7 12l-2-2.500M7 12l2-2.500M12 7v9M12 16l-2-2.500M12 16l2-2.500M17 3v9M17 12l-2-2.500M17 12l2-2.500M4 21h16',
   'archer:fan-volley': 'M12 21V4M12 21L4 7M12 21l8-14M12 4l-2 3M12 4l2 3',
   'archer:siege-shot': 'M3 12h15M14 7l5 5-5 5M3 8v8',
   'archer:ricochet': 'M3 18l6-10 5 8 6-11M20 5h-4M20 5v4',
@@ -62,22 +64,57 @@ export const RELIC_ICONS: Readonly<Record<string, string>> = {
   relic_magnet: 'M6 4v8a6 6 0 0 0 12 0V4h-4v8a2 2 0 0 1-4 0V4zM6 8h4M14 8h4',
   relic_shell: `${circle(12, 14, 6)}M9 3l3 5 3-5M12 12v4M10 14h4`,
   relic_mender: `${circle(12, 12, 8)}M12 8v8M8 12h8`,
-  relic_ember: ELEMENT_ICONS.fire, relic_tide: ELEMENT_ICONS.water, relic_stone: ELEMENT_ICONS.earth, relic_wind: ELEMENT_ICONS.air,
+  relic_ember: ELEMENT_ICONS.fire,
+  relic_tide: ELEMENT_ICONS.water,
+  relic_stone: ELEMENT_ICONS.earth,
+  relic_wind: ELEMENT_ICONS.air,
   relic_solitude: `${circle(12, 12, 8)}${circle(12, 12, 1.5)}`,
   relic_concord: `${circle(9, 12, 5)}${circle(15, 12, 5)}`,
 };
 const COINS = `${circle(12, 12, 8)}M12 7v10M14.5 9.500h-3.500a1.5 1.5 0 0 0 0 3h2a1.5 1.5 0 0 1 0 3H9.5`;
 const STAR = 'M12 2l3 7 7 .8-5.2 4.800L18.4 22 12 18l-6.4 4 1.6-7.400L2 9.8 9 9z';
 
-export type UpgradeKind = 'learn' | 'improve' | 'exclusive' | 'stat' | 'affinity' | 'mastery' | 'relic' | 'coins' | 'technique';
-const KIND_LABELS: Record<UpgradeKind, string> = { learn: 'Nueva habilidad', improve: 'Mejora de habilidad', exclusive: 'Elección exclusiva', stat: 'Estadística', affinity: 'Afinidad', mastery: 'Maestría', relic: 'Reliquia', coins: 'Monedas', technique: 'Técnica' };
+export type UpgradeKind =
+  | 'learn'
+  | 'improve'
+  | 'exclusive'
+  | 'stat'
+  | 'affinity'
+  | 'mastery'
+  | 'relic'
+  | 'coins'
+  | 'technique';
+const KIND_LABELS: Record<UpgradeKind, string> = {
+  learn: 'Nueva habilidad',
+  improve: 'Mejora de habilidad',
+  exclusive: 'Elección exclusiva',
+  stat: 'Estadística',
+  affinity: 'Afinidad',
+  mastery: 'Maestría',
+  relic: 'Reliquia',
+  coins: 'Monedas',
+  technique: 'Técnica',
+};
 
 /** What a level-up or reward option is, read from its id only. */
 export function upgradeKind(id: string): { kind: UpgradeKind; label: string } {
-  const kind: UpgradeKind = id.startsWith('ability:') ? id.includes('/learn/') ? 'learn' : id.includes('/branch/') ? 'improve' : 'exclusive'
-    : id.startsWith('stat:') || Object.hasOwn(STAT_ICONS, id) ? 'stat'
-    : id.startsWith('relic_') ? 'relic' : id === 'salvage' ? 'coins' : id === 'mastery' ? 'mastery'
-    : isElement(id) || id.startsWith('secondary') || id === 'affinity' ? 'affinity' : 'technique';
+  const kind: UpgradeKind = id.startsWith('ability:')
+    ? id.includes('/learn/')
+      ? 'learn'
+      : id.includes('/branch/')
+        ? 'improve'
+        : 'exclusive'
+    : id.startsWith('stat:') || Object.hasOwn(STAT_ICONS, id)
+      ? 'stat'
+      : id.startsWith('relic_')
+        ? 'relic'
+        : id === 'salvage'
+          ? 'coins'
+          : id === 'mastery'
+            ? 'mastery'
+            : isElement(id) || id.startsWith('secondary') || id === 'affinity'
+              ? 'affinity'
+              : 'technique';
   return { kind, label: KIND_LABELS[kind] };
 }
 
@@ -85,7 +122,10 @@ export function upgradeKind(id: string): { kind: UpgradeKind; label: string } {
 export function iconPath(id: string, element = ''): string | undefined {
   if (id.startsWith('ability:')) return ABILITY_ICONS[id.slice(8).split('/')[0]];
   if (id.startsWith('stat:')) return STAT_ICONS[id.slice(5)];
-  if (id.startsWith('secondary_')) { const second = id.slice(10); return isElement(second) ? ELEMENT_ICONS[second] : undefined; }
+  if (id.startsWith('secondary_')) {
+    const second = id.slice(10);
+    return isElement(second) ? ELEMENT_ICONS[second] : undefined;
+  }
   if (id === 'salvage') return COINS;
   if (id === 'mastery') return STAR;
   if (isElement(id)) return ELEMENT_ICONS[id];
@@ -94,7 +134,13 @@ export function iconPath(id: string, element = ''): string | undefined {
 }
 
 export function createIcon(path: string) {
-  const namespace = 'http://www.w3.org/2000/svg', svg = document.createElementNS(namespace, 'svg'), shape = document.createElementNS(namespace, 'path');
-  svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('aria-hidden', 'true'); svg.classList.add('icon');
-  shape.setAttribute('d', path); svg.append(shape); return svg;
+  const namespace = 'http://www.w3.org/2000/svg',
+    svg = document.createElementNS(namespace, 'svg'),
+    shape = document.createElementNS(namespace, 'path');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.classList.add('icon');
+  shape.setAttribute('d', path);
+  svg.append(shape);
+  return svg;
 }
