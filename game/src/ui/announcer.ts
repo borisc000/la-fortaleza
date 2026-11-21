@@ -1,9 +1,18 @@
 import { CAPTURE } from '../content/activities.ts';
-import { ENEMIES } from '../content/enemies.ts';
+import { BOSS_FURY, ENEMIES } from '../content/enemies.ts';
+import { STONE_HEART_CAPTAIN } from '../content/stone-heart.ts';
 import type { UiContext } from './context.ts';
 import { element } from './dom.ts';
 
-const fresh = () => ({ started: false, phase: 'waves', elite: false, fury: false, capture: 'idle' });
+const fresh = () => ({
+  started: false,
+  phase: 'waves',
+  interior: 'entry',
+  elite: false,
+  fury: false,
+  capture: 'idle',
+  incursionAt: 0,
+});
 
 /** Large, brief centre-screen titles for the moments that change what the player should do. */
 export function createAnnouncer(ctx: UiContext) {
@@ -33,7 +42,31 @@ export function createAnnouncer(ctx: UiContext) {
     const run = ctx.run;
     if (!announced.started) {
       announced.started = true;
-      announce('Los dominios exteriores', run.objective);
+      announce(run.title, run.objective);
+    }
+    if (run.stoneHeart) {
+      const { phase } = run.stoneHeart;
+      if (phase !== announced.interior) {
+        announced.interior = phase;
+        switch (phase) {
+          case 'reinforcements':
+            announce('Refuerzos en el patio', 'Vigila los flancos', 'danger');
+            break;
+          case 'passage':
+            announce('Patio asegurado', 'Rastrillo abierto · armería al oeste', 'gain');
+            break;
+          case 'captain':
+            announce(STONE_HEART_CAPTAIN, 'Esquiva el barrido y el golpe al suelo', 'danger');
+            break;
+          case 'signal':
+            announce('Salón recuperado', 'Enciende la almenara junto al muro del fondo', 'gain');
+            break;
+          case 'complete':
+            announce('Almenara encendida', 'La expedición ha recuperado el recinto', 'gain');
+            break;
+        }
+      }
+      return;
     }
     if (run.eliteSpawned && !announced.elite) {
       announced.elite = true;
@@ -45,15 +78,21 @@ export function createAnnouncer(ctx: UiContext) {
       else if (run.phase === 'arrival') announce('El Castellano se aproxima', 'Las hordas se retiran', 'danger');
       else if (run.phase === 'boss') announce(ENEMIES.boss.name, 'Duelo en el territorio', 'danger');
     }
-    if (!announced.fury && run.boss && !run.boss.dead && run.boss.hp <= run.boss.maxHp / 2) {
+    const boss = run.boss;
+    if (!announced.fury && boss && !boss.dead && boss.hp <= boss.maxHp * BOSS_FURY.healthFraction) {
       announced.fury = true;
-      announce('Furia', 'El Castellano ataca más rápido y dispara más flechas', 'danger');
+      announce('Furia', 'El Castellano se mueve y ataca más rápido', 'danger');
     }
     if (run.capture.state !== announced.capture) {
       announced.capture = run.capture.state;
       if (run.capture.state === 'warning')
         announce('Captura inminente', `Resiste ${CAPTURE.duration} s dentro del círculo`);
       else if (run.capture.state === 'completed') announce('Puesto asegurado', `+${CAPTURE.reward} monedas`, 'gain');
+    }
+    const incursion = run.incursion;
+    if (incursion && incursion.at !== announced.incursionAt) {
+      announced.incursionAt = incursion.at;
+      announce(incursion.title, incursion.warning, 'danger');
     }
   }
 

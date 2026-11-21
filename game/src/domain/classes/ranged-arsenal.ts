@@ -31,6 +31,7 @@ type Action = {
   loadout: ElementalLoadout;
   pulses: number;
   count: number;
+  fractures?: (Point & { radius: number })[];
   nodes: Node[];
   struck: Map<number, number>;
   casts: number;
@@ -65,13 +66,36 @@ type Shot = HeroProjectile & {
 };
 export type RangedVisual = Readonly<{
   id: string;
-  kind: 'zone' | 'beam' | 'orb' | 'trap' | 'stake' | 'mirror' | 'beacon';
+  kind:
+    | 'zone'
+    | 'beam'
+    | 'orb'
+    | 'trap'
+    | 'stake'
+    | 'mirror'
+    | 'beacon'
+    | 'seal'
+    | 'seal-flash'
+    | 'pierce'
+    | 'fissure'
+    | 'nova-front'
+    | 'crystal-fall'
+    | 'splinters'
+    | 'echo'
+    | 'trap-snap'
+    | 'stake-hit'
+    | 'bend'
+    | 'mark'
+    | 'lance-hit'
+    | 'snared';
   x: number;
   z: number;
   radius: number;
   yaw: number;
   width?: number;
   ready?: boolean;
+  phase?: number;
+  residual?: boolean;
 }>;
 
 /** Shared scheduling/collision only; the two repertoires retain distinct executors. */
@@ -102,6 +126,8 @@ export class RangedArsenal implements HeroKit {
     pierce: number;
   };
   private marks = new Map<number, { bonus: number; until: number }>();
+  private trapSlowUntil = 0;
+  private impactFlashes: { birth: number; visual: RangedVisual }[] = [];
   private visuals: RangedVisual[] = [];
   private bounds: Bounds;
   constructor(classId: 'mage' | 'archer', bounds: Bounds) {
@@ -128,6 +154,15 @@ export class RangedArsenal implements HeroKit {
     this.time += dt;
     this.clock.step(dt);
     const s = this.state;
+    if (s.siegeTrail) {
+      s.siegeTrail.fade -= dt;
+      if (s.siegeTrail.fade <= 0) s.siegeTrail = undefined;
+    }
+    if (s.siegePose && s.siegePose.age < 0) s.siegePose = undefined;
+    if (s.siegePose) {
+      s.siegePose.age += dt;
+      if (s.siegePose.age >= 0.36) s.siegePose = undefined;
+    }
     s.cooldown = Math.max(0, s.cooldown - dt);
     s.passiveRemaining = Math.max(0, s.passiveRemaining - dt);
     if (this.classId === 'archer' && s.passiveRemaining <= 1e-8) s.passiveStacks = 0;
@@ -150,6 +185,7 @@ export class RangedArsenal implements HeroKit {
       s = this.state,
       hits: HeroHit[] = [];
     this.visuals = [];
+    s.beamYaw = undefined;
     const near = (point: Point, radius: number) =>
       alive
         .filter(e => Math.hypot(e.x - point.x, e.z - point.z) <= radius + e.radius && clearPath(point, e, solids, 0.04))
@@ -189,6 +225,8 @@ export class RangedArsenal implements HeroKit {
         origin,
         armorIgnore: this.classId === 'archer' ? arrowArmorIgnore(loadout, source === 'rain') : 0,
       });
+    const flash = (kind: RangedVisual['kind'], id: string, point: Point, radius: number, yaw = 0) =>
+      this.impactFlashes.push({ birth: this.time, visual: { kind, id, x: point.x, z: point.z, radius, yaw } });
     const area = (
       a: Action,
       point: Point,
@@ -199,6 +237,11 @@ export class RangedArsenal implements HeroKit {
     ) => {
       const id = c.nextId();
       emit(point, radius, source);
+      const kind = a.p.id;
+      if (kind === 'cataclysm') flash('fissure', `crack:${id}`, point, radius, a.pulses * 0.3);
+      if (kind === 'nova') flash('nova-front', `nova:${id}`, point, radius);
+      if (kind === 'fragments') flash('splinters', `crystal:${id}`, point, radius);
+      if (kind === 'spike-trap') flash('trap-snap', `spring:${id}`, point, radius);
       for (const e of near(point, radius)) {
         let bonus = 1;
         if (a.p.id === 'rain' && a.skill.finisher === 1 && (e.kind === 'elite' || e.kind === 'boss')) bonus *= 1.6;
@@ -208,8 +251,10 @@ export class RangedArsenal implements HeroKit {
           bonus *= 1.5;
         if (a.p.id === 'spike-trap' && !derived && a.skill.mutation === 0 && e.hp >= e.maxHp) bonus *= 1.35;
         hit(e, a.p.damage * a.multiplier * factor * bonus, derived ? 'ability-extra' : source, id, a.loadout, point);
-        if (a.p.id === 'spike-trap' && !derived)
+        if (a.p.id === 'spike-trap' && !derived) {
           e.trapSlowRemaining = Math.max(e.trapSlowRemaining ?? 0, a.skill.finisher === 0 ? 4 : 2);
+          this.trapSlowUntil = Math.max(this.trapSlowUntil, this.time + e.trapSlowRemaining);
+        }
         if (
           (a.p.id === 'nova' || (a.p.id === 'detonation' && a.skill.mutation === 1)) &&
           !derived &&
@@ -248,6 +293,9 @@ export class RangedArsenal implements HeroKit {
         age: 0,
         damage: p.damage * multiplier,
         empowered: false,
+        siege: p.id === 'siege-shot',
+        abilityId: p.id,
+        flightOrigin: p.id === 'return-arrows' ? { ...origin } : undefined,
         loadout,
         skill,
         source,
@@ -328,6 +376,21 @@ export class RangedArsenal implements HeroKit {
             (first ? q.firstBonus : 1) *
             (e.kind === 'boss' || e.kind === 'elite' ? q.eliteBonus : 1);
           hit(e, q.damage * factor, q.source, q.id, q.loadout, q.previous);
+          if (q.siege) {
+            this.impactFlashes.push({
+              birth: this.time,
+              visual: {
+                id: `pierce:${q.id}:${e.id}`,
+                kind: 'pierce',
+                x: q.x,
+                z: q.z,
+                yaw: Math.atan2(q.vx, q.vz),
+                radius: Math.max(0.55, e.radius),
+              },
+            });
+          }
+          if (q.skill.id === 'mage:arcane-lances')
+            flash('lance-hit', `lance:${q.id}:${e.id}`, q, 0.46, Math.atan2(q.vx, q.vz));
           q.hitIds.add(e.id);
           q.visited.add(e.id);
           q.firstTarget ??= e.id;
@@ -347,6 +410,7 @@ export class RangedArsenal implements HeroKit {
                   : candidates[0];
             if (candidate) {
               if (q.visited.has(candidate.id)) q.duelUsed = true;
+              flash('bend', `bounce:${q.id}:${q.bounceLeft}`, q, Math.min(2, q.traveled), Math.atan2(-q.vx, -q.vz));
               q.allowedBounce = candidate.id;
               q.bounceLeft--;
               q.damage *= q.skill.finisher === 0 ? 1 : 0.8;
@@ -368,8 +432,22 @@ export class RangedArsenal implements HeroKit {
           }
         }
       }
+      if (q.siege) {
+        if (s.siegeTrail?.id !== q.id)
+          s.siegeTrail = {
+            start: { ...q.previous },
+            end: { x: q.x, z: q.z },
+            id: q.id,
+            fade: 0.18,
+            element: q.loadout.element,
+          };
+        s.siegeTrail.end.x = q.x;
+        s.siegeTrail.end.z = q.z;
+        s.siegeTrail.fade = 0.18;
+      }
       if (!bounced && (ended || q.traveled >= q.range - 1e-8 || q.life > 8)) {
         if (!ended && q.leg + 1 < q.legs && q.life <= 8) {
+          flash('bend', `turn:${q.id}:${q.leg}`, q, 0.8, Math.atan2(-q.vx, -q.vz));
           q.leg++;
           q.traveled = 0;
           q.vx *= -1;
@@ -466,7 +544,8 @@ export class RangedArsenal implements HeroKit {
           shoot(a.skill, a.p, a.loadout, a.multiplier * 0.4, hero, s.attack.yaw + side * 0.16, 'ability-extra');
       for (const mirror of this.actions.filter(a => a.p.id === 'mirror' && a.age < a.duration)) {
         mirror.casts++;
-        if (mirror.casts % (mirror.skill.finisher === 0 ? 2 : 3) === 0)
+        if (mirror.casts % (mirror.skill.finisher === 0 ? 2 : 3) === 0) {
+          flash('echo', `echo:${mirror.id}:${mirror.casts}`, { x: hero.x + 0.8, z: hero.z }, 0.6, s.attack.yaw);
           for (let j = 0; j < (mirror.skill.mutation === 0 ? 2 : 1); j++)
             shoot(
               a.skill,
@@ -482,6 +561,7 @@ export class RangedArsenal implements HeroKit {
               'ability-extra',
               { maxHits: mirror.skill.mutation === 1 ? a.pierce + 2 : a.pierce },
             );
+        }
       }
       c.emit(this.classId === 'mage' ? 'spell-cast' : 'arrow-shot', 0, empowered ? 1 : a.pierce, hero);
     }
@@ -509,6 +589,11 @@ export class RangedArsenal implements HeroKit {
       if (id === 'detonation')
         duration = Math.max(0.3, 0.7 - skill.branches.specialization * 0.1) + (skill.finisher === 0 ? 0.85 : 0.05);
       if (id === 'spike-trap') duration = 6;
+      if (id === 'siege-shot') {
+        const remaining = this.clock.remaining(skill.id);
+        if (remaining > 0 && remaining <= 0.22)
+          s.siegePose = { age: -remaining, yaw: Math.atan2(hero.x - targets[0].x, hero.z - targets[0].z) };
+      }
       if (!this.clock.start(skill, true, duration, p.cooldown)) continue;
       const a: Action = {
         id: c.nextId(),
@@ -556,6 +641,7 @@ export class RangedArsenal implements HeroKit {
         this.defenseUntil = this.time + 2;
         this.defenseBonus = 0.2;
       }
+      if (id === 'siege-shot') s.siegePose = { age: 0, yaw: a.yaw };
       this.actions.push(a);
     }
     for (const a of this.actions) {
@@ -578,7 +664,19 @@ export class RangedArsenal implements HeroKit {
           : 1;
         const radius = Math.min(abilityData(skill.id).radius * 1.8, p.radius * masteryRadius);
         this.visuals.push({ id: `area:${a.id}`, kind: 'zone', ...a.center, radius, yaw: 0 });
+        if (id === 'cataclysm' && m === 1 && !a.fractures) {
+          // Both the telegraph and pulses use these fixed footprints for this cast.
+          const lobeRadius = Math.min(2 * 1.8, (radius / abilityData(skill.id).radius) * 2);
+          a.fractures = [-1, 1]
+            .map(sign => ({
+              x: a.center.x + Math.cos(a.yaw) * sign,
+              z: a.center.z - Math.sin(a.yaw) * sign,
+              radius: lobeRadius,
+            }))
+            .filter(point => clearPath(a.center, point, solids, 0.04));
+        }
         s.area = {
+          fractures: a.fractures,
           id: a.id,
           age: a.age,
           duration: a.duration,
@@ -596,19 +694,8 @@ export class RangedArsenal implements HeroKit {
             factor =
               (final && a.loadout.element === 'earth' && a.loadout.mastery ? 2 : 1) *
               (id === 'cataclysm' && final && f === 0 ? 2 : 1);
-          if (id === 'cataclysm' && m === 1)
-            for (const sign of [-1, 1]) {
-              const point = { x: a.center.x + Math.cos(a.yaw) * sign, z: a.center.z - Math.sin(a.yaw) * sign };
-              if (clearPath(a.center, point, solids, 0.04))
-                area(
-                  a,
-                  point,
-                  Math.min(2 * 1.8, (radius / abilityData(skill.id).radius) * 2),
-                  factor * 0.55,
-                  false,
-                  'cataclysm',
-                );
-            }
+          if (a.fractures)
+            for (const point of a.fractures) area(a, point, point.radius, factor * 0.55, false, 'cataclysm');
           else area(a, a.center, radius, factor, false, id === 'cataclysm' ? 'cataclysm' : 'rain');
         }
       } else if (id === 'guardian-orbs') {
@@ -618,7 +705,7 @@ export class RangedArsenal implements HeroKit {
             angle = a.age * 4 * (m === 1 ? 1.5 : 1) + (j * Math.PI * 2) / n,
             radius = p.radius + (outer ? 0.6 : 0),
             point = { x: hero.x + Math.sin(angle) * radius, z: hero.z + Math.cos(angle) * radius };
-          this.visuals.push({ id: `orb:${a.id}:${j}`, kind: 'orb', ...point, radius: 0.22, yaw: angle });
+          this.visuals.push({ id: `orb:${a.id}:${j}`, kind: 'orb', ...point, radius: 0.22, width: radius, yaw: angle });
           if (clearPath(hero, point, solids, 0.04))
             for (const e of near(point, 0.35))
               if (this.time - (a.struck.get(e.id) ?? -Infinity) >= 0.4) {
@@ -634,16 +721,40 @@ export class RangedArsenal implements HeroKit {
               }
         }
       } else if (id === 'detonation') {
-        for (const [j, node] of a.nodes.entries())
-          this.visuals.push({ id: `seal:${a.id}:${j}`, kind: 'zone', ...node, radius: p.radius, yaw: a.age });
         const delay = Math.max(0.3, 0.7 - b.specialization * 0.1);
+        const residual = a.age >= delay;
+        if (!residual || (f === 0 && a.age < delay + 0.8))
+          for (const [j, node] of a.nodes.entries())
+            this.visuals.push({
+              id: `seal:${a.id}:${j}`,
+              kind: 'seal',
+              ...node,
+              radius: p.radius,
+              yaw: 0,
+              phase: residual ? (a.age - delay) / 0.8 : a.age / delay,
+              residual,
+            });
         while (a.pulses < (f === 0 ? 2 : 1) && a.age + 1e-8 >= delay + a.pulses * 0.8) {
           const derived = a.pulses++ > 0;
-          for (const node of a.nodes) area(a, node, p.radius, (m === 0 ? 0.6 : 1) * (derived ? 0.4 : 1), derived);
+          for (const [j, node] of a.nodes.entries()) {
+            area(a, node, p.radius, (m === 0 ? 0.6 : 1) * (derived ? 0.4 : 1), derived);
+            this.impactFlashes.push({
+              birth: this.time,
+              visual: {
+                id: `seal-hit:${a.id}:${j}:${a.pulses}`,
+                kind: 'seal-flash',
+                ...node,
+                radius: p.radius,
+                yaw: 0,
+                residual: derived,
+              },
+            });
+          }
         }
       } else if (id === 'runic-beam') {
         const yaw = a.yaw + (m === 0 ? ((Math.min(1, a.age / a.duration) - 0.5) * Math.PI) / 4 : 0),
           angles = m === 1 ? [yaw - 0.22, yaw + 0.22] : [yaw];
+        s.beamYaw = yaw;
         for (const [j, angle] of angles.entries())
           this.visuals.push({
             id: `beam:${a.id}:${j}`,
@@ -652,6 +763,7 @@ export class RangedArsenal implements HeroKit {
             z: a.origin.z - (Math.cos(angle) * p.radius) / 2,
             radius: p.radius,
             width: p.width,
+            phase: (a.age % 0.35) / 0.35,
             yaw: angle,
           });
         while (a.pulses < a.count && a.age + 1e-8 >= a.pulses * 0.35) {
@@ -700,6 +812,27 @@ export class RangedArsenal implements HeroKit {
               index >= original,
             );
         }
+        if (a.pulses < a.count) {
+          const until = (a.pulses * 2) / a.count - a.age;
+          const final = a.pulses === a.count - 1;
+          const center = m === 1 ? (alive.find(e => e.id === a.target) ?? a.center) : a.center;
+          const point = final
+            ? center
+            : {
+                x: center.x + Math.sin(a.pulses * 2.4) * p.radius * 0.55,
+                z: center.z + Math.cos(a.pulses * 2.4) * p.radius * 0.55,
+              };
+          if (until <= 0.28 && clearPath(a.center, point, solids, 0.04))
+            this.visuals.push({
+              kind: 'crystal-fall',
+              id: `fall:${a.id}:${a.pulses}`,
+              x: point.x,
+              z: point.z,
+              radius: final && f === 0 ? 1.5 : 0.9,
+              yaw: a.yaw,
+              phase: 1 - until / 0.28,
+            });
+        }
         this.visuals.push({ id: `fragments:${a.id}`, kind: 'zone', ...a.center, radius: p.radius, yaw: 0 });
       } else if (id === 'mirror')
         this.visuals.push({
@@ -739,12 +872,20 @@ export class RangedArsenal implements HeroKit {
               radius: p.radius,
               yaw: 0,
               ready: a.age >= 0.6,
+              phase: Math.min(1, a.age / 0.6),
             });
         }
       } else if (id === 'stakes') {
         for (const [j, node] of a.nodes.entries())
           if (node.uses < (f === 0 ? 2 : 1)) {
-            this.visuals.push({ id: `stake:${a.id}:${j}`, kind: 'stake', ...node, radius: 0.4, yaw: a.yaw });
+            this.visuals.push({
+              id: `stake:${a.id}:${j}`,
+              kind: 'stake',
+              ...node,
+              radius: 0.4,
+              yaw: a.yaw,
+              phase: Math.max(0, Math.min(1, (a.age - j * 0.045) / 0.18)),
+            });
             const e = alive.find(
               e =>
                 segmentDistance(e.previous, e, node) <= 0.35 + e.radius &&
@@ -754,6 +895,7 @@ export class RangedArsenal implements HeroKit {
             if (e) {
               node.uses++;
               node.last.set(e.id, this.time);
+              flash('stake-hit', `stake-hit:${a.id}:${j}:${node.uses}`, node, 0.4, a.yaw);
               hit(e, p.damage * a.multiplier, 'ability', c.nextId(), a.loadout, node);
               if (f === 1) area(a, node, 1, 0.4, true);
             }
@@ -820,6 +962,7 @@ export class RangedArsenal implements HeroKit {
               a.yaw + (parallel ? 0 : offset * spread),
               source,
               {
+                lateral: j !== 0,
                 maxHits: Math.min(10, pierce),
                 decay:
                   (id === 'arcane-lances' && f === 1) || (id === 'siege-shot' && f === 0) || id === 'ricochet'
@@ -839,6 +982,19 @@ export class RangedArsenal implements HeroKit {
         }
       }
     }
+    if (this.impactFlashes.length) {
+      this.impactFlashes = this.impactFlashes.filter(flash => this.time - flash.birth < 0.28);
+      for (const flash of this.impactFlashes)
+        this.visuals.push({ ...flash.visual, phase: (this.time - flash.birth) / 0.28 });
+    }
+    if (this.marks.size || this.time < this.trapSlowUntil)
+      for (const e of alive) {
+        if (this.visuals.length >= 64) break;
+        if ((e.trapSlowRemaining ?? 0) > 0)
+          this.visuals.push({ kind: 'snared', id: `snared:${e.id}`, x: e.x, z: e.z, radius: e.radius, yaw: e.yaw });
+        if (this.targetBonus(e) > 0)
+          this.visuals.push({ kind: 'mark', id: `mark:${e.id}`, x: e.x, z: e.z, radius: e.radius, yaw: 0 });
+      }
     return hits;
   }
   finishStep() {
@@ -848,6 +1004,11 @@ export class RangedArsenal implements HeroKit {
     this.state.skillCooldown = this.state.area ? 0 : this.clock.remaining(initial);
   }
   cancel() {
+    this.impactFlashes.length = 0;
+    this.trapSlowUntil = 0;
+    this.state.siegeTrail = undefined;
+    this.state.siegePose = undefined;
+    this.state.beamYaw = undefined;
     this.stopped = true;
     this.clock.stop();
     this.actions = [];

@@ -1,0 +1,13 @@
+{
+  "fecha": "2026-11-18",
+  "metodo": "Página de revisión con createWorld real, materiales y HDR, 1440x900, pixelRatio 1, sin contar personajes. Panel del navegador oculto; tiempos orientativos. Coste del sombreado sin medir.",
+  "antes_E2_2": { "mallasFusionadas": 24, "obstaculos": 861, "triangulos": 260070 },
+  "despues_E2_3": { "mallasFusionadas": 27, "obstaculos": 864, "triangulos": 268495 },
+  "zonaDeMuestra": { "centro": [4, -4], "plenaHasta": 34, "desapareceEn": 48 },
+  "colisionesNuevas": {
+    "ariete": "centro (20,5; -10,2), rumbo 0,1 rad, 6,3 x 2,6 m",
+    "barril": "(12,4; -10,6), radio 0,42 m",
+    "pieDeEscala": "x -21,55 a -20,45; z -14,6 a -14,05; alto 1,2 m"
+  },
+  "sinColision": ["charcos", "barro mojado", "adoquines sueltos", "escala caída", "flechas", "escudos", "hoguera", "estacas", "estandarte caído", "duelas y aro", "rueda suelta", "malezas", "zarzas"]
+}

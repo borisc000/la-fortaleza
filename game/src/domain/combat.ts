@@ -12,16 +12,17 @@ import type { ClassDefinition } from '../content/class-definition.ts';
 import type { ClassRuntime, HeroKit, ClassEffects, AreaAction } from './hero-kit.ts';
 import { WARRIOR_RUNTIME } from './classes.ts';
 import { inArc } from './targeting.ts';
-import { angleDelta, moveCircle } from './movement.ts';
+import { angleDelta } from './movement.ts';
 import type { Body, Bounds, Point, Solid } from './movement.ts';
-import { clearPath, Navigation } from './navigation.ts';
+import { Navigation } from './navigation.ts';
 import { ELEMENT_RULES as R, splitDirectDamage } from '../content/elements.ts';
 import type { ElementalLoadout } from '../content/elements.ts';
-import { ENEMIES, actionStats, CHARGE } from '../content/enemies.ts';
+import { ENEMIES, actionStats, BOSS_FURY, BOSS_ROTATION, isGroundAttack } from '../content/enemies.ts';
 import type { EnemyKind, EnemyAction } from '../content/enemies.ts';
 import { Projectiles, segmentDistance } from './projectiles.ts';
 
 export type Attack = {
+  swordStroke?: 'cut' | 'backhand' | 'thrust';
   id: number;
   yaw: number;
   age: number;
@@ -30,6 +31,7 @@ export type Attack = {
   impetusGranted?: boolean;
   loadout?: ElementalLoadout;
   action?: EnemyAction;
+  groundTarget?: Point;
   released?: boolean;
   pierce?: number;
   range?: number;
@@ -295,6 +297,50 @@ export class Combat {
   private begin(yaw: number): Attack {
     return { id: ++this.sequence, yaw, age: 0, hits: new Set() };
   }
+  private startEnemyAttack(enemy: Enemy, hero: Body, furious: boolean) {
+    const distance = Math.hypot(hero.x - enemy.x, hero.z - enemy.z);
+    const reach = distance - this.definition.movement.radius;
+    let action: EnemyAction = 'melee';
+    switch (enemy.kind) {
+      case 'archer':
+        action = 'shot';
+        break;
+      case 'charger':
+      case 'hunter':
+        action = 'charge';
+        break;
+      case 'elite':
+        action = enemy.actionCount % 2 === 1 ? 'slam' : 'melee';
+        break;
+      case 'boss': {
+        action = BOSS_ROTATION[enemy.actionCount % BOSS_ROTATION.length];
+        const canCharge =
+          distance > 4 &&
+          reach <= actionStats('boss', 'charge').range &&
+          this.navigation.clearPath(enemy, hero, enemy.radius);
+        if (action === 'charge' && !canCharge) action = 'melee';
+        if (
+          !isGroundAttack(action) &&
+          (reach > actionStats('boss', action).range || !this.navigation.clearPath(enemy, hero, 0.04))
+        ) {
+          // An unreachable melee strike must not stall the rotation indefinitely.
+          action = canCharge ? 'charge' : enemy.actionCount % 2 === 0 ? 'rupture' : 'edict';
+        }
+        break;
+      }
+    }
+    const data = actionStats(enemy.kind, action);
+    const activationRange = action === 'charge' && enemy.kind !== 'boss' ? ENEMIES[enemy.kind].range : data.range;
+    if (!isGroundAttack(action) && (reach > activationRange || !this.navigation.clearPath(enemy, hero, 0.04))) return;
+
+    const attack = this.begin(Math.atan2(enemy.x - hero.x, enemy.z - hero.z));
+    attack.action = action;
+    if (isGroundAttack(action)) attack.groundTarget = { x: hero.x, z: hero.z };
+    enemy.attack = attack;
+    enemy.actionCount++;
+    enemy.yaw = attack.yaw;
+    enemy.cooldown = data.cooldown * (furious ? BOSS_FURY.cooldownMultiplier : 1);
+  }
   step(dt: number, hero: Body) {
     if (this.status !== 'running' || dt <= 0) return;
     if (this.renewalCooldown !== undefined) this.renewalCooldown = Math.max(0, this.renewalCooldown - dt);
@@ -349,6 +395,7 @@ export class Combat {
       }
       enemy.cooldown = Math.max(0, enemy.cooldown - dt);
       const stats = ENEMIES[enemy.kind];
+      const furious = enemy.kind === 'boss' && enemy.hp <= enemy.maxHp * BOSS_FURY.healthFraction;
       if (enemy.attack) {
         enemy.attack.age += dt;
         if (enemy.attack.age >= actionStats(enemy.kind, enemy.attack.action).duration) enemy.attack = undefined;
@@ -357,9 +404,10 @@ export class Combat {
         vz = 0;
       const moveSpeed =
         stats.speed *
+        (furious ? BOSS_FURY.speedMultiplier : 1) *
         (1 - Math.max(enemy.wetRemaining > 0 ? R.slow : 0, (enemy.trapSlowRemaining ?? 0) > 0 ? 0.2 : 0) * stats.slow);
       const distance = Math.hypot(hero.x - enemy.x, hero.z - enemy.z);
-      const visible = clearPath(enemy, hero, this.solids, enemy.radius);
+      const visible = this.navigation.clearPath(enemy, hero, enemy.radius);
       const keepDistance = enemy.kind === 'archer' ? 7 : 0.95 + enemy.radius - SOLDIER.radius;
       if (!enemy.attack && (distance > keepDistance || !visible)) {
         const waypoint = visible ? hero : enemy.waypoint;
@@ -377,11 +425,10 @@ export class Combat {
         vx = ((enemy.x - hero.x) / distance) * moveSpeed;
         vz = ((enemy.z - hero.z) / distance) * moveSpeed;
       }
+      const charge =
+        enemy.attack?.action === 'charge' && !enemy.attack.released ? actionStats(enemy.kind, 'charge') : undefined;
       const charging =
-        enemy.attack?.action === 'charge' &&
-        enemy.attack.age >= stats.windup &&
-        enemy.attack.age < stats.windup + CHARGE.duration &&
-        !enemy.attack.released;
+        charge && enemy.attack!.age >= charge.windup && enemy.attack!.age < charge.windup + charge.active;
       // Soft separation, never contact damage or a rigid wall of enemies.
       for (const other of this.neighbors.near(enemy, enemy.radius + 0.65 + 0.18)) {
         if (other.id === enemy.id || charging) continue;
@@ -401,30 +448,30 @@ export class Combat {
         vz *= moveSpeed / speed;
       }
       if (charging) {
-        vx = -Math.sin(enemy.attack!.yaw) * CHARGE.speed * (enemy.wetRemaining > 0 ? 1 - R.slow : 1);
-        vz = -Math.cos(enemy.attack!.yaw) * CHARGE.speed * (enemy.wetRemaining > 0 ? 1 - R.slow : 1);
+        const chargeSpeed = charge.range / charge.active;
+        const chargeSlow = enemy.wetRemaining > 0 ? 1 - R.slow * stats.slow : 1;
+        vx = -Math.sin(enemy.attack!.yaw) * chargeSpeed * chargeSlow;
+        vz = -Math.cos(enemy.attack!.yaw) * chargeSpeed * chargeSlow;
       }
       const intended = { x: enemy.x + vx * dt, z: enemy.z + vz * dt };
-      if (charging && !clearPath(enemy, intended, this.solids, enemy.radius)) {
+      if (charging && !this.navigation.clearPath(enemy, intended, enemy.radius)) {
         vx = 0;
         vz = 0;
         enemy.attack!.released = true;
       }
-      let next = moveCircle(enemy, { x: vx * dt, z: vz * dt }, enemy.radius, this.bounds, this.solids);
+      let next = this.navigation.move(enemy, { x: vx * dt, z: vz * dt }, enemy.radius);
       const hx = next.x - hero.x,
         hz = next.z - hero.z,
         overlap = Math.hypot(hx, hz),
         separation = this.definition.movement.radius + enemy.radius;
       if (!charging && overlap < separation)
-        next = moveCircle(
+        next = this.navigation.move(
           next,
           {
             x: (overlap > 0.001 ? hx / overlap : 1) * (separation - overlap),
             z: (overlap > 0.001 ? hz / overlap : 0) * (separation - overlap),
           },
           enemy.radius,
-          this.bounds,
-          this.solids,
         );
       enemy.speed = Math.hypot(next.x - enemy.x, next.z - enemy.z) / dt;
       enemy.x = next.x;
@@ -434,32 +481,7 @@ export class Combat {
         enemy.yaw +=
           angleDelta(enemy.yaw, Math.atan2(enemy.x - hero.x, enemy.z - hero.z)) *
           (1 - Math.exp(-SOLDIER.turnSpeed * dt));
-      const action: EnemyAction =
-        enemy.kind === 'archer'
-          ? 'shot'
-          : enemy.kind === 'charger'
-            ? 'charge'
-            : enemy.kind === 'elite'
-              ? enemy.actionCount % 2 === 1
-                ? 'slam'
-                : 'melee'
-              : enemy.kind === 'boss'
-                ? (['melee', 'slam', 'volley'] as const)[enemy.actionCount % 3]
-                : 'melee';
-      const actionData = actionStats(enemy.kind, action);
-      const activationRange = action === 'charge' ? stats.range : actionData.range;
-      if (
-        !enemy.attack &&
-        enemy.cooldown <= 1e-8 &&
-        Math.hypot(hero.x - enemy.x, hero.z - enemy.z) <= activationRange + this.definition.movement.radius &&
-        clearPath(enemy, hero, this.solids, 0.04)
-      ) {
-        enemy.attack = this.begin(Math.atan2(enemy.x - hero.x, enemy.z - hero.z));
-        enemy.attack.action = action;
-        enemy.actionCount++;
-        enemy.yaw = enemy.attack.yaw;
-        enemy.cooldown = actionData.cooldown * (enemy.kind === 'boss' && enemy.hp <= enemy.maxHp / 2 ? 0.85 : 1);
-      }
+      if (!enemy.attack && enemy.cooldown <= 1e-8) this.startEnemyAttack(enemy, hero, furious);
       if (
         enemy.attack &&
         (enemy.attack.action === 'shot' || enemy.attack.action === 'volley') &&
@@ -468,11 +490,7 @@ export class Combat {
       ) {
         enemy.attack.released = true;
         const angles =
-          enemy.attack.action === 'shot'
-            ? [0]
-            : enemy.hp <= enemy.maxHp / 2
-              ? [-0.36, -0.18, 0, 0.18, 0.36]
-              : [-0.24, 0, 0.24];
+          enemy.attack.action === 'shot' ? [0] : furious ? [-0.36, -0.18, 0, 0.18, 0.36] : [-0.24, 0, 0.24];
         for (const angle of angles)
           this.projectiles.fire(
             enemy,
@@ -514,12 +532,22 @@ export class Combat {
         attack.age >= actionData.windup + actionData.active - 1e-8
       )
         continue;
-      const hit =
-        attack.action === 'charge'
-          ? !attack.released &&
-            segmentDistance(enemy.previous, enemy, hero) <= enemy.radius + this.definition.movement.radius
-          : inArc(enemy, hero, attack.yaw, actionData.range, actionData.arc, this.definition.movement.radius);
-      if (hit && clearPath(enemy, hero, this.solids, 0.04)) {
+      let hit: boolean;
+      if (isGroundAttack(attack.action)) {
+        if (!attack.groundTarget) continue;
+        // Ground spells resolve once at the warned position, even through cover.
+        attack.hits.add(0);
+        const inside = Math.hypot(hero.x - attack.groundTarget.x, hero.z - attack.groundTarget.z) <= actionData.range;
+        hit = attack.action === 'edict' ? !inside : inside;
+      } else {
+        hit =
+          (attack.action === 'charge'
+            ? !attack.released &&
+              segmentDistance(enemy.previous, enemy, hero) <= enemy.radius + this.definition.movement.radius
+            : inArc(enemy, hero, attack.yaw, actionData.range, actionData.arc, this.definition.movement.radius)) &&
+          this.navigation.clearPath(enemy, hero, 0.04);
+      }
+      if (hit) {
         attack.hits.add(0);
         if (this.protection <= 1e-8 && !heroHit) {
           heroHit = true;

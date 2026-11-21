@@ -1,4 +1,4 @@
-> Estado vigente: **E1 completada, aplicación 0.2.15; siguiente E2.1 antes de 2.8**. Las tres clases tienen ocho habilidades, cuatro espacios y niveles hasta 10. Plan: 49 subfases, 22 futuras.
+> Estado vigente: **E3.2 completada, aplicación 0.2.15; siguiente E3.3 antes de 2.8**. Las tres clases tienen ocho habilidades, cuatro espacios y niveles hasta 10. Plan: 49 subfases, 22 futuras.
 
 Ver [ritmo y economía 2.7.6](../docs/diseno/RITMO_2_7_6.md).
 
@@ -19,6 +19,12 @@ npm run dev
 
 Abrir http://127.0.0.1:5183/ en un navegador con WebGL 2 y aceleración gráfica. El servidor escucha únicamente en el propio PC. Mantener la terminal abierta; Ctrl+C lo detiene. Los recursos se sirven localmente: no se consultan servicios externos durante la escena. No abrir `index.html` mediante `file://`.
 
+En inicio, elige **Jugar** y prepara **Los dominios exteriores** o **El corazón de piedra**. **La primera bandera** figura en desarrollo. En **Cómo jugar** puedes revisar los controles y objetivos de la etapa antes de empezar y durante la pausa.
+
+### El corazón de piedra
+
+Cruza el portón, despeja el patio para levantar el rastrillo y derrota al capitán en el salón. La armería queda al oeste y ofrece un cofre, un mercader y suministros. Acércate a la almenara y pulsa **E** o el botón táctil para ganar. [Diseño y recorrido](../docs/diseno/EL_CORAZON_DE_PIEDRA.md).
+
 ## Controles de esta entrega
 
 - **Equipo y apoyo:** hasta cuatro reliquias distintas, sin reemplazo en esta expedición. Cofres permiten tomar una reliquia compatible o monedas; el puesto añade un premio y el mercader tres ofertas. Desde nivel 5, en niveles impares, puede aparecer otra afinidad o su mejora hasta III. El principal conserva el kit y la única maestría; el apoyo añade estados/control. Sello de pureza bloquea la segunda afinidad. [Catálogo y reglas](../docs/diseno/RELIQUIAS_AFINIDADES_2_7.md).
@@ -30,12 +36,12 @@ Abrir http://127.0.0.1:5183/ en un navegador con WebGL 2 y aceleración gráfica
 - **Mago automático:** 80 de vida, orbes a 10 m y cada cuarto disparo +60 % de daño en área. Cataclismo marca una zona fija, avisa y libera tres pulsos; recarga 14 s desde el final. Todo sin botones de combate.
 - **Nuevas afinidades:** Mago/Tierra crea coraza con el cuarto lanzamiento; Mago/Aire empuja con proyectiles y atrae con Cataclismo. Arquero/Tierra aplica Quebranto e ignora armadura; Arquero/Aire aumenta alcance, velocidad y blancos atravesados. [Rangos y maestrías](../docs/diseno/AFINIDADES_2_5.md).
 - **Afinidades del Mago:** Fuego quema y Agua ralentiza. Rangos II/III añaden 10/20 % de daño. Maestrías: Erupción mayor suma dos pulsos; Marea creciente amplía el radio y empuja. [Valores completos](../docs/diseno/MAGO_2_2.md).
-- **Entrar en el territorio:** inicia explícitamente el encuentro; antes de pulsarlo los enemigos no avanzan.
+- **Iniciar expedición:** arranca la partida con la última clase y afinidad elegidas en la pantalla de preparación.
 - **WASD:** caminar respecto al rumbo horizontal de la cámara, a 5 m/s de base (hasta 6,5 con mejoras); Arquero: 5,2–6,7 m/s. Las diagonales no aceleran. El héroe gira hacia donde se desplaza.
 - **Táctil horizontal:** joystick flotante al tocar la mitad izquierda; arrastre en la derecha para mirar. Cada dedo conserva su función aunque cruce de lado. Soltar o cancelar uno no cancela el otro.
 - **Mover el mouse, sin mantener botones:** girar cámara. Al entrar, continuar tras pausa/elección o reiniciar desde un botón se solicita captura del puntero en PC. Esc libera y pausa. En menús el cursor queda libre. Si el navegador rechaza la captura, mover el mouse sobre el paisaje también gira la vista sin arrastrar; al salir del paisaje deja de girar. El arrastre se conserva para cámara táctil.
 - **Rueda sobre el paisaje:** hacia delante acerca; hacia atrás aleja. Distancia inicial de 12 m, ajustable entre 4 y 18 m. Los muros pueden acercar temporalmente la cámara por debajo de ese mínimo para evitar atravesarlos. La rueda no modifica la cámara sobre menús ni durante la pausa; Ctrl/⌘ + rueda conserva el zoom del navegador.
-- **Capturar ratón:** permite reintentar la captura si el navegador la rechazó. El control habitual ya la solicita al entrar o continuar; no necesitas este botón normalmente.
+- **Capturar ratón:** desde el desplegable **Cámara** puedes reintentar la captura si el navegador la rechazó.
 - **Espada automática:** el Guerrero selecciona enemigos cercanos y ataca sin clics. Sigue caminando durante los golpes; girar la cámara no cambia su blanco.
 - **Ímpetu:** cada espadazo que acierta suma una acumulación, aunque alcance a varios enemigos. Cada una añade 5 % al daño de los siguientes espadazos, hasta +20 %. Tras 3 s sin acertar un nuevo espadazo se pierden todas. El panel muestra cuatro marcas, bonificación y tiempo restante.
 - **Torbellino automático:** listo al inicio; se activa al tener un enemigo alcanzable a 2,6 m más su radio. Dura 2,4 s y hace seis pulsos de 12 de daño, separados por 0,4 s. Puede coincidir con la espada y permite caminar a velocidad normal. No atraviesa muros ni genera Ímpetu. Recarga de 20 s desde el final; el panel muestra disponibilidad, duración o recarga, sin botón.
@@ -49,14 +55,15 @@ Abrir http://127.0.0.1:5183/ en un navegador con WebGL 2 y aceleración gráfica
 - **Oleadas:** llegan con el tiempo, sin esperar a recoger toda la esencia. Desde 1:00 incluyen ballesteros; desde 2:30, cargadores. Los últimos cuatro segundos de cada minuto dejan de generar refuerzos normales, salvo mientras resistes dentro de una captura activa; pero los enemigos presentes siguen activos. Aparición anunciada de 1,5 s, tres segundos para el élite y seis para el jefe.
 - **Ballestero:** una línea azul anuncia su tiro. Esquiva lateralmente; el virote no te sigue y lo bloquean las paredes.
 - **Devastador:** una franja ámbar marca su carga. Sal de ella antes de que avance; no puede girar para perseguirte durante la embestida.
-- **Castellano Vacío:** tras seis minutos se retiran los enemigos normales sin recompensas. Si el élite sigue vivo, debes vencerlo primero. El jefe anuncia barrido, golpe circular y andanada; a media vida entra en furia. Aprovecha su recuperación entre ataques. Solo derrotarlo da la victoria.
+- Cada **Toque de asedio** avisa antes de que lleguen refuerzos por los flancos. El primero trae ballesteros y el segundo añade devastadores. Entre ambos, la **Montería del Verdugo** trae al Verdugo de la ronda. Su carga sigue la dirección marcada, así que esquívala de lado. [Reglas y verificación](../docs/verificaciones/PRESION_EXTERIOR.md).
+- Tras seis minutos se retiran los enemigos normales sin recompensas. Si el Portador sigue vivo, debes vencerlo antes de que llegue el **Castellano Vacío**. El jefe anuncia barrido, golpe circular, andanada y arremetida. Sal del círculo rojo de la Ruptura del suelo y, con el Edicto del vacío, espera el impacto dentro del anillo turquesa. Ambos ataques fijan la marca donde estás y pueden activarse desde cualquier distancia. A media vida, la furia acelera sus ataques. Solo derrotarlo da la victoria.
 - **Arco ámbar enemigo:** prepara un ataque. Sal de su alcance o dirección antes del golpe. Tocar al enemigo no produce daño por sí solo.
 - **↶ / ↷ / Centrar:** girar y volver a situar la cámara detrás de la orientación actual del personaje; conserva la distancia elegida.
-- **Ajustes y diagnóstico:** calidad, distancia, sensibilidad, invertir vertical, sonidos y volumen. Abrir el panel pausa la expedición; Continuar lo cierra. Sonidos al 25 % inicialmente, activados después de Entrar; conserva los ajustes al reiniciar. Los avisos visuales siguen disponibles al silenciar.
+- **Ajustes y diagnóstico:** abre el panel desde inicio o pausa para cambiar calidad, distancia inicial, sensibilidad, tamaño del HUD, efectos y audio. Se guardan en el navegador. **Restaurar valores** restablece los predeterminados, incluido el volumen inicial de 25 %.
 - **Pausar / Esc / pérdida de foco:** detener el bucle; volver a la pestaña exige pulsar Continuar.
-- **Reiniciar encuentro:** disponible en pausa y en el resultado. Restablece vida, enemigos, posiciones, ataques, reloj, experiencia, mejoras y elecciones, conservando ajustes y distancia de cámara. Los antiguos botones de teletransporte se retiraron de la interfaz de combate.
+- **Reiniciar / Jugar de nuevo:** empiezan otra partida con la misma clase y afinidad inicial, semilla nueva y la distancia inicial de los ajustes. **Cambiar clase** lleva a preparación y **Volver al inicio** vuelve al menú. En pausa se pide confirmar antes de descartar la expedición.
 
-En vertical estrecho se pausa y se pide girar el dispositivo; al regresar hay que pulsar Continuar. La pausa, pérdida de foco o interacción con menús limpian teclas y punteros. Una tecla mantenida durante una pausa debe soltarse antes de volver a mover. No hay ataques manuales ni botones de habilidades. La victoria exige sobrevivir al asedio y derrotar al Castellano; llegar a seis minutos por sí solo no termina la partida. El jefe se combate en el territorio cerca de la ubicación actual, sin teletransporte. Cada reinicio genera una semilla nueva para las posiciones de refuerzo.
+Los menús admiten móvil vertical. Para jugar, gira el dispositivo a horizontal. Si lo giras durante la partida, se pausa y pide pulsar **Continuar** al volver a horizontal. La pausa, la pérdida de foco y los menús limpian teclas y punteros. Suelta las teclas antes de seguir moviéndote. Los ataques y las habilidades son automáticos. Cada reinicio genera una semilla nueva para las decisiones de la partida y las posiciones de refuerzo del exterior.
 
 ## Arquitectura
 
@@ -72,7 +79,7 @@ Refuerzos a 11–23 m con distancia segura, ruta para el enemigo y el héroe, y 
 | `src/input` | Estado de teclas y dos punteros; conexión de teclado, ratón, táctil, captura y pérdida de foco |
 | `src/rendering` | Escena, materiales, personajes provisionales, animación, arcos, números de daño, cristales de esencia/núcleo, anticipaciones, proyectiles y cámara |
 | `src/rendering/collision.ts` | Funciones puras de volumen de cámara y recuperación |
-| `src/ui` | Interfaz DOM: HUD, radar, tutorial, anuncios, subida de nivel, tienda, resultados y ajustes. Lee la partida mediante `UiContext`; no la modifica salvo a través de `run.choose` y `run.shop.buy` |
+| `src/ui` | Interfaz DOM de campaña y preparación, ajustes, ayuda, HUD, radar, pistas iniciales, mejoras, tienda y resultados. Lee la partida mediante `UiContext` y aplica elecciones a través de `run.choose` y `run.shop.buy` |
 | `src/main.ts` | Coordinación: carga, bucle de simulación y render, fases, redimensionado y botones |
 | `public/assets` | Materiales y cielo locales con manifiesto de origen |
 
@@ -98,7 +105,7 @@ Consultar [VERIFICACION_2_7.md](../docs/verificaciones/VERIFICACION_2_7.md) y lo
 
 Ver [CREDITOS.md](CREDITOS.md). Carga de 13 archivos con tiempo máximo de descarga por archivo de 15 s, progreso, materiales de reserva y aviso de fallos. Errores de WebGL muestran recuperación mediante recarga. Sombras y resolución limitadas por calidad; geometría estática agrupada por material. La cámara comprueba un volumen conservador contra cajas de arquitectura y suelo, se acerca inmediatamente y vuelve suavemente.
 
-El jugador usa un cuerpo circular de radio 0,4 m. Las colisiones cubren murallas, puerta, ruinas, cajas, troncos, viga caída y vallado; piedras pequeñas y hierba son transitables. No hay salto, escalada ni interior accesible. Esta entrega implementa el ciclo de seis minutos, élite y jefe preliminar; el núcleo provisional de 1.8 ha sido retirado. Las ofertas generales siguen rotando de forma determinista. Las posiciones de refuerzo varían por semilla; el dominio acepta una semilla fija para reproducir pruebas (la usada por el navegador figura en el atributo data-seed del canvas). Máximo 100 enemigos vivos, 100 proyectiles enemigos y 32 proyectiles del héroe; las oleadas omitidas por saturación no se acumulan. Los cadáveres normales se retiran de simulación tras dos segundos con identificadores no reutilizados. Audio esencial y pulido de claridad implementados en 1.10; balance humano, escucha real, revisión visual y medición GPU permanecen pendientes. No se requiere cuenta ni se guarda progreso.
+El jugador usa un cuerpo circular de radio 0,4 m. Las colisiones cubren murallas, puerta, ruinas, cajas, troncos, viga caída y vallado; piedras pequeñas y hierba son transitables. El exterior usa un ciclo de seis minutos, un élite y un jefe preliminar. El corazón de piedra combina un patio, una armería, un pasaje y un salón sobre suelo llano. Las ofertas generales siguen rotando de forma determinista. Las posiciones de refuerzo varían por semilla; el dominio acepta una semilla fija para reproducir pruebas (la usada por el navegador figura en el atributo data-seed del canvas). Máximo 100 enemigos vivos, 100 proyectiles enemigos y 32 proyectiles del héroe; las oleadas omitidas por saturación no se acumulan. Los cadáveres normales se retiran de simulación tras dos segundos con identificadores no reutilizados. Audio esencial y pulido de claridad implementados en 1.10; balance humano, escucha real, revisión visual y medición GPU permanecen pendientes. No se requiere cuenta ni se guarda progreso.
 
 ## Recogibles e interacción — 1.9.2
 

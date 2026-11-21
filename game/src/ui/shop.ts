@@ -23,7 +23,7 @@ export function createShopScreen(ctx: UiContext, hooks: ShopHooks) {
     const revision = run.shop.revision;
     element('shop-relics').textContent = relicSummary(run.progression);
     element('shop-description').textContent =
-      `Combate y reloj en pausa. Estadísticas compartidas con las mejoras de nivel: máximo ${run.progression.development ? 4 : 3} rangos.`;
+      `Partida en pausa. Cada estadística admite hasta ${run.progression.development ? 4 : 3} rangos entre compras y subidas de nivel.`;
     for (const offer of run.shop.offers) {
       const button = document.createElement('button');
       button.className = 'shop-offer';

@@ -1,0 +1,16 @@
+{
+  "fecha": "2026-11-18",
+  "metodo": "Página de revisión temporal con createWorld real, materiales y HDR cargados, 1440x900, pixelRatio 1. Recuento sobre la escena del mundo sin contar personajes. Panel del navegador oculto: el tiempo de construcción es orientativo.",
+  "antes": { "mallasFusionadas": 22, "obstaculos": 856, "triangulos": 258446, "construccionMs": 2707 },
+  "despues": { "mallasFusionadas": 24, "obstaculos": 861, "triangulos": 259442, "construccionMs": 2735 },
+  "geometriaPuerta": {
+    "eje": { "x": 4 },
+    "vano": { "ancho": 4.4, "arranque": 3.3, "clave": 5.5 },
+    "cuerpoDeGuardia": { "x": [0.6, 7.4], "z": [-19.8, -16.2], "alto": 10, "almenasHasta": 10.9 },
+    "torres": { "centros": [[-2, -15], [10, -15]], "radioFuste": 3.1, "radioPie": 3.55, "adarve": 12.4, "almenasHasta": 14.3, "mastilHasta": 17.7 },
+    "rastrillo": { "z": -16.75, "barrasVerticales": 11, "separacion": 0.4 },
+    "portonDeMadera": { "z": [-19, -18.7] },
+    "cadalso": { "frente": -15.05, "piso": 7.03, "tejaroz": 9.35 },
+    "antes": { "vano": { "ancho": 5.9, "clave": 7.25 }, "torres": "cuadradas 5,6 m en (-2,4/10,4; -19,1), 10 m con tejado", "portonEnElPlanoDeLaMuralla": true }
+  }
+}

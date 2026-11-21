@@ -2,7 +2,7 @@
 
 Juego web de fantasía oscura en 3D (Three.js + TypeScript): un *survivor* en tercera persona con combate automático, hordas y progresión por clases y elementos. Nombre de trabajo; el definitivo está pendiente.
 
-> **Estado:** aplicación 0.2.15. E1 completada; siguiente trabajo E2.1 (puerta y dos torres) antes de retomar 2.8. Detalle y punto de reanudación en [ESTADO.md](ESTADO.md); historial en [CHANGELOG.md](CHANGELOG.md).
+> **Estado** · Aplicación 0.2.15. El selector abre Los dominios exteriores y el [prototipo de El corazón de piedra](docs/diseno/EL_CORAZON_DE_PIEDRA.md). El siguiente trabajo del exterior es E3.3 (vegetación). [Punto de reanudación](ESTADO.md) · [Historial](CHANGELOG.md).
 
 ## Ejecutar
 
@@ -70,3 +70,7 @@ Balance humano prolongado, medición de GPU y prueba en teléfono físico siguen
 ## Idea narrativa para después
 
 [Campaña por eras y etapas](docs/diseno/IDEA_CAMPANA_ERAS.md), registrada el 2026-11-02: cada era reúne tres a cinco etapas. Era I: establecer el reino recuperando exterior, interior y defendiendo la fortaleza. El escenario actual puede representar su primera etapa. Es una propuesta futura; no añade implementación ni cambia los recuentos del plan.
+
+## Multijugador archivado para después
+
+[Propuesta de multijugador](docs/diseno/PROPUESTA_MULTIJUGADOR.md), archivada el 2026-11-17 con aprobación general del usuario: cooperativo de 2–4 jugadores y VS «Dominio de los Osarios» en mapas propios. En cooperativo, elegir mejoras vuelve al héroe invencible durante un tiempo máximo. No cambia el alcance del MVP ni los recuentos del plan.

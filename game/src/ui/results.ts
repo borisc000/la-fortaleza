@@ -33,16 +33,23 @@ export function renderResults(ctx: UiContext, tally: DamageTally) {
     combat = run.combat,
     p = run.progression,
     victory = combat.status === 'victory';
-  element('result-title').textContent = victory ? 'El Castellano ha caído' : 'Has caído';
+  element('result-outcome').textContent = victory ? 'Victoria' : 'Derrota';
+  element('result-title').textContent = victory
+    ? run.stoneHeart
+      ? 'La almenara está encendida'
+      : 'El Castellano ha caído'
+    : 'La expedición ha caído';
   element('result-description').textContent = victory
-    ? 'Sobreviviste al asedio y derrotaste al señor de la fortaleza.'
-    : 'La fortaleza conserva a su señor. Esquiva los disparos lateralmente y abandona las líneas y círculos antes del impacto.';
+    ? run.stoneHeart
+      ? 'Recuperaste el recinto. La escalera sellada del salón conduce a las dependencias inferiores.'
+      : 'Sobreviviste al asedio y recuperaste los dominios exteriores.'
+    : 'Vuelve a intentarlo. Sal de las líneas y círculos marcados antes de que lleguen los golpes.';
   fillTiles(
     element('result-grid'),
     [
       ['Abatidos', combat.kills],
       ['Tiempo', clockLabel(combat.time)],
-      ['Oleada', run.wave],
+      [run.stoneHeart ? 'Encuentro' : 'Oleada', run.wave],
       ['Nivel', p.level],
       ['Esencia', p.totalEssence],
       ['Vida', `${Math.ceil(combat.hp)} / ${combat.maxHp}`],
@@ -79,6 +86,14 @@ export function renderResults(ctx: UiContext, tally: DamageTally) {
   );
   renderBuild(element('result-build'), run, definition);
   element('results').dataset.outcome = victory ? 'victory' : 'defeat';
+  const chests = run.exploration.chestsOpened;
+  const destination = run.stoneHeart
+    ? victory
+      ? 'Almenara encendida'
+      : run.stoneHeart.section
+    : run.capture.state === 'completed'
+      ? 'Puesto asegurado'
+      : 'Puesto sin asegurar';
   element('result-stats').textContent =
-    `${run.exploration.chestsOpened} cofres · ${run.capture.state === 'completed' ? 'Puesto asegurado' : 'Puesto sin asegurar'}`;
+    `${run.title} · ${chests} ${chests === 1 ? 'cofre' : 'cofres'} · ${destination}`;
 }

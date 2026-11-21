@@ -151,7 +151,7 @@ export function bindControls(
     event => {
       if (event.code === 'Escape') {
         clear();
-        options.pause('Pausaste la exploración.');
+        options.pause('');
         return;
       }
       if (event.code === 'KeyE') {

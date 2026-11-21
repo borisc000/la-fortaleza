@@ -1,0 +1,9 @@
+dist/model-lab.html                5.69 kB │ gzip:   2.20 kB
+dist/index.html                   16.79 kB │ gzip:   5.26 kB
+dist/assets/models-9UIL0UqC.css    4.39 kB │ gzip:   1.65 kB
+dist/assets/game-BO4UhGhc.css     53.67 kB │ gzip:  12.19 kB
+dist/assets/models-CLmZVkfg.js    55.85 kB │ gzip:  17.13 kB
+dist/assets/game-DjizLF65.js      93.75 kB │ gzip:  33.25 kB
+dist/assets/combat-C4KTeLZ2.js   883.80 kB │ gzip: 241.59 kB
+✓ built in 587ms
+[plugin builtin:vite-reporter]

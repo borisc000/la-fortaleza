@@ -18,7 +18,9 @@ Subfase 1.9: ballesta, armadura del cargador, capa/corona de los enemigos princi
 
 Subfase 1.9.1: ampliación de muralla, caminos, campamento, ruinas del sur y arbolado creados proceduralmente para el proyecto, reutilizando los materiales ya acreditados. Sin nuevas descargas ni modelos externos.
 
-Conceptos visuales de `../arte/`: imágenes generadas previamente para este proyecto; sirven de referencia y no se cargan como escenario ni se presentan como capturas del motor.
+Conceptos visuales de `../arte/`: imágenes generadas previamente para este proyecto. `public/assets/interface/puerta.webp` y `exterior.webp` son versiones WebP de **Puerta de hierro** y **Explanada del bastión**, usadas como arte del menú. Los retratos `warrior.webp`, `mage.webp` y `archer.webp` se renderizaron con Three.js a partir de las mallas originales del juego, con iluminación de estudio y fondo transparente.
+
+El corazón de piedra emplea geometría original creada en código y reutiliza los materiales del proyecto. La tarjeta `public/assets/interface/interior.webp` usa una captura del salón renderizado por el propio juego.
 
 Motor [Three.js](https://threejs.org/), licencia MIT. Herramientas de desarrollo: Vite (MIT), TypeScript (Apache-2.0) y tipos de Three.js (MIT). Versiones exactas en `package.json` y dependencias resueltas en `package-lock.json`; los paquetes conservan sus archivos de licencia en `node_modules` tras instalar. Sin fuentes remotas: tipografía del sistema.
 

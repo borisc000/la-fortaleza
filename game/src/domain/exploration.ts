@@ -5,7 +5,7 @@ import { LANDMARKS } from '../content/map.ts';
 import { PLAYER } from '../content/config.ts';
 import { EXPEDITION, OPENING_GUARD_OFFSETS } from '../content/expedition.ts';
 import { routeClearance } from '../content/terrain-layout.ts';
-import type { ExpeditionLayout } from '../content/expedition.ts';
+import type { PlayableLayout } from '../content/expedition.ts';
 import { Navigation, clearPath } from './navigation.ts';
 import { overlaps } from './movement.ts';
 import type { Bounds, Point, Solid } from './movement.ts';
@@ -42,10 +42,15 @@ export class Exploration {
     seed: number,
     heroRadius: number = PLAYER.radius,
     denseEconomy = false,
-    layout: ExpeditionLayout = EXPEDITION,
+    layout: PlayableLayout = EXPEDITION,
   ) {
     this.denseEconomy = denseEconomy;
     this.solids = solids;
+    if ('id' in layout) {
+      for (const object of layout.objects)
+        this.objects.push({ ...object, id: ++this.sequence, status: 'available', discovered: false });
+      return;
+    }
     // Independent stream: scenery does not alter the combat director's seeded sequence.
     let state = (seed ^ 0x6ac1e57d) >>> 0;
     const random = () => {

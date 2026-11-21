@@ -1,0 +1,49 @@
+ok 1 - camera stops before a wall, including its volume and safety gap
+ok 2 - volume catches a corner missed by an unpadded centre ray
+ok 3 - parallel rays outside a wall and walls behind the player do not obstruct
+ok 4 - starting inside an expanded obstacle cannot place camera beyond it
+ok 5 - lowest camera position leaves space above the terrain
+ok 6 - snap in immediately; recover independently of render framerate
+ok 7 - wide screens increase camera collision volume to protect near-plane corners
+ok 8 - loading and pause require explicit entry; fatal state cannot resume
+ok 9 - offscreen candidates are preferred; visible fallback retains warning and safe distance
+ok 10 - unsafe or disconnected spawn rings are deferred without a later wave backlog
+ok 11 - only persistently distant unseen normals retire; visibility resets grace and rewards survive
+ok 12 - local replenishment follows a relocated player while respecting rests and population
+ok 13 - expanded map has connected activity clearings and safe normal/major spawns at edges
+ok 14 - coins collect once by proximity and supplies wait at full health
+ok 15 - walls block automatic collection, discovery and contextual interaction
+ok 16 - chests are unique rewards; sources preserve charges at full HP and exhaust visibly
+ok 17 - interaction targeting is deterministic, prefers unused objects and rechecks range
+ok 18 - normal deaths leave collectible currency once; withdrawal and boss deaths do not
+ok 19 - discovery remembers visited destinations but limits guidance to three nearby points
+ok 20 - paused choices freeze pickups and queued interactions; lethal hits take priority over healing
+ok 21 - reward state and balance reset while the same seed reproduces placement
+ok 22 - actual map placements are reproducible, separated and reachable with player clearance
+ok 23 - rendered props reflect used states and release objects and shared resources on restart
+ok 24 - E2.4 lab pieces: the gate builds alone at its world size, with the same collision as in the world
+ok 25 - E2.4 lab pieces: siege remains build in isolation and only the ram and barrel collide
+ok 26 - seed 1: roadside rewards remain discoverable and approachable
+ok 27 - seed 2: roadside rewards remain discoverable and approachable
+ok 28 - seed 7: roadside rewards remain discoverable and approachable
+ok 29 - seed 19: roadside rewards remain discoverable and approachable
+ok 30 - seed 43: roadside rewards remain discoverable and approachable
+ok 31 - seed 77: roadside rewards remain discoverable and approachable
+ok 32 - seed 256: roadside rewards remain discoverable and approachable
+ok 33 - seed 9173: roadside rewards remain discoverable and approachable
+ok 34 - local reinforcement rings remain populated at all landmarks and activities for normal, elite and boss sizes
+ok 35 - director rejects a previously valid spawn when a persistent prop occupies it
+ok 36 - capture ground, loot and supplies do not suppress the horde; the flag and used props do
+ok 37 - all six sectors have spatial territories and the route network joins the arrival and fifteen landmarks
+ok 38 - the actual fortress builds with fallback materials and every viewpoint has a safe camera
+ok 39 - walking from every spawn across the real clearing preserves body and camera clearance
+ok 40 - the full five-soldier encounter completes on the actual map with unique deaths
+ok 41 - a pursuer routes around the actual ruin rather than attacking through its walls
+ok 42 - reinforcements have enough safe reachable positions across the actual clearing
+ok 43 - E2.1 gate: towers keep the wall foot passable, the arch mouth open and their stone solid
+ok 44 - E2.3 explanada: siege remains leave the road, the ronda, the clearing and the opening encounter free
+ok 45 - E3.1 surfaces: every sector has a ground character and puddles stay off clearings and collision
+ok 46 - E3.2 relief: the camera stays above the banks, camera-only boxes never block movement, outcrops leave routes free
+# tests 46
+# pass 46
+# fail 0

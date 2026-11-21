@@ -1,3 +1,4 @@
+import { STONE_HEART_BEACON } from '../content/stone-heart.ts';
 import type { Point } from '../domain/movement.ts';
 import { radarPoint } from '../app/guidance.ts';
 import type { UiContext } from './context.ts';
@@ -56,7 +57,7 @@ export function createRadar(radar: HTMLCanvasElement, ctx: UiContext) {
     };
     g.fillStyle = '#d8634fd9';
     for (const enemy of combat.enemies) {
-      if (enemy.dead || enemy.kind === 'elite' || enemy.kind === 'boss') continue;
+      if (enemy.dead || enemy.kind === 'elite' || enemy.kind === 'boss' || enemy.kind === 'hunter') continue;
       const p = at(enemy);
       if (!p.pinned) g.fillRect(p.x - 1.5, p.y - 1.5, 3, 3);
     }
@@ -85,6 +86,8 @@ export function createRadar(radar: HTMLCanvasElement, ctx: UiContext) {
     }
     const major = run.boss && !run.boss.dead ? run.boss : run.elite;
     if (major && !major.dead) mark(major, '#ff5a3c', 'diamond', 6.5);
+    if (run.hunter) mark(run.hunter, '#eca076', 'diamond', 5);
+    if (run.stoneHeart?.phase === 'signal') mark(STONE_HEART_BEACON, '#ffd68a', 'ring', 6.5);
     g.fillStyle = '#f1f4f7';
     g.beginPath();
     g.moveTo(half, half - 6);

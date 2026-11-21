@@ -1,4 +1,19 @@
 import type { Point } from '../domain/movement.ts';
+import type { ObjectKind } from './exploration.ts';
+
+export type ExpeditionId = 'exterior' | 'stone-heart';
+
+export const EXPEDITION_TITLES: Readonly<Record<ExpeditionId, string>> = {
+  exterior: 'Los dominios exteriores',
+  'stone-heart': 'El corazón de piedra',
+};
+
+export type InteriorExpeditionLayout = {
+  id: 'stone-heart';
+  start: Point & { yaw: number };
+  arrivalName: string;
+  objects: readonly (Point & { kind: ObjectKind; region: string; amount: number; uses: number })[];
+};
 
 export type ExpeditionLayout = {
   start: Point & { yaw: number };
@@ -10,6 +25,8 @@ export type ExpeditionLayout = {
   capture: Point;
   roadsidePlacement?: boolean;
 };
+
+export type PlayableLayout = ExpeditionLayout | InteriorExpeditionLayout;
 
 // Shared arrival, opening guards and early activities for the exterior scenario.
 export const EXPEDITION: ExpeditionLayout = {

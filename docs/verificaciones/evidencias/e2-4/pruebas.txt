@@ -1,0 +1,29 @@
+ok 1 - offscreen candidates are preferred; visible fallback retains warning and safe distance
+ok 2 - unsafe or disconnected spawn rings are deferred without a later wave backlog
+ok 3 - only persistently distant unseen normals retire; visibility resets grace and rewards survive
+ok 4 - local replenishment follows a relocated player while respecting rests and population
+ok 5 - expanded map has connected activity clearings and safe normal/major spawns at edges
+ok 6 - E2.4 lab pieces: the gate builds alone at its world size, with the same collision as in the world
+ok 7 - E2.4 lab pieces: siege remains build in isolation and only the ram and barrel collide
+ok 8 - seed 1: roadside rewards remain discoverable and approachable
+ok 9 - seed 2: roadside rewards remain discoverable and approachable
+ok 10 - seed 7: roadside rewards remain discoverable and approachable
+ok 11 - seed 19: roadside rewards remain discoverable and approachable
+ok 12 - seed 43: roadside rewards remain discoverable and approachable
+ok 13 - seed 77: roadside rewards remain discoverable and approachable
+ok 14 - seed 256: roadside rewards remain discoverable and approachable
+ok 15 - seed 9173: roadside rewards remain discoverable and approachable
+ok 16 - local reinforcement rings remain populated at all landmarks and activities for normal, elite and boss sizes
+ok 17 - director rejects a previously valid spawn when a persistent prop occupies it
+ok 18 - capture ground, loot and supplies do not suppress the horde; the flag and used props do
+ok 19 - all six sectors have spatial territories and the route network joins the arrival and fifteen landmarks
+ok 20 - the actual fortress builds with fallback materials and every viewpoint has a safe camera
+ok 21 - walking from every spawn across the real clearing preserves body and camera clearance
+ok 22 - the full five-soldier encounter completes on the actual map with unique deaths
+ok 23 - a pursuer routes around the actual ruin rather than attacking through its walls
+ok 24 - reinforcements have enough safe reachable positions across the actual clearing
+ok 25 - E2.1 gate: towers keep the wall foot passable, the arch mouth open and their stone solid
+ok 26 - E2.3 explanada: siege remains leave the road, the ronda, the clearing and the opening encounter free
+# tests 26
+# pass 26
+# fail 0

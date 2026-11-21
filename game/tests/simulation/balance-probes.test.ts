@@ -1,6 +1,7 @@
 import { TRAINING_EXPEDITION } from '../support/training-expedition.ts';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { actionStats } from '../../src/content/enemies.ts';
 import { Run } from '../../src/domain/run.ts';
 
 const bounds = { minX: -35, maxX: 35, minZ: -35, maxZ: 45 };
@@ -16,6 +17,7 @@ for (const cls of ['warrior', 'mage', 'archer'] as const)
         const body = { x: 0, z: 7, yaw: 0 };
         let peak = 0,
           choices = 0;
+        let bossStartHp: number | undefined;
         const choiceTimes: number[] = [];
         let move = { x: 0, z: 0 };
         for (let frame = 0; frame < 36000 && c.status === 'running'; frame++) {
@@ -69,10 +71,18 @@ for (const cls of ['warrior', 'mage', 'archer'] as const)
                 (supply && Math.hypot(supply.x - body.x, supply.z - body.z) < 18 ? supply : undefined) ??
                 p.drops.find(d => d.core) ??
                 (loot && Math.hypot(loot.x - body.x, loot.z - body.z) < 12 ? loot : nearest(enemies));
+            const bossAttack = run.boss?.attack;
+            const groundAction = bossAttack?.action;
+            const groundStats =
+              groundAction === 'edict' || groundAction === 'rupture' ? actionStats('boss', groundAction) : undefined;
+            const groundTarget =
+              groundStats && bossAttack && bossAttack.age < groundStats.windup ? bossAttack.groundTarget : undefined;
+            const mayWait = Boolean(groundTarget && groundAction === 'edict');
             let best = -Infinity;
-            for (let i = 0; i < 24; i++) {
-              const x = Math.sin((i * Math.PI) / 12),
-                z = Math.cos((i * Math.PI) / 12),
+            for (let i = 0; i < (mayWait ? 25 : 24); i++) {
+              const waiting = i === 24;
+              const x = waiting ? 0 : Math.sin((i * Math.PI) / 12),
+                z = waiting ? 0 : Math.cos((i * Math.PI) / 12),
                 ahead = { x: body.x + x * 2, z: body.z + z * 2 };
               if (Math.abs(ahead.x) > 30 || ahead.z < -30 || ahead.z > 40) continue;
               let score = target
@@ -87,6 +97,15 @@ for (const cls of ['warrior', 'mage', 'archer'] as const)
                 const d = Math.hypot(ahead.x - bolt.x - bolt.vx * 0.3, ahead.z - bolt.z - bolt.vz * 0.3);
                 score -= Math.max(0, 1.2 - d) * 8;
               }
+              if (groundTarget && groundStats) {
+                const distance = Math.hypot(ahead.x - groundTarget.x, ahead.z - groundTarget.z);
+                const clearance = 0.25;
+                if (groundAction === 'edict') {
+                  const safeRadius = groundStats.range - clearance;
+                  score -= Math.max(0, distance - safeRadius) * 30;
+                  if (waiting && distance < safeRadius) score += 3;
+                } else score -= Math.max(0, groundStats.range + clearance - distance) * 30;
+              }
               score += (x * move.x + z * move.z) * 0.1;
               if (score > best) {
                 best = score;
@@ -100,6 +119,7 @@ for (const cls of ['warrior', 'mage', 'archer'] as const)
           const interaction =
             c.hp < c.maxHp * 0.8 && focus && ['fountain', 'shop'].includes(focus.kind) ? focus.id : undefined;
           run.step(1 / 60, body, undefined, interaction);
+          if (run.phase === 'boss') bossStartHp ??= c.hp;
           if (run.shop.isOpen) {
             run.shop.buy('heal', run.shop.revision, run.exploration, p, c);
             run.shop.close();
@@ -114,6 +134,7 @@ for (const cls of ['warrior', 'mage', 'archer'] as const)
             status: c.status,
             time: c.time,
             hp: c.hp,
+            bossStartHp,
             level: p.level,
             kills: c.kills,
             choices,

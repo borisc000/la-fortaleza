@@ -5,13 +5,14 @@ import { classAffinity } from '../content/class-definition.ts';
 import { ARCHER_KIT, archerRange, arrowArmorIgnore } from '../content/classes/archer.ts';
 import { MAGE_KIT, mageRange } from '../content/classes/mage.ts';
 import { IMPETUS, WHIRLWIND } from '../content/combat.ts';
-import { ENEMIES, actionStats } from '../content/enemies.ts';
+import { BOSS_ATTACK_CUES, BOSS_FURY, ENEMIES, actionStats, isGroundAttack } from '../content/enemies.ts';
 import { regionAt } from '../content/map.ts';
+import { STONE_HEART_CAPTAIN, stoneHeartRegion } from '../content/stone-heart.ts';
 import { abilityData } from '../content/ranged-abilities.ts';
 import { techniqueValue } from '../content/techniques.ts';
 import { RangedArsenal } from '../domain/classes/ranged-arsenal.ts';
 import { WarriorArsenal } from '../domain/classes/warrior-arsenal.ts';
-import type { Point, Solid } from '../domain/movement.ts';
+import type { Point } from '../domain/movement.ts';
 import { HudCadence, edgeAnchor, incomingProjectile } from '../app/guidance.ts';
 import { createIcon, iconPath } from '../app/icons.ts';
 import { affinitySummary, relicSummary } from '../app/relics.ts';
@@ -28,14 +29,14 @@ const MAJOR_ACTIONS: Record<string, string> = {
   slam: 'Golpe al suelo · sal del círculo',
   volley: 'Andanada · muévete de lado',
   shot: 'Disparo',
-  charge: 'Carga',
+  charge: 'Carga · esquiva hacia un lado',
 };
 
 /**
  * Combat and exploration HUD: health, passive, skill, ability bar, relics, objective, threats,
  * edge markers, radar, tutorial and announcements. Reads the run; never changes it.
  */
-export function createHud(ctx: UiContext, solids: readonly Solid[], cue: (name: 'select') => void) {
+export function createHud(ctx: UiContext, cue: (name: 'select') => void) {
   const radar = createRadar(element<HTMLCanvasElement>('radar'), ctx);
   const tutorial = createTutorial(ctx, () => cue('select'));
   const announcer = createAnnouncer(ctx);
@@ -223,8 +224,9 @@ export function createHud(ctx: UiContext, solids: readonly Solid[], cue: (name: 
     if (progress.totalEssence > shownEssence && !ctx.quiet())
       experience.animate([{ filter: 'brightness(2.2)' }, { filter: 'none' }], { duration: 380 });
     shownEssence = progress.totalEssence;
-    element('group-text').textContent =
-      run.phase === 'waves'
+    element('group-text').textContent = run.stoneHeart
+      ? `Tramo ${run.stoneHeart.gateOpen ? 2 : 1} de 2`
+      : run.phase === 'waves'
         ? `Oleada ${run.wave} · ${clockLabel(untilBoss)} hasta el jefe`
         : run.phase === 'elite-gate'
           ? 'Último obstáculo · el Portador'
@@ -296,25 +298,26 @@ export function createHud(ctx: UiContext, solids: readonly Solid[], cue: (name: 
     const banner = element('encounter-banner');
     banner.hidden = !inGame;
     banner.textContent = run.objective;
-    banner.dataset.stage = run.phase;
-    const major = run.boss && !run.boss.dead ? run.boss : run.elite;
-    element('place').textContent = regionAt(body);
+    banner.dataset.stage = run.stoneHeart?.phase ?? run.incursion?.kind ?? run.phase;
+    const boss = run.boss;
+    const major = boss && !boss.dead ? boss : (run.elite ?? run.hunter);
+    const majorName = major && (run.stoneHeart ? STONE_HEART_CAPTAIN : ENEMIES[major.kind].name);
+    element('place').textContent = run.stoneHeart ? stoneHeartRegion(body) : regionAt(body);
     const core = run.progression.drops.find(drop => drop.core);
     const heldPost = run.capture.pressure ? run.capture.point : undefined;
-    const destination = core ?? major ?? heldPost ?? { x: 4, z: -18 };
-    const goal = core
-      ? 'Núcleo'
-      : major
-        ? ENEMIES[major.kind].name
-        : heldPost
-          ? 'Puesto disputado'
-          : 'Puerta de la fortaleza';
+    const missionTarget = run.stoneHeart?.destination(combat, body);
+    const destination = missionTarget ?? core ?? major ?? heldPost ?? { x: 4, z: -18 };
+    const goal =
+      missionTarget?.name ??
+      (core ? 'Núcleo' : majorName ? majorName : heldPost ? 'Puesto disputado' : 'Puerta de la fortaleza');
     element('wayfinder').textContent =
       `${goal} · ${Math.round(Math.hypot(destination.x - body.x, destination.z - body.z))} m · ${bearingWord(ctx.bearingTo(destination))}`;
     element('boss-panel').hidden = !inGame || !major;
     if (major) {
+      const action = major.attack?.action ?? 'melee';
+      const cue = major.kind === 'boss' ? BOSS_ATTACK_CUES[action] : undefined;
       element('boss-name').textContent =
-        `${ENEMIES[major.kind].name}${major.kind === 'boss' && major.hp <= major.maxHp / 2 ? ' · Furia' : ''}`;
+        `${majorName}${major.kind === 'boss' && major.hp <= major.maxHp * BOSS_FURY.healthFraction ? ' · Furia' : ''}`;
       element<HTMLProgressElement>('boss-health').max = major.maxHp;
       element<HTMLProgressElement>('boss-health').value = major.hp;
       element('boss-life').textContent = `${Math.ceil(major.hp)} / ${major.maxHp}`;
@@ -322,7 +325,11 @@ export function createHud(ctx: UiContext, solids: readonly Solid[], cue: (name: 
         major.spawnRemaining > 0
           ? 'Se aproxima…'
           : major.attack
-            ? MAJOR_ACTIONS[major.attack.action ?? 'melee']
+            ? isGroundAttack(action) && major.attack.age >= actionStats(major.kind, action).windup
+              ? 'Recuperándose · aprovecha para atacar'
+              : cue
+                ? `${cue.name} · ${cue.instruction}`
+                : MAJOR_ACTIONS[action]
             : 'Reposicionándose';
     }
 
@@ -341,12 +348,11 @@ export function createHud(ctx: UiContext, solids: readonly Solid[], cue: (name: 
       shots: Point[] = [];
     if (state.active)
       for (const enemy of combat.enemies) {
-        const reach = enemy.kind === 'archer' || enemy.kind === 'charger' || enemy.kind === 'boss' ? 16 : 4;
+        if (enemy.dead || !enemy.attack || isGroundAttack(enemy.attack.action)) continue;
+        const action = actionStats(enemy.kind, enemy.attack.action);
         if (
-          enemy.dead ||
-          !enemy.attack ||
-          enemy.attack.age >= actionStats(enemy.kind, enemy.attack.action).windup ||
-          Math.hypot(enemy.x - body.x, enemy.z - body.z) > reach
+          enemy.attack.age >= action.windup ||
+          Math.hypot(enemy.x - body.x, enemy.z - body.z) > Math.max(4, action.range + 3)
         )
           continue;
         const side = offscreen(enemy);
@@ -361,7 +367,7 @@ export function createHud(ctx: UiContext, solids: readonly Solid[], cue: (name: 
       }
     if (state.active)
       for (const p of combat.projectiles.items) {
-        if (!incomingProjectile(p, body, solids, definition.movement.radius) || !offscreen(p)) continue;
+        if (!incomingProjectile(p, body, run.movementSolids, definition.movement.radius) || !offscreen(p)) continue;
         warning ||= '¡Proyectil fuera de vista! Muévete de lado';
         if (shots.push(p) === 2) break;
       }
@@ -412,10 +418,19 @@ export function createHud(ctx: UiContext, solids: readonly Solid[], cue: (name: 
         }),
       );
     }
-    element('exploration-help').hidden = !!destinations.length;
-    const focus = exploration.focus(body);
+    const explorationHelp = element('exploration-help');
+    explorationHelp.hidden = !!destinations.length;
+    const hint = run.stoneHeart
+      ? 'La armería está al oeste del patio.'
+      : 'Explora para descubrir recompensas, mercader y captura.';
+    if (explorationHelp.textContent !== hint) explorationHelp.textContent = hint;
+    const focus = run.focus(body);
     element('interaction-prompt').hidden = !state.active || !focus;
-    if (focus) {
+    if (focus?.kind === 'beacon') {
+      element('interaction-description').textContent = 'Salón asegurado · prende la señal';
+      element<HTMLButtonElement>('interact').disabled = false;
+      element('interaction-verb').textContent = 'Encender almenara';
+    } else if (focus) {
       const full = focus.kind === 'fountain' && combat.hp >= combat.maxHp;
       element('interaction-description').textContent =
         focus.status === 'used'

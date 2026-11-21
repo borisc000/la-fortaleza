@@ -1,0 +1,10 @@
+{
+  "fecha": "2026-11-18",
+  "equipo": "ANGLE (AMD Radeon(TM) Graphics 0x1681, Direct3D11), GPU integrada; panel del navegador oculto",
+  "metodo": "Método de E2.4: createWorld real, 1440x900, pixelRatio 1, sombras PCF; por encuadre, 6 fotogramas de calentamiento y 30 medidos con lectura de 1 píxel tras cada uno (espera a la GPU). Mediana en ms; mínimo de dos rondas. Sin horda. 'Antes' es el estado de E2 (world.ts y weathering.ts previos a E3.1) cargado en la misma página.",
+  "antes_E2": { "cerca": 10.0, "contrapicado": 11.5, "detalle": 10.7, "oblicua-este": 13.0, "oblicua-oeste": 9.6, "media": 9.4, "lejana": 9.4, "aproximacion": 8.9, "escala": 13.4, "explanada-alta": 9.5, "camino": 9.6, "flanco-oeste": 9.4, "flanco-este": 9.8, "suelo": 10.8, "a-llegada": 10.0, "a-caravanas": 9.4, "b-campos": 9.4, "b-molinos": 9.5, "c-abadia": 9.5, "c-encrucijada": 9.8, "d-bosque": 10.5, "d-atalaya": 9.4, "e-campamento": 9.6, "e-ruinas": 10.4 },
+  "despues_E3_1": { "cerca": 10.8, "contrapicado": 10.9, "detalle": 10.8, "oblicua-este": 13.9, "oblicua-oeste": 10.4, "media": 9.5, "lejana": 10.2, "aproximacion": 9.7, "escala": 12.3, "explanada-alta": 9.7, "camino": 10.1, "flanco-oeste": 9.9, "flanco-este": 9.8, "suelo": 10.7, "a-llegada": 11.1, "a-caravanas": 10.3, "b-campos": 9.9, "b-molinos": 9.7, "c-abadia": 10.7, "c-encrucijada": 11.4, "d-bosque": 10.9, "d-atalaya": 9.9, "e-campamento": 9.6, "e-ruinas": 11.3 },
+  "diferencia": { "mediana": 0.5, "maxima": 1.6, "encuadreMaximo": "c-encrucijada", "nota": "Variación entre rondas de unos ±0,5 ms; algunos encuadres salen más baratos por ruido." },
+  "primeraVersion": { "nota": "Con el carácter de sector calculado por píxel la diferencia era de unos +1,2 ms en los sectores y hasta +2,4 ms en cruces; pasarlo al sombreado de vértice la redujo a la de arriba.", "sectores": { "a-llegada": 12.2, "c-encrucijada": 12.2, "e-ruinas": 12.8, "b-campos": 10.9 } },
+  "geometria": { "mallasFusionadas": { "antes": 27, "despues": 28 }, "obstaculos": { "antes": 864, "despues": 864 }, "triangulosEscena": { "antes": 268495, "despues": 269405 } }
+}

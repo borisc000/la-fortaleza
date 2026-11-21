@@ -73,15 +73,25 @@ export function createWarriorAsset(basic: BasicAttackDefinition, template = sour
       gait = THREE.MathUtils.damp(gait, Math.min(1, speed / 3), 14, dt);
       rest();
     },
-    combatPose(age: number | undefined, flash: number, spinning = false, impetus = 0) {
+    combatPose(
+      age: number | undefined,
+      flash: number,
+      spinning = false,
+      impetus = 0,
+      _siegeAge?: number,
+      stroke?: 'cut' | 'backhand' | 'thrust',
+    ) {
       rest();
       if (age !== undefined || spinning) {
         const time = Math.max(0, age ?? 0);
         const windup = THREE.MathUtils.smoothstep(time, 0, basic.windup);
         const cut = THREE.MathUtils.smoothstep(time, basic.windup, basic.windup + basic.active);
         const recovery = 1 - THREE.MathUtils.smoothstep(time, basic.windup + basic.active, basic.duration);
-        const lift = spinning ? 1 : windup * recovery;
-        const sweep = spinning ? 0.35 : (-0.6 + cut * 1.25) * lift;
+        const swingWeight = windup * recovery;
+        const lift = spinning ? 0.76 + 0.24 * swingWeight : swingWeight;
+        const sweep =
+          (spinning ? 0.35 * (1 - swingWeight) : 0) +
+          (-0.6 + cut * 1.25) * swingWeight * (stroke === 'backhand' ? -1 : 1);
         torso.rotation.y = sweep;
         head.rotation.y = -sweep * 0.7;
         arms[1].upper.rotation.set(1.2 * lift, -0.3 * lift, 0.18 - 0.65 * lift);
@@ -89,11 +99,24 @@ export function createWarriorAsset(basic: BasicAttackDefinition, template = sour
         arms[1].hand.rotation.x = -0.42 + 0.7 * lift;
         arms[0].upper.rotation.set(0.35 * lift, 0, -0.18 - 0.3 * lift);
         arms[0].fore.rotation.x = 0.09 + 0.65 * lift;
+        if (stroke === 'thrust') {
+          torso.rotation.x = -0.26 * cut * recovery;
+          arms[1].upper.rotation.x = 1.5 * lift;
+          arms[1].fore.rotation.x = (1 - cut) * lift;
+          arms[1].hand.rotation.x = -0.42 - 0.7 * cut * recovery;
+        }
       }
       for (const material of materials.values()) {
         material.emissive.set(flash > 0 ? 0xac3927 : 0x7c6e42);
         material.emissiveIntensity = flash > 0 ? flash : impetus * 0.03;
       }
+    },
+    pullChain(phase: number) {
+      const retract = THREE.MathUtils.smoothstep(phase, 0.1, 0.58);
+      const weight = 1 - THREE.MathUtils.smoothstep(phase, 0.62, 1);
+      arms[0].upper.rotation.x += (1.28 - 0.9 * retract) * weight;
+      arms[0].fore.rotation.x += (0.12 + 1.05 * retract) * weight;
+      torso.rotation.y -= 0.23 * retract * weight;
     },
     resetPose() {
       stride = gait = 0;

@@ -25,6 +25,7 @@ export type AreaAction = {
   maxPulses: number;
   loadout: ElementalLoadout;
   center?: Point;
+  fractures?: readonly (Point & { radius: number })[];
   multiplier?: number;
 };
 export type HeroProjectile = Point & {
@@ -35,12 +36,20 @@ export type HeroProjectile = Point & {
   age: number;
   damage: number;
   empowered: boolean;
+  siege?: boolean;
+  abilityId?: string;
+  flightOrigin?: Point;
+  leg?: number;
+  lateral?: boolean;
   loadout: ElementalLoadout;
   delay?: number;
   echo?: boolean;
   burstRadius?: number;
 };
 export type HeroKitState = {
+  siegeTrail?: { start: Point; end: Point; id: number; fade: number; element?: ElementalLoadout['element'] };
+  beamYaw?: number;
+  siegePose?: { age: number; yaw: number };
   attack?: Attack;
   cooldown: number;
   targetId?: number;

@@ -7,10 +7,10 @@ import { Navigation } from './navigation.ts';
 import { overlaps } from './movement.ts';
 import type { Body, Bounds, Point, Solid } from './movement.ts';
 import { SOLDIER } from '../content/combat.ts';
-import { EXPEDITION, OPENING_GUARD_OFFSETS } from '../content/expedition.ts';
-import type { ExpeditionLayout } from '../content/expedition.ts';
+import { EXPEDITION, EXPEDITION_TITLES, OPENING_GUARD_OFFSETS } from '../content/expedition.ts';
+import type { PlayableLayout } from '../content/expedition.ts';
 import { PROGRESSION } from '../content/progression.ts';
-import { CAMPAIGN, WAVES, LOCAL_HORDE } from '../content/campaign.ts';
+import { CAMPAIGN, INCURSION_WARNING, LOCAL_HORDE, WAVES, incursionSchedule } from '../content/campaign.ts';
 import { ENEMIES } from '../content/enemies.ts';
 import type { ClassId, ClassDefinition } from '../content/class-definition.ts';
 import { classRuntime } from './classes.ts';
@@ -19,6 +19,7 @@ import type { ChoiceOption } from './progression.ts';
 import { Exploration } from './exploration.ts';
 import { Capture } from './capture.ts';
 import { ExpeditionShop } from './shop.ts';
+import { StoneHeartMission } from './stone-heart-mission.ts';
 import { CAPTURE } from '../content/activities.ts';
 import type { Element } from '../content/elements.ts';
 
@@ -30,9 +31,11 @@ export class Run {
   readonly exploration: Exploration;
   readonly capture: Capture;
   readonly shop: ExpeditionShop;
+  readonly stoneHeart?: StoneHeartMission;
+  readonly layout: PlayableLayout;
   phase: 'waves' | 'elite-gate' | 'arrival' | 'boss' = 'waves';
   wave = 1;
-  totalSpawned = OPENING_GUARD_OFFSETS.length as number;
+  totalSpawned: number;
   eliteSpawned = false;
   bossSpawned = false;
   bossArrivalAt = 0;
@@ -40,10 +43,14 @@ export class Run {
   private specialRetryAt = 0;
   private nextLocalCheck = 3;
   private lastNormalSpawn = 0;
+  private readonly incursions: ReturnType<typeof incursionSchedule>;
+  private incursionIndex = 0;
+  private incursionSpawned = 0;
+  private incursionRetryAt = 0;
   private distantSince = new Map<number, number>();
   private randomState: number;
   private navigations = new Map<number, Navigation>();
-  private bounds: Bounds;
+  readonly bounds: Bounds;
   private solids: readonly Solid[];
   constructor(
     bounds: Bounds,
@@ -51,12 +58,14 @@ export class Run {
     seed = 1,
     classId: ClassId = 'warrior',
     initialElement?: Element,
-    layout: ExpeditionLayout = EXPEDITION,
+    layout: PlayableLayout = EXPEDITION,
   ) {
+    this.layout = layout;
     this.bounds = bounds;
     this.solids = solids;
     this.seed = seed >>> 0;
     this.randomState = this.seed;
+    this.incursions = incursionSchedule(this.seed);
     this.shop = new ExpeditionShop(this.seed);
     const originalRuntime = classRuntime(classId);
     const runtime =
@@ -67,10 +76,12 @@ export class Run {
           : originalRuntime;
     this.definition = runtime.definition;
     this.progression = new Progression(this.definition, initialElement, true, seed);
-    const opening = OPENING_GUARD_OFFSETS.map(offset => ({
-      x: layout.start.x + offset.x,
-      z: layout.start.z + offset.z,
-    }));
+    const opening =
+      'id' in layout
+        ? []
+        : OPENING_GUARD_OFFSETS.map(offset => ({ x: layout.start.x + offset.x, z: layout.start.z + offset.z }));
+    this.totalSpawned = opening.length;
+    if ('id' in layout) this.stoneHeart = new StoneHeartMission(solids);
     this.combat = new Combat(bounds, solids, opening, false, runtime);
     syncLoadout(this.progression, this.combat);
     this.exploration = new Exploration(bounds, solids, this.seed, this.definition.movement.radius, true, layout);
@@ -79,11 +90,38 @@ export class Run {
       solids,
     );
   }
+  get expeditionId() {
+    return 'id' in this.layout ? this.layout.id : 'exterior';
+  }
+  get title() {
+    return EXPEDITION_TITLES[this.expeditionId];
+  }
+  get movementSolids() {
+    return this.stoneHeart?.movementSolids ?? this.solids;
+  }
+  focus(hero: Point) {
+    return this.stoneHeart?.focus(hero) ?? this.exploration.focus(hero);
+  }
   get elite() {
     return this.combat.enemies.find(e => e.kind === 'elite' && !e.dead);
   }
   get boss() {
     return this.combat.enemies.find(e => e.kind === 'boss');
+  }
+  get hunter() {
+    return this.combat.enemies.find(e => e.kind === 'hunter' && !e.dead);
+  }
+  get incursion() {
+    const event = this.incursions[this.incursionIndex];
+    const time = this.combat.time;
+    return !this.stoneHeart &&
+      this.phase === 'waves' &&
+      time < CAMPAIGN.bossAt &&
+      event &&
+      time >= event.at - INCURSION_WARNING &&
+      time < event.at + event.duration
+      ? event
+      : undefined;
   }
   get stage() {
     return [...WAVES].reverse().find(stage => this.combat.time >= stage.at)!;
@@ -92,11 +130,19 @@ export class Run {
     return this.phase === 'waves' && this.combat.time % 60 >= CAMPAIGN.restStart;
   }
   get objective() {
+    if (this.stoneHeart) return this.stoneHeart.objective(this.combat);
     if (this.phase === 'elite-gate') return 'Derrota al Portador del núcleo para abrir paso al Castellano';
     if (this.phase === 'arrival')
       return `El Castellano se aproxima · ${Math.max(0, Math.ceil(CAMPAIGN.arrivalWarning - (this.combat.time - this.bossArrivalAt)))} s`;
     if (this.phase === 'boss') return 'Derrota al Castellano Vacío';
+    const event = this.incursion;
+    if (event) {
+      const remaining = event.at - this.combat.time;
+      if (remaining > 0) return `${event.title} en ${Math.ceil(remaining)} s · ${event.warning}`;
+      if (event.kind === 'siege' || this.hunter) return `${event.title} · ${event.active}`;
+    }
     if (this.elite) return 'El Portador ha llegado · derrótalo y recoge su núcleo';
+    if (this.hunter) return 'Verdugo de la ronda · esquiva su carga hacia un lado';
     if (this.capture.pressure) return 'Puesto disputado · resiste dentro del círculo';
     return this.resting
       ? 'Breve respiro · recoge esencia y prepara tu configuración'
@@ -180,10 +226,33 @@ export class Run {
     this.totalSpawned++;
     return true;
   }
+  private advanceIncursion(hero: Point, isVisible: (point: Point) => boolean) {
+    const time = this.combat.time;
+    let event = this.incursions[this.incursionIndex];
+    while (event && time >= event.at + event.duration) {
+      this.incursionIndex++;
+      this.incursionSpawned = 0;
+      event = this.incursions[this.incursionIndex];
+    }
+    if (!event || time < event.at || time < this.incursionRetryAt || this.incursionSpawned >= event.enemies.length)
+      return;
+    this.incursionRetryAt = time + 1;
+    const alive = this.combat.enemies.filter(enemy => !enemy.dead).length;
+    const remaining = event.enemies.slice(this.incursionSpawned);
+    const count = Math.min(remaining.length, CAMPAIGN.maxEnemies - 1 - alive);
+    if (count <= 0) return;
+    const clearance = Math.max(...remaining.map(kind => ENEMIES[kind].radius));
+    const positions = this.reinforcementPositions(hero, count, clearance, isVisible);
+    positions.forEach((point, index) => {
+      this.combat.addEnemies([point], event.kind === 'hunt' ? 2.4 : CAMPAIGN.spawnWarning, remaining[index]);
+    });
+    this.incursionSpawned += positions.length;
+    this.totalSpawned += positions.length;
+  }
   private retireDistant(hero: Point, isVisible: (point: Point) => boolean) {
     const alive = new Set<number>();
     for (const enemy of this.combat.enemies) {
-      if (enemy.dead || enemy.kind === 'elite' || enemy.kind === 'boss') continue;
+      if (enemy.dead || enemy.kind === 'elite' || enemy.kind === 'boss' || enemy.kind === 'hunter') continue;
       alive.add(enemy.id);
       if (Math.hypot(enemy.x - hero.x, enemy.z - hero.z) <= LOCAL_HORDE.retireDistance || isVisible(enemy)) {
         this.distantSince.delete(enemy.id);
@@ -198,7 +267,25 @@ export class Run {
     }
     for (const id of this.distantSince.keys()) if (!alive.has(id)) this.distantSince.delete(id);
   }
-  step(dt: number, hero: Body, isVisible: (point: Point) => boolean = () => false, interactionId?: number) {
+  private useActivity(interactionId: number, hero: Point) {
+    const focus = this.exploration.focus(hero);
+    if (focus?.id === interactionId && focus.kind === 'shop') {
+      this.shop.open();
+      return true;
+    }
+    const object = this.exploration.objects.find(o => o.id === interactionId);
+    if (!this.exploration.interact(interactionId, hero, this.combat) || object?.kind !== 'chest') return false;
+    this.exploration.coins -= object.amount;
+    this.progression.offerRelics(
+      `chest:${object.id}`,
+      this.stoneHeart ? 'Cofre de la armería' : 'Cofre de la fortaleza',
+      this.seed + object.id * 37,
+      object.amount,
+    );
+    this.exploration.announce('Cofre abierto · elige una reliquia o monedas');
+    return true;
+  }
+  step(dt: number, hero: Body, isVisible: (point: Point) => boolean = () => false, interactionId?: number | 'beacon') {
     if (this.combat.status !== 'running' || this.progression.pending || this.shop.isOpen || dt <= 0) return [];
     this.combat.step(dt, hero);
     const events = this.combat.takeEvents();
@@ -220,6 +307,17 @@ export class Run {
     // Choices stop both the director and combat; no spawn backlog builds while choosing.
     if (this.progression.pending) return events;
     this.exploration.step(dt, hero, this.combat);
+    if (this.stoneHeart) {
+      this.stoneHeart.advance(this.combat, hero);
+      this.wave = this.stoneHeart.wave;
+      this.totalSpawned = this.stoneHeart.spawned;
+      this.eliteSpawned ||= this.stoneHeart.phase === 'captain';
+      if (interactionId === 'beacon' && this.stoneHeart.light(this.combat, hero)) {
+        this.progression.stop();
+        this.exploration.stop();
+      } else if (typeof interactionId === 'number') this.useActivity(interactionId, hero);
+      return events;
+    }
     const time = this.combat.time;
     const captureEvent = this.capture.step(dt, hero, this.phase === 'waves' && time < CAMPAIGN.bossAt);
     if (captureEvent === 'completed') {
@@ -233,6 +331,7 @@ export class Run {
       this.combat.retireNormals();
       this.phase = 'elite-gate';
     }
+    if (this.phase === 'waves') this.advanceIncursion(hero, isVisible);
     if (this.phase === 'elite-gate' && this.eliteSpawned && !this.elite) {
       this.combat.projectiles.clear();
       if (this.spawnSpecial('boss', hero, isVisible)) {
@@ -244,25 +343,7 @@ export class Run {
     if (this.phase === 'arrival' && this.boss && this.boss.spawnRemaining <= 0) this.phase = 'boss';
     if (this.progression.pending) return events;
     // Final transition has priority even when E opens the merchant on this exact step.
-    if (interactionId !== undefined) {
-      const focus = this.exploration.focus(hero);
-      if (focus?.id === interactionId && focus.kind === 'shop') {
-        this.shop.open();
-        return events;
-      }
-      const object = this.exploration.objects.find(o => o.id === interactionId);
-      if (this.exploration.interact(interactionId, hero, this.combat) && object?.kind === 'chest') {
-        this.exploration.coins -= object.amount;
-        this.progression.offerRelics(
-          `chest:${object.id}`,
-          'Cofre de la fortaleza',
-          this.seed + object.id * 37,
-          object.amount,
-        );
-        this.exploration.announce('Cofre abierto · elige una reliquia o monedas');
-        return events;
-      }
-    }
+    if (typeof interactionId === 'number' && this.useActivity(interactionId, hero)) return events;
     const checkLocal = time >= this.nextLocalCheck;
     if (checkLocal) this.nextLocalCheck = time + LOCAL_HORDE.checkInterval;
     const localCount = this.combat.enemies.filter(
@@ -278,12 +359,15 @@ export class Run {
         return events;
       }
       const active = this.combat.enemies.filter(e => !e.dead).length;
+      const incursion = this.incursions[this.incursionIndex];
+      const reserve = (incursion?.enemies.length ?? 0) - this.incursionSpawned;
+      const siege = incursion?.kind === 'siege' && time >= incursion.at;
       const normalRequested =
         time >= this.nextWaveAt ? this.stage.count : replenish ? this.stage.localTarget - localCount : 0;
       const requested = Math.max(normalRequested, captureDue ? CAPTURE.reinforcements : 0);
       const count = Math.min(
         this.stage.count,
-        CAMPAIGN.maxEnemies - 1 - active,
+        CAMPAIGN.maxEnemies - 1 - active - reserve,
         Math.max(0, this.stage.localTarget - localCount),
         requested,
       );
@@ -295,12 +379,21 @@ export class Run {
       // Keep threats a minority even when replenishing tiny batches repeatedly.
       let archers = this.combat.enemies.filter(e => !e.dead && e.kind === 'archer').length;
       let chargers = this.combat.enemies.filter(e => !e.dead && e.kind === 'charger').length;
+      const archerSlots = siege ? 3 : 1;
+      const chargerSlots = siege ? 2 : 1;
+      const archerLimit = Math.floor(this.stage.localTarget * (siege ? 0.16 : 0.08));
+      const chargerLimit = Math.floor(this.stage.localTarget * (siege ? 0.1 : 0.06));
       positions.forEach((p, i) => {
         let kind: EnemyKind = 'thrall';
-        if (i === 0 && this.stage.archers && archers < Math.floor(this.stage.localTarget * 0.08)) {
+        if (i < archerSlots && this.stage.archers && archers < archerLimit) {
           kind = 'archer';
           archers++;
-        } else if (i === 1 && this.stage.chargers && chargers < Math.floor(this.stage.localTarget * 0.06)) {
+        } else if (
+          i >= archerSlots &&
+          i < archerSlots + chargerSlots &&
+          this.stage.chargers &&
+          chargers < chargerLimit
+        ) {
           kind = 'charger';
           chargers++;
         } else if ((this.totalSpawned + i) % 8 === 0) kind = 'soldier';

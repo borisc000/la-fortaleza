@@ -1,6 +1,6 @@
 # Los dominios exteriores — revisión y producción del escenario
 
-Definido el 11 de noviembre de 2026. **E0 y E1 completadas; E2–E6 pendientes.** Diagnóstico, mediciones y decisiones en [evaluación E0](EVALUACION_DOMINIOS_E0.md); distribución en [plano](../verificaciones/evidencias/e0/plano.png).
+Definido el 11 de noviembre de 2026. **E0, E1, E2, E3.1 y E3.2 completadas; E3.3–E3.4 y E4–E6 pendientes.** Diagnóstico, mediciones y decisiones en [evaluación E0](EVALUACION_DOMINIOS_E0.md); distribución en [plano](../verificaciones/evidencias/e0/plano.png).
 
 ## Objetivo y alcance
 
@@ -40,17 +40,17 @@ Conservar cámara libre, rueda, clases, progresión y combate automático. Las h
 
 ## E2 — Primera zona con acabado de referencia
 
-- **E2.1 · Puerta y dos torres.** Refinar proporciones y modelado de la entrada, arco, portón, torres y conexiones con la muralla. Evaluar silueta desde cerca y a distancia.
-- **E2.2 · Materiales y construcción.** Definir piedra, madera, metal, juntas, remates, daños y variaciones de superficie. Evitar detalles que no se lean desde la cámara de juego.
-- **E2.3 · Explanada y camino inmediato.** Producir una muestra completa de suelo, transición de materiales, vegetación y restos de asedio junto a la entrada.
-- **E2.4 · Comparación visual.** Registrar antes y después bajo condiciones equivalentes, revisar escala junto a los personajes y comprobar combate, cámara y coste de renderizado en esa zona. Preparar las piezas reutilizables útiles para el laboratorio.
+- **E2.1 · Puerta y dos torres — completada.** [Entrega y verificación](../verificaciones/VERIFICACION_E2_1.md). Refinar proporciones y modelado de la entrada, arco, portón, torres y conexiones con la muralla. Evaluar silueta desde cerca y a distancia.
+- **E2.2 · Materiales y construcción — completada.** [Entrega y verificación](../verificaciones/VERIFICACION_E2_2.md). Definir piedra, madera, metal, juntas, remates, daños y variaciones de superficie. Evitar detalles que no se lean desde la cámara de juego.
+- **E2.3 · Explanada y camino inmediato — completada.** [Entrega y verificación](../verificaciones/VERIFICACION_E2_3.md). Producir una muestra completa de suelo, transición de materiales, vegetación y restos de asedio junto a la entrada.
+- **E2.4 · Comparación visual — completada.** [Entrega y verificación](../verificaciones/VERIFICACION_E2_4.md); criterios resultantes en [ACABADO_EXTERIOR_E2.md](ACABADO_EXTERIOR_E2.md). Registrar antes y después bajo condiciones equivalentes, revisar escala junto a los personajes y comprobar combate, cámara y coste de renderizado en esa zona. Preparar las piezas reutilizables útiles para el laboratorio.
 
 **Cierre:** una zona terminada como referencia de calidad para el resto del exterior, con criterios claros de materiales, escala, densidad y lectura. Incorporar el feedback recibido antes de extender ese acabado.
 
 ## E3 — Terreno, vegetación y profundidad
 
-- **E3.1 · Superficies.** Extender caminos gastados, barro, piedra y transiciones con bordes irregulares y variación coherente.
-- **E3.2 · Relieve y límites naturales.** Incorporar taludes, rocas y desniveles visuales. Mantener estable la superficie de combate; cualquier desnivel realmente transitable exige resolver antes su soporte en movimiento, colisión y cámara.
+- **E3.1 · Superficies — completada.** [Entrega y verificación](../verificaciones/VERIFICACION_E3_1.md). Extender caminos gastados, barro, piedra y transiciones con bordes irregulares y variación coherente.
+- **E3.2 · Relieve y límites naturales — completada.** [Entrega y verificación](../verificaciones/VERIFICACION_E3_2.md). Incorporar taludes, rocas y desniveles visuales. Mantener estable la superficie de combate; cualquier desnivel realmente transitable exige resolver antes su soporte en movimiento, colisión y cámara.
 - **E3.3 · Vegetación.** Distribuir hierba, arbustos y árboles por grupos y condiciones del terreno, manteniendo libres las rutas y la lectura de amenazas.
 - **E3.4 · Paisaje y atmósfera.** Revisar cielo nublado, niebla, luz, humedad de materiales y paisaje lejano. Ajustar densidad, distancia de dibujo y reutilización de recursos a medida que se incorporan.
 
@@ -87,4 +87,4 @@ Conservar cámara libre, rueda, clases, progresión y combate automático. Las h
 
 Secuencia prevista: **E0 → E1 → E2 → E3 → E4 → E5 → E6**. Navegación, rendimiento y revisión visual se comprueban desde la fase que introduce cada cambio; E6 consolida esas verificaciones. Las decisiones rutinarias de implementación no requieren una aprobación adicional. Una modificación importante del alcance debe quedar explicada y documentada.
 
-La siguiente tarea es **E2.1, puerta y dos torres**. E1 está cerrada con distribución, acceso, aparición y recorridos verificados. Refinar la entrada como referencia de acabado, conservando sus pasos; desarrollar materiales y explanada en E2.2–E2.3.
+La zona de referencia E2 está terminada ([criterios](ACABADO_EXTERIOR_E2.md)). E3.1 extendió su suelo gastado a todo el mapa con carácter por sector, y E3.2 cerró el claro con taludes de 3,5–7 m (con freno de cámara) y añadió doce afloramientos rocosos en terreno muerto. La siguiente tarea es **E3.3, vegetación**: hierba, arbustos y árboles por grupos y según el terreno, sin cerrar rutas ni tapar amenazas.

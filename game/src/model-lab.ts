@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CAMERA } from './content/config.ts';
 import { catalog } from './model-catalog.ts';
 import type { ModelView, CatalogItem } from './model-catalog.ts';
 import { FRAME_STEP, type AnimationMode } from './model-animation.ts';
@@ -79,13 +80,32 @@ function restoreMaterials() {
 function wireframe() {
   setWire(el<HTMLInputElement>('wire').checked);
 }
+let gameFraming = false;
 function fit(direction = new THREE.Vector3(1, 0.55, -1.6)) {
+  gameFraming = false;
+  camera.fov = 40;
   controls.target.set(0, targetHeight, 0);
   camera.position.copy(controls.target).add(direction.normalize().multiplyScalar(radius * 2.6));
   controls.minDistance = radius * 0.15;
   controls.maxDistance = radius * 15;
   camera.near = Math.max(0.001, radius / 1000);
   camera.far = radius * 100;
+  camera.updateProjectionMatrix();
+  controls.update();
+}
+function frameCombat() {
+  if (!current || !abilityMode()) return;
+  gameFraming = true;
+  controls.autoRotate = false;
+  el('rotate').setAttribute('aria-pressed', 'false');
+  controls.target.copy(current.root.position);
+  controls.target.y += CAMERA.targetHeight;
+  camera.position.copy(controls.target);
+  camera.position.y += CAMERA.distance * Math.sin(CAMERA.pitch);
+  camera.position.z += CAMERA.distance * Math.cos(CAMERA.pitch);
+  camera.fov = CAMERA.fov;
+  camera.near = CAMERA.near;
+  camera.far = CAMERA.far;
   camera.updateProjectionMatrix();
   controls.update();
 }
@@ -120,6 +140,7 @@ async function select(item: CatalogItem) {
       [archerVariants, warriorVariants, ['mage', 'mage-before', 'mage-approved']].some(
         variants => variants.includes(selected?.id) && variants.includes(item.id),
       ));
+  const keepGameFraming = gameFraming && abilityMode();
   const previousOffset = compare ? camera.position.clone().sub(controls.target).divideScalar(radius) : undefined;
   selected = item;
   list();
@@ -171,6 +192,7 @@ async function select(item: CatalogItem) {
       camera.position.copy(controls.target).addScaledVector(previousOffset, radius);
       controls.update();
     }
+    if (keepGameFraming) frameCombat();
     wireframe();
     el('metrics').textContent =
       `${size.x.toFixed(2)} × ${size.y.toFixed(2)} × ${size.z.toFixed(2)} m · ancho / alto / fondo · ${meshes} mallas · ${Math.round(triangles).toLocaleString('es')} triángulos`;
@@ -192,6 +214,8 @@ async function select(item: CatalogItem) {
 function trialConfig(): TrialConfig {
   return {
     abilityId: el<HTMLSelectElement>('trial-ability').value,
+    testGuardHits: el<HTMLInputElement>('test-guard').checked,
+    testStakeCrossing: el<HTMLInputElement>('test-crossing').checked,
     level: Number(el<HTMLSelectElement>('trial-level').value),
     focus: el<HTMLSelectElement>('trial-focus').value as TrialConfig['focus'],
     mutation: Number(el<HTMLSelectElement>('trial-mutation').value) as 0 | 1,
@@ -230,6 +254,10 @@ function runTrial() {
   const b = build.state.branches;
   el('trial-branches').textContent =
     `Potencia ${b.power} · Expansión ${b.expansion} · Especialización ${b.specialization} · Ritmo ${b.rhythm}. Al completar una rama, se distribuye el resto en las siguientes.`;
+  const guard = config.abilityId === 'warrior:retaliation';
+  el('guard-options').hidden = !guard;
+  const crossing = config.abilityId === 'archer:stakes';
+  el('crossing-options').hidden = !crossing;
   const support = ['mage:mirror', 'archer:hunting-beacon', 'warrior:war-banner'].includes(config.abilityId);
   playing = true;
   void select({
@@ -242,7 +270,11 @@ function runTrial() {
       (support
         ? ' Básico de nivel 1 habilitado para observar el apoyo de esta habilidad.'
         : ' Solo esta habilidad activa.') +
-      ' Muñecos sin armadura, sin ataques y con vida restaurada. Los empujes sí se conservan.',
+      (guard && config.testGuardHits
+        ? ' El muñeco frontal ataca para probar la barrera.'
+        : crossing && config.testStakeCrossing
+          ? ' Un muñeco de la fila avanza hacia el arquero y cruza la formación.'
+          : ' Muñecos sin armadura, sin ataques y con vida restaurada. Los empujes sí se conservan.'),
     create: () =>
       createAbilityLab(config, camera, text => {
         el('metrics').textContent = text;
@@ -257,7 +289,15 @@ el('trial-ability').onchange = () => {
   trialVariants();
   runTrial();
 };
-for (const id of ['trial-level', 'trial-element', 'trial-focus', 'trial-mutation', 'trial-finisher'])
+for (const id of [
+  'trial-level',
+  'trial-element',
+  'trial-focus',
+  'trial-mutation',
+  'trial-finisher',
+  'test-guard',
+  'test-crossing',
+])
   el(id).onchange = runTrial;
 el('trial-run').onclick = () => {
   playing = true;
@@ -266,6 +306,7 @@ el('trial-run').onclick = () => {
 el('lab-mode').onchange = () => {
   const skills = abilityMode();
   document.body.classList.toggle('ability-mode', skills);
+  el('game-camera').hidden = !skills;
   el('ability-settings').hidden = !skills;
   el('model-collection').hidden = skills;
   el('pose-settings').hidden = skills;
@@ -293,6 +334,7 @@ el('timeline').oninput = () => {
   seek(Number(el<HTMLInputElement>('timeline').value));
 };
 el('search').oninput = list;
+el('game-camera').onclick = frameCombat;
 el('reset').onclick = () => fit();
 el('front').onclick = () => fit(new THREE.Vector3(0, 0.1, -1));
 el('side').onclick = () => fit(new THREE.Vector3(1, 0.1, 0));

@@ -3,37 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0e1412" />
-    <meta name="description" content="Primera escena de una aventura de fantasía oscura. Fortaleza, explanada y cámara en tercera persona." />
+    <meta name="theme-color" content="#11110f" />
+    <meta name="description" content="Sobrevive al asedio de los muertos en los dominios exteriores y recupera el corazón de La Fortaleza." />
     <link rel="icon" href="data:," />
-    <title>La Fortaleza · Los dominios exteriores</title>
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="stylesheet" href="/src/interface.css" />
+    <title>La Fortaleza</title>
   </head>
   <body>
-    <main id="app">
-      <canvas id="world" aria-label="Exterior de la fortaleza. WASD para caminar, mover el mouse para mirar y rueda para zoom." tabindex="0"></canvas>
-
-      <header class="masthead">
-        <div class="sigil" aria-hidden="true">♜</div>
-        <div><p class="eyebrow">Fantasía oscura · prototipo 0.2.15</p><h1>La Fortaleza</h1></div>
-      </header>
+    <main id="app" data-phase="loading">
+      <canvas id="world" aria-label="Exterior de la fortaleza. WASD para caminar, ratón para mirar y rueda para acercar o alejar la cámara." tabindex="0" inert></canvas>
 
       <div class="top-actions">
-        <details id="settings">
-          <summary>Ajustes</summary>
-          <div class="settings-body">
-            <label>Calidad <select id="quality"><option value="high">Alta</option><option value="low">Ligera</option></select></label>
-            <label>Distancia <input id="distance" type="range" min="4" max="18" step="0.01" value="12" /></label>
-            <label>Sensibilidad <input id="sensitivity" type="range" min="0.001" max="0.006" step="0.0005" value="0.003" /></label>
-            <label>Volumen <input id="sound-volume" type="range" min="0" max="100" step="5" value="25" /></label>
-            <label class="check"><input id="sound-enabled" type="checkbox" checked /> Sonidos</label>
-            <label class="check"><input id="invert" type="checkbox" /> Invertir mirada vertical</label>
-            <label>Interfaz <input id="ui-scale" type="range" min="85" max="125" step="5" value="100" /></label>
-            <label class="check"><input id="reduce-effects" type="checkbox" /> Reducir destellos y sacudidas</label>
-            <p class="section-label">Diagnóstico</p>
-            <output id="metrics">Esperando el primer fotograma.</output>
-            <p class="fine">Seis minutos de oleadas, élite y jefe. Máximo 100 enemigos vivos y 100 proyectiles enemigos y 32 del héroe; El diagnóstico mide intervalos de fotograma, no tiempo de GPU.</p>
-          </div>
-        </details>
         <button id="pause" class="quiet" disabled><span class="pause-icon" aria-hidden="true"></span>Pausar</button>
       </div>
 
@@ -80,7 +61,7 @@
         </div>
         <div id="edge-markers" aria-hidden="true"></div>
         <i id="hit-direction" aria-hidden="true"></i>
-        <aside id="tutorial" hidden aria-label="Primeros pasos"><p class="section-label">Primeros pasos</p><ol id="tutorial-steps"></ol></aside>
+        <aside id="tutorial" hidden aria-label="Primeros pasos"><p class="section-label">Primeros pasos</p><p id="tutorial-step" role="status"></p></aside>
         <div id="announce" role="status"><h2 id="announce-title"></h2><p id="announce-detail"></p></div>
       </section>
 
@@ -103,76 +84,118 @@
       <div id="curtain" aria-hidden="true"></div>
 
       <footer class="toolbar" id="controls" hidden>
-        <div class="camera-controls"><button id="left" aria-label="Girar cámara a la izquierda">↶</button><button id="reset" aria-label="Restablecer cámara">Centrar</button><button id="right" aria-label="Girar cámara a la derecha">↷</button><button id="capture">Capturar ratón</button></div>
-        <p class="hint desktop-hint" id="hint"><span><kbd>WASD</kbd> caminar</span><span><kbd>Ratón</kbd> mirar</span><span><kbd>Rueda</kbd> zoom</span><span><kbd>E</kbd> interactuar</span><span><kbd>Esc</kbd> pausa</span></p>
-        <p class="hint mobile-hint">Izquierda: caminar · Derecha: mirar</p>
+        <details id="camera-menu"><summary>Cámara</summary><div class="camera-controls"><button id="left" aria-label="Girar cámara a la izquierda">↶</button><button id="reset" aria-label="Restablecer cámara">Centrar</button><button id="right" aria-label="Girar cámara a la derecha">↷</button><button id="capture">Capturar ratón</button></div></details>
       </footer>
       <div id="joystick" aria-hidden="true" hidden><div id="joystick-thumb"></div></div>
 
-      <div id="loading" class="veil"><section class="panel loading-panel"><div class="sigil" aria-hidden="true">♜</div><p class="eyebrow">Preparando el entorno</p><h2>Piedra, hierro y ceniza</h2><p id="load-message" role="status">Cargando los materiales de la fortaleza…</p><progress id="load-progress" value="0" max="13"></progress><p class="fine">Escena local · sin cuentas ni conexión a servidores de juego.</p></section></div>
-
-      <div id="welcome" class="veil" hidden><section class="panel welcome-panel">
-        <header class="welcome-head">
-          <p class="eyebrow">Los dominios exteriores</p>
-          <h2>El asedio de los muertos</h2>
-          <p class="lede">Resiste seis minutos y derrota al Castellano Vacío. Tú te mueves; los ataques y habilidades se activan solos.</p>
+      <div id="campaign" data-screen="home">
+        <header class="campaign-nav">
+          <button class="campaign-brand" type="button" data-screen-link="home" aria-label="La Fortaleza, volver al inicio">
+            <span class="keep-sigil" aria-hidden="true">♜</span><span>La Fortaleza</span>
+          </button>
+          <nav aria-label="Ayuda y opciones">
+            <button class="menu-link" type="button" data-dialog="guide">Cómo jugar</button>
+            <button class="menu-link" type="button" data-dialog="settings">Ajustes</button>
+          </nav>
         </header>
-        <div class="welcome-body">
-          <div class="class-selection">
-            <p class="section-label" id="class-label">Elige tu clase</p>
-            <div class="class-cards" role="group" aria-labelledby="class-label">
-              <button type="button" class="class-card" data-class="warrior" aria-pressed="true">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4l-4.6.6L6 14l4 4 9.4-9.4z"/><path d="M4.5 12.5l7 7M7.5 16.5 4 20"/></svg>
-                <strong>Guerrero</strong><span>Combate cercano</span><small>100 de vida</small>
-              </button>
-              <button type="button" class="class-card" data-class="mage" aria-pressed="false">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3l1.9 5.6L18.5 10.5l-5.6 1.9L11 18l-1.9-5.6L3.5 10.5l5.6-1.9z"/><path d="M18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg>
-                <strong>Mago</strong><span>Distancia y área</span><small>80 de vida</small>
-              </button>
-              <button type="button" class="class-card" data-class="archer" aria-pressed="false">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4c9 0 15 6 15 15"/><path d="M5 4l15 15"/><path d="M4 20 15.5 8.5M15.5 8.5h-4.2M15.5 8.5v4.2"/></svg>
-                <strong>Arquero</strong><span>Precisión y penetración</span><small>90 de vida</small>
-              </button>
-            </div>
-            <select id="select-class" hidden aria-labelledby="class-label"><option value="warrior">Guerrero · combate cercano</option><option value="mage">Mago · distancia y área</option><option value="archer">Arquero · precisión y penetración</option></select>
-            <div id="initial-element" hidden>
-              <p class="section-label" id="element-label">Afinidad inicial</p>
-              <div class="element-chips" role="group" aria-labelledby="element-label">
-                <button type="button" class="element-chip" data-element="fire" aria-pressed="true" title="Quemadura y erupciones">Fuego</button>
-                <button type="button" class="element-chip" data-element="water" aria-pressed="false" title="Ralentización y oleadas">Agua</button>
-                <button type="button" class="element-chip" data-element="earth" aria-pressed="false" title="Quebranto y coraza">Tierra</button>
-                <button type="button" class="element-chip" data-element="air" aria-pressed="false" title="Empuje y vórtice">Aire</button>
+
+        <section id="home" class="campaign-page" aria-labelledby="home-title">
+          <div class="home-content">
+            <p class="campaign-kicker">Era I <span aria-hidden="true">/</span> Establecer el reino</p>
+            <h1 id="home-title">La <span>Fortaleza</span></h1>
+            <p class="home-intro">Cruza los dominios de la fortaleza ocupada, resiste el asedio de los muertos y derrota al Castellano Vacío.</p>
+            <button id="campaign-play" class="primary campaign-cta" type="button" data-screen-link="expeditions">Jugar <span aria-hidden="true">→</span></button>
+          </div>
+        </section>
+
+        <section id="expeditions" class="campaign-page campaign-content" aria-labelledby="expedition-title" hidden>
+          <button class="back-link" type="button" data-screen-link="home"><span aria-hidden="true">←</span> Inicio</button>
+          <header class="campaign-heading">
+            <p class="campaign-kicker">Era I <span aria-hidden="true">/</span> Establecer el reino</p>
+            <h2 id="expedition-title" tabindex="-1">Expediciones</h2>
+          </header>
+          <div class="stage-grid">
+            <article class="stage-card stage-playable">
+              <img src="/assets/interface/exterior.webp" width="900" height="507" alt="" />
+              <div class="stage-content">
+                <p class="campaign-kicker">Etapa I</p>
+                <h3>Los dominios exteriores</h3>
+                <p>Sobrevive al asedio y vence al Castellano Vacío ante la fortaleza.</p>
+                <button id="prepare-expedition" class="primary campaign-cta" type="button" data-screen-link="welcome" data-expedition="exterior">Preparar expedición <span aria-hidden="true">→</span></button>
               </div>
-              <select id="select-element" hidden aria-labelledby="element-label"><option value="fire">Fuego · quemadura y erupciones</option><option value="water">Agua · ralentización y oleadas</option><option value="earth">Tierra · quebranto y coraza</option><option value="air">Aire · empuje y vórtice</option></select>
+            </article>
+            <article class="stage-card stage-playable stage-interior">
+              <img src="/assets/interface/interior.webp" width="900" height="567" alt="" />
+              <div class="stage-content">
+                <p class="campaign-kicker">Etapa II <span aria-hidden="true">/</span> Prototipo jugable</p>
+                <h3>El corazón de piedra</h3>
+                <p>Despeja el patio y el salón, visita la armería y enciende la almenara.</p>
+                <button id="prepare-stone-heart" class="primary campaign-cta" type="button" data-screen-link="welcome" data-expedition="stone-heart" aria-label="Preparar El corazón de piedra">Preparar expedición <span aria-hidden="true">→</span></button>
+              </div>
+            </article>
+            <article class="stage-card stage-planned stage-defense">
+              <div class="stage-content">
+                <p class="campaign-kicker">Etapa III <span aria-hidden="true">/</span> En desarrollo</p>
+                <h3>La primera bandera</h3>
+                <p>Defiende la fortaleza y asegura las catacumbas.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="welcome" class="campaign-page campaign-content" aria-labelledby="welcome-title" hidden>
+          <button class="back-link" type="button" data-screen-link="expeditions"><span aria-hidden="true">←</span> Expediciones</button>
+          <div class="preparation">
+            <div class="loadout">
+              <header class="campaign-heading">
+                <p id="prepare-stage" class="campaign-kicker">Los dominios exteriores</p>
+                <h2 id="welcome-title" tabindex="-1">Elige tu clase</h2>
+              </header>
+              <div class="class-cards" role="group" aria-labelledby="welcome-title">
+                <button type="button" class="class-card" data-class="warrior" aria-pressed="true"><strong>Guerrero</strong><span>Cuerpo a cuerpo</span></button>
+                <button type="button" class="class-card" data-class="mage" aria-pressed="false"><strong>Mago</strong><span>Daño de área</span></button>
+                <button type="button" class="class-card" data-class="archer" aria-pressed="false"><strong>Arquero</strong><span>Largo alcance</span></button>
+              </div>
+              <select id="select-class" hidden aria-labelledby="welcome-title"><option value="warrior">Guerrero</option><option value="mage">Mago</option><option value="archer">Arquero</option></select>
+              <div class="class-details" aria-live="polite">
+                <dl class="class-stats">
+                  <div><dt>Vida inicial</dt><dd id="loadout-health">100</dd></div>
+                  <div><dt>Alcance básico</dt><dd id="loadout-range">2 m</dd></div>
+                  <div><dt>Pasiva</dt><dd id="loadout-passive">Ímpetu</dd></div>
+                </dl>
+                <p id="class-description"></p>
+              </div>
+              <div id="initial-element" hidden>
+                <p class="section-label" id="element-label">Afinidad inicial</p>
+                <div class="element-chips" role="group" aria-labelledby="element-label">
+                  <button type="button" class="element-chip" data-element="fire" aria-pressed="true">Fuego</button>
+                  <button type="button" class="element-chip" data-element="water" aria-pressed="false">Agua</button>
+                  <button type="button" class="element-chip" data-element="earth" aria-pressed="false">Tierra</button>
+                  <button type="button" class="element-chip" data-element="air" aria-pressed="false">Aire</button>
+                </div>
+                <select id="select-element" hidden aria-labelledby="element-label"><option value="fire">Fuego</option><option value="water">Agua</option><option value="earth">Tierra</option><option value="air">Aire</option></select>
+              </div>
+              <div class="deploy-actions">
+                <button id="enter" class="primary campaign-cta" type="button" disabled>Iniciar expedición <span aria-hidden="true">→</span></button>
+                <div id="loading" class="deploy-status"><p id="load-message" role="status">Preparando la escena…</p><progress id="load-progress" value="0" max="13" aria-label="Carga de la escena"></progress></div>
+                <p id="landscape-hint" class="deploy-status" hidden>Gira el dispositivo para iniciar la expedición.</p>
+              </div>
             </div>
-            <p id="class-description" aria-live="polite">100 de vida · espada a corta distancia. Aprende hasta cuatro habilidades automáticas y mejóralas hasta nivel 10. Torbellino y espada pueden actuar a la vez. Elige Fuego, Agua, Tierra o Aire al nivel 2.</p>
+            <div id="loadout-preview" class="loadout-preview" data-class="warrior" aria-hidden="true">
+              <img id="class-portrait" src="/assets/interface/warrior.webp" width="480" height="640" alt="" />
+            </div>
           </div>
-          <div class="welcome-guide">
-            <p class="section-label">Cómo se juega</p>
-            <ul class="welcome-steps">
-              <li><strong>Construye tu poder.</strong> Cada clase tiene ocho habilidades: equipa hasta cuatro y desarróllalas hasta nivel 10. Desde nivel 5 puedes añadir un elemento de apoyo.</li>
-              <li><strong>Explora.</strong> Abre cofres con reliquias, usa fuentes y visita al mercader. Las monedas duran esta expedición.</li>
-              <li><strong>Arriesga por un premio.</strong> Resiste 25 s dentro del puesto para ganar 25 monedas.</li>
-              <li><strong>Despierta tu maestría.</strong> Derrota al Portador desde 2:30 y recoge su núcleo con afinidad III.</li>
-            </ul>
-            <p class="section-label">Controles</p>
-            <ul class="key-list">
-              <li><kbd>WASD</kbd> Caminar</li>
-              <li><kbd>Ratón</kbd> Mirar, sin mantener botones</li>
-              <li><kbd>Rueda</kbd> Zoom</li>
-              <li><kbd>E</kbd> Interactuar</li>
-              <li><kbd>Esc</kbd> Liberar el ratón y pausar</li>
-            </ul>
-          </div>
-        </div>
-        <button id="enter" class="primary">Entrar en el territorio <span aria-hidden="true">→</span></button>
-        <p class="fine">Al entrar se captura el ratón. En táctil: izquierda para caminar y derecha para mirar. Personajes y animaciones provisionales.</p>
+        </section>
+      </div>
+
+      <div id="paused" class="veil" hidden><section class="panel menu-panel pause-panel panel-with-footer" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+        <header><p id="pause-stage" class="eyebrow">Los dominios exteriores</p><h2 id="pause-title">En pausa</h2><p id="pause-reason"></p></header>
+        <div class="panel-scroll" tabindex="0" role="region" aria-label="Estado de la expedición"><dl id="pause-grid" class="stat-grid"></dl><div id="pause-build" class="build-summary"></div></div>
+        <div class="panel-actions"><button id="resume" class="primary">Continuar</button><button class="secondary" type="button" data-dialog="settings">Ajustes</button><button class="secondary" type="button" data-dialog="guide">Cómo jugar</button><button id="restart-paused" class="secondary">Reiniciar</button><button id="select-paused" class="secondary">Cambiar clase</button><button id="home-paused" class="secondary">Volver al inicio</button></div>
       </section></div>
 
-      <div id="paused" class="veil" hidden><section class="panel menu-panel pause-panel"><p class="eyebrow">Un momento de calma</p><h2>Encuentro en pausa</h2><p id="pause-reason">El encuentro se ha pausado.</p><dl id="pause-grid" class="stat-grid"></dl><div id="pause-build" class="build-summary"></div><button id="resume" class="primary">Continuar</button><button id="restart-paused" class="secondary">Reiniciar encuentro</button><button id="select-paused" class="secondary">Nueva expedición · elegir clase</button></section></div>
-
       <div id="level-up" class="veil" hidden><section class="panel upgrade-panel" role="dialog" aria-modal="true" aria-labelledby="upgrade-title" aria-describedby="upgrade-description">
-        <p class="eyebrow">Esencia de la fortaleza</p>
+        <p class="eyebrow">Progresión de la expedición</p>
         <h2 id="upgrade-title">Elige una mejora</h2>
         <p id="upgrade-description"></p>
         <div id="upgrade-options" class="upgrade-options"></div>
@@ -185,13 +208,64 @@
         </div>
       </section></div>
 
-      <div id="shop" class="veil" hidden><section class="panel shop-panel" role="dialog" aria-modal="true" aria-labelledby="shop-title" aria-describedby="shop-description"><p class="eyebrow">Mercader de campaña</p><h2 id="shop-title">Provisiones para el asedio</h2><p id="shop-description">Combate y reloj en pausa. Existencias limitadas por expedición. Las mejoras comparten el máximo de tres rangos con las subidas de nivel.</p><p id="shop-balance"></p><p id="shop-relics" class="techniques-summary"></p><div id="shop-offers"></div><p id="shop-message" role="status"></p><button id="shop-continue" class="primary">Continuar expedición</button><p class="fine">Esc cierra la tienda y deja el juego en pausa.</p></section></div>
+      <div id="shop" class="veil" hidden><section class="panel shop-panel panel-with-footer" role="dialog" aria-modal="true" aria-labelledby="shop-title" aria-describedby="shop-description">
+        <header><p class="eyebrow">Mercader de campaña</p><h2 id="shop-title">Provisiones para el asedio</h2><p id="shop-description"></p><p id="shop-balance"></p><p id="shop-relics" class="techniques-summary"></p></header>
+        <div class="panel-scroll"><div id="shop-offers"></div></div>
+        <footer class="shop-actions"><p id="shop-message" role="status"></p><button id="shop-continue" class="primary">Continuar expedición</button></footer>
+      </section></div>
 
-      <div id="results" class="veil" hidden><section class="panel results-panel"><p class="eyebrow">Fin del encuentro</p><h2 id="result-title"></h2><p id="result-description"></p><dl id="result-grid" class="stat-grid"></dl><section id="result-damage" class="damage-breakdown" aria-label="Daño por origen"></section><div id="result-build" class="build-summary"></div><p id="result-stats" class="fine"></p><button id="restart" class="primary">Volver a intentarlo</button><button id="select-results" class="secondary">Elegir clase y afinidad</button></section></div>
+      <div id="results" class="veil" hidden><section class="panel results-panel panel-with-footer" role="dialog" aria-modal="true" aria-labelledby="result-title">
+        <header><p id="result-outcome" class="eyebrow"></p><h2 id="result-title" tabindex="-1"></h2><p id="result-description"></p></header>
+        <div id="result-summary" class="panel-scroll" tabindex="0" role="region" aria-label="Resumen de la expedición">
+          <dl id="result-grid" class="stat-grid"></dl><section id="result-damage" class="damage-breakdown" aria-label="Daño por origen"></section><div id="result-build" class="build-summary"></div><p id="result-stats" class="fine"></p>
+        </div>
+        <div class="panel-actions"><button id="restart" class="primary">Jugar de nuevo</button><button id="select-results" class="secondary">Cambiar clase</button><button id="home-results" class="secondary">Volver al inicio</button></div>
+      </section></div>
 
-      <div id="fatal" class="veil" hidden><section class="panel menu-panel"><p class="eyebrow">No se pudo abrir la escena</p><h2>Algo interrumpió la vista</h2><p id="fatal-message" role="alert"></p><button id="reload" class="primary">Volver a cargar</button></section></div>
+      <div id="fatal" class="veil" hidden><section class="panel menu-panel" role="dialog" aria-modal="true" aria-labelledby="fatal-title"><h2 id="fatal-title">No se pudo abrir la escena</h2><p id="fatal-message" role="alert"></p><button id="reload" class="primary">Volver a cargar</button></section></div>
 
-      <div id="portrait" class="veil"><section class="panel menu-panel"><h2>Gira tu dispositivo</h2><p>Esta vista está diseñada para jugar en horizontal.</p></section></div>
+      <div id="portrait" class="veil" hidden><section class="panel menu-panel" role="dialog" aria-modal="true" aria-labelledby="portrait-title"><h2 id="portrait-title" tabindex="-1">Gira tu dispositivo</h2><p>Vuelve a poner la pantalla en horizontal para retomar la expedición.</p></section></div>
+
+      <dialog id="settings" class="interface-dialog" aria-labelledby="settings-title">
+        <header class="dialog-heading"><h2 id="settings-title">Ajustes</h2><form method="dialog"><button class="close-button" aria-label="Cerrar ajustes" autofocus>×</button></form></header>
+        <div class="preferences">
+          <fieldset>
+            <legend>Imagen e interfaz</legend>
+            <label class="select-field">Calidad gráfica <select id="quality"><option value="high">Alta</option><option value="low">Ligera</option></select></label>
+            <label class="range-field"><span>Tamaño del HUD <output id="ui-scale-value" for="ui-scale">100 %</output></span><input id="ui-scale" type="range" min="85" max="125" step="5" value="100" /></label>
+            <label class="toggle-field"><input id="reduce-effects" type="checkbox" /> Reducir destellos y sacudidas</label>
+          </fieldset>
+          <fieldset>
+            <legend>Cámara</legend>
+            <label class="range-field"><span>Distancia inicial <output id="distance-value" for="distance">12 m</output></span><input id="distance" type="range" min="4" max="18" step="0.5" value="12" /></label>
+            <label class="range-field"><span>Sensibilidad <output id="sensitivity-value" for="sensitivity">Normal</output></span><input id="sensitivity" type="range" min="0.001" max="0.006" step="0.0005" value="0.003" /></label>
+            <label class="toggle-field"><input id="invert" type="checkbox" /> Invertir mirada vertical</label>
+          </fieldset>
+          <fieldset>
+            <legend>Sonido</legend>
+            <label class="toggle-field"><input id="sound-enabled" type="checkbox" checked /> Activar sonidos</label>
+            <label class="range-field"><span>Volumen <output id="sound-volume-value" for="sound-volume">25 %</output></span><input id="sound-volume" type="range" min="0" max="100" step="5" value="25" /></label>
+          </fieldset>
+        </div>
+        <details class="diagnostics"><summary>Diagnóstico</summary><pre id="metrics">Disponible durante la expedición.</pre></details>
+        <div class="dialog-actions"><button id="reset-settings" class="secondary" type="button">Restaurar valores</button><form method="dialog"><button class="primary">Listo</button></form></div>
+      </dialog>
+
+      <dialog id="guide" class="interface-dialog" aria-labelledby="guide-title">
+        <header class="dialog-heading"><h2 id="guide-title">Cómo jugar</h2><form method="dialog"><button class="close-button" aria-label="Cerrar ayuda" autofocus>×</button></form></header>
+        <p class="guide-lead">Muévete para esquivar y buscar un buen ángulo. Tu héroe ataca y activa sus habilidades de forma automática.</p>
+        <div class="guide-columns">
+          <section aria-labelledby="guide-controls"><h3 id="guide-controls">Controles</h3><dl class="guide-keys"><div><dt><kbd>WASD</kbd></dt><dd>Caminar</dd></div><div><dt><kbd>Ratón</kbd></dt><dd>Mirar</dd></div><div><dt><kbd>Rueda</kbd></dt><dd>Acercar o alejar la cámara</dd></div><div><dt><kbd>E</kbd></dt><dd>Interactuar</dd></div><div><dt><kbd>Esc</kbd></dt><dd>Pausar y liberar el ratón</dd></div></dl><p>En táctil, usa el lado izquierdo para caminar y el derecho para mirar.</p></section>
+          <section aria-labelledby="guide-expedition"><h3 id="guide-expedition">Durante la expedición</h3><ul class="guide-steps"><li>Recoge esencia para aprender y mejorar habilidades. Puedes equipar hasta cuatro.</li><li>Abre cofres, usa fuentes y gasta monedas con el mercader.</li><li id="guide-mastery">Derrota al Portador. Reúne su núcleo y afinidad III para despertar tu maestría.</li><li id="guide-objective">Resiste seis minutos y derrota al Castellano Vacío.</li></ul></section>
+        </div>
+        <div class="dialog-actions"><form method="dialog"><button class="primary">Cerrar</button></form></div>
+      </dialog>
+
+      <dialog id="confirm-expedition" class="interface-dialog confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-description">
+        <header class="dialog-heading"><h2 id="confirm-title"></h2></header>
+        <p id="confirm-description">Perderás el progreso de esta expedición.</p>
+        <form class="dialog-actions" method="dialog"><button class="secondary" value="cancel" autofocus>Cancelar</button><button id="confirm-action" class="primary" value="confirm"></button></form>
+      </dialog>
     </main>
     <script type="module" src="/src/main.ts"></script>
   </body>

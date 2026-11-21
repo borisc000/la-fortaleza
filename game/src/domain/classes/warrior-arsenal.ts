@@ -26,7 +26,7 @@ type Action = {
   pulses: number;
   struck: Map<number, number>;
   done?: boolean;
-  links?: ArsenalVisual[];
+  links?: { id: string; target: Point }[];
 };
 type Blade = {
   action: Action;
@@ -40,7 +40,16 @@ type Blade = {
   hits: Set<number>;
   count: number;
 };
-export type ArsenalVisual = Readonly<{ id: string; kind: string; x: number; z: number; radius: number; yaw: number }>;
+export type ArsenalVisual = Readonly<{
+  id: string;
+  kind: string;
+  x: number;
+  z: number;
+  radius: number;
+  yaw: number;
+  phase?: number;
+  damageFraction?: number;
+}>;
 export class WarriorArsenal implements HeroKit {
   readonly state: HeroKitState = { cooldown: 0, passiveStacks: 0, passiveRemaining: 0, skillCooldown: 0 };
   abilities: readonly AbilityState[] = new AbilityBook('warrior').snapshot;
@@ -56,6 +65,9 @@ export class WarriorArsenal implements HeroKit {
   defenseBonus = 0;
   private wardAt = 0;
   private stopped = false;
+  private backhand = false;
+  private spearHits: { birth: number; visual: ArsenalVisual }[] = [];
+  private guardWave?: { birth: number; visual: ArsenalVisual };
   private visuals: ArsenalVisual[] = [];
   private bounds: Bounds;
   constructor(bounds: Bounds) {
@@ -155,7 +167,9 @@ export class WarriorArsenal implements HeroKit {
     this.state.targetId = chooseTarget(hero, alive, this.state.targetId, solids, reach);
     const target = alive.find(e => e.id === this.state.targetId);
     if (!this.state.attack && this.state.cooldown <= 1e-8 && target) {
+      this.backhand = !this.backhand;
       this.state.attack = {
+        swordStroke: basic.mutation === 1 ? 'thrust' : this.backhand ? 'cut' : 'backhand',
         id: c.nextId(),
         yaw: Math.atan2(hero.x - target.x, hero.z - target.z),
         age: 0,
@@ -196,6 +210,9 @@ export class WarriorArsenal implements HeroKit {
       }
     }
     for (const skill of this.abilities.filter(s => s.id !== 'warrior:sword')) {
+      const remaining = this.clock.remaining(skill.id);
+      // Only the hammer needs a target preview during the last part of its cooldown.
+      if (remaining > 0 && (skill.id !== 'warrior:war-hammer' || remaining > 0.24)) continue;
       const p = parameters(skill, this.stats),
         enemies = nearby(
           hero,
@@ -212,6 +229,22 @@ export class WarriorArsenal implements HeroKit {
           p.radius *
             (c.loadout.mastery ? (c.loadout.element === 'water' ? 1.2 : c.loadout.element === 'air' ? 1.25 : 1) : 1),
         );
+      }
+      if (p.id === 'war-hammer') {
+        if (remaining > 0 && remaining <= 0.24 && !this.actions.some(a => a.skill.id === skill.id)) {
+          const yaw = Math.atan2(hero.x - enemies[0].x, hero.z - enemies[0].z);
+          const distance = skill.mutation === 1 ? 0 : skill.mutation === 0 ? 3 : 1.5;
+          const center = { x: hero.x - Math.sin(yaw) * distance, z: hero.z - Math.cos(yaw) * distance };
+          if (clearPath(hero, center, solids, 0.04))
+            this.visuals.push({
+              kind: 'hammer',
+              id: 'hammer-windup',
+              ...center,
+              radius: p.radius,
+              yaw,
+              phase: -remaining,
+            });
+        }
       }
       if (!this.clock.start(skill, true, duration, p.cooldown)) continue;
       const a: Action = {
@@ -298,7 +331,14 @@ export class WarriorArsenal implements HeroKit {
           if (clearPath(a.origin, center, solids, 0.04)) ring(a, center, 0.5, true);
           a.pulses++;
         }
-        this.visuals.push({ id: `hammer:${a.id}`, kind: 'hammer', ...center, radius: p.radius, yaw: a.yaw });
+        this.visuals.push({
+          id: `hammer:${a.id}`,
+          kind: 'hammer',
+          ...center,
+          radius: p.radius,
+          yaw: a.yaw,
+          phase: a.age - (a.pulses > 1 ? 0.6 : 0),
+        });
       } else if (p.id === 'orbiting-axes') {
         const count = p.count + (skill.finisher === 0 ? 2 : 0);
         for (let i = 0; i < count; i++) {
@@ -318,10 +358,33 @@ export class WarriorArsenal implements HeroKit {
         }
       } else if (p.id === 'war-banner') {
         const center = skill.mutation === 0 ? hero : a.origin;
-        this.visuals.push({ id: `banner:${a.id}`, kind: 'banner', ...center, radius: p.radius, yaw: 0 });
+        this.visuals.push({ id: `banner:${a.id}`, kind: 'banner', ...center, radius: p.radius, yaw: 0, phase: a.age });
       } else if (p.id === 'retaliation') {
+        if (this.state.barrier && a.age < p.duration) {
+          this.visuals.push({
+            id: `guard:${a.id}`,
+            kind: 'guard',
+            x: hero.x,
+            z: hero.z,
+            radius: 0.76,
+            yaw: hero.yaw,
+            phase: Math.min(1, a.age / 0.16),
+            damageFraction: Math.max(0, 1 - this.state.barrier.amount / p.barrier),
+          });
+        }
         if (!a.pulses && (skill.mutation === 1 || !this.state.barrier || a.age + 1e-8 >= p.duration)) {
           ring(a, hero);
+          this.guardWave = {
+            birth: this.time,
+            visual: {
+              id: `guard-wave:${a.id}`,
+              kind: 'guard-wave',
+              x: hero.x,
+              z: hero.z,
+              radius: p.radius,
+              yaw: hero.yaw,
+            },
+          };
           a.pulses++;
         }
         if (!this.state.barrier) {
@@ -329,45 +392,46 @@ export class WarriorArsenal implements HeroKit {
           a.done = true;
         }
       } else if (p.id === 'war-chain') {
-        if (a.pulses) {
-          this.visuals.push(...(a.links ?? []));
-          continue;
-        }
-        a.links = [];
-        a.pulses++;
-        const targets = nearby(hero, p.radius)
-          .sort((x, y) => Math.hypot(x.x - hero.x, x.z - hero.z) - Math.hypot(y.x - hero.x, y.z - hero.z))
-          .slice(0, p.count);
-        for (let i = 0; i < targets.length; i++) {
-          const e = targets[i];
-          hit(a, e, p.damage * (i ? 0.5 : 1));
-          if (skill.finisher === 0) hits[hits.length - 1].exposeDuration = 2;
-          if (e.pushProtection <= 1e-8) {
-            displaceFrom(
-              e,
-              hero,
-              -(0.6 + skill.branches.specialization * 0.15) * ENEMIES[e.kind].push,
-              this.bounds,
-              solids,
-              hero,
-            );
-            e.pushProtection = 0.5;
+        if (!a.links) {
+          a.links = [];
+          a.pulses++;
+          const targets = nearby(hero, p.radius)
+            .sort((x, y) => Math.hypot(x.x - hero.x, x.z - hero.z) - Math.hypot(y.x - hero.x, y.z - hero.z))
+            .slice(0, p.count);
+          for (let i = 0; i < targets.length; i++) {
+            const e = targets[i];
+            hit(a, e, p.damage * (i ? 0.5 : 1));
+            if (skill.finisher === 0) hits[hits.length - 1].exposeDuration = 2;
+            if (e.pushProtection <= 1e-8) {
+              displaceFrom(
+                e,
+                hero,
+                -(0.6 + skill.branches.specialization * 0.15) * ENEMIES[e.kind].push,
+                this.bounds,
+                solids,
+                hero,
+              );
+              e.pushProtection = 0.5;
+            }
+            a.links.push({ id: `chain:${a.id}:${i}`, target: e });
           }
-          a.links.push({
-            id: `chain:${a.id}:${i}`,
+          if (skill.finisher === 1 && targets[0])
+            for (const e of nearby(targets[0], 3)
+              .filter(e => !targets.includes(e))
+              .slice(0, 2))
+              hit(a, e, p.damage * 0.35, true, targets[0]);
+        }
+        for (const { id, target } of a.links) {
+          this.visuals.push({
+            id,
             kind: 'chain',
-            x: (hero.x + e.x) / 2,
-            z: (hero.z + e.z) / 2,
-            radius: Math.hypot(hero.x - e.x, hero.z - e.z) / 2,
-            yaw: Math.atan2(hero.x - e.x, hero.z - e.z),
+            x: (hero.x + target.x) / 2,
+            z: (hero.z + target.z) / 2,
+            radius: Math.hypot(hero.x - target.x, hero.z - target.z) / 2,
+            yaw: Math.atan2(hero.x - target.x, hero.z - target.z),
+            phase: a.age / p.duration,
           });
         }
-        this.visuals.push(...a.links);
-        if (skill.finisher === 1 && targets[0])
-          for (const e of nearby(targets[0], 3)
-            .filter(e => !targets.includes(e))
-            .slice(0, 2))
-            hit(a, e, p.damage * 0.35, true, targets[0]);
       }
     }
     for (let i = this.blades.length - 1; i >= 0; i--) {
@@ -396,6 +460,18 @@ export class WarriorArsenal implements HeroKit {
           const decay = a.p.id === 'spectral-spears' && a.skill.finisher === 1 ? 1 : Math.max(0.25, 0.85 ** b.count);
           const first = b.count === 0 && a.skill.finisher === 0 ? (p.id === 'steel-wave' ? 2 : 1.8) : 1;
           hit(a, e, p.damage * b.factor * decay * first * (b.returning ? 0.4 : 1), false, b.origin);
+          if (p.id === 'spectral-spears')
+            this.spearHits.push({
+              birth: this.time,
+              visual: {
+                kind: 'spear-hit',
+                id: `spear-hit:${a.id}:${i}:${e.id}`,
+                x: b.point.x,
+                z: b.point.z,
+                radius: e.radius,
+                yaw: Math.atan2(-b.dx, -b.dz),
+              },
+            });
           b.hits.add(e.id);
           b.count++;
           if (b.count >= p.pierce) break;
@@ -404,6 +480,7 @@ export class WarriorArsenal implements HeroKit {
       this.visuals.push({
         id: `blade:${a.id}:${i}`,
         kind: p.id === 'steel-wave' ? 'wave' : 'spear',
+        phase: b.returning ? -1 : b.distance,
         ...b.point,
         radius: 0.55,
         yaw: Math.atan2(-b.dx, -b.dz),
@@ -423,6 +500,17 @@ export class WarriorArsenal implements HeroKit {
         }
       }
     }
+    if (this.damageBonus > 0)
+      this.visuals.push({ id: 'standard-bonus', kind: 'standard-bonus', x: hero.x, z: hero.z, radius: 0.18, yaw: 0 });
+    if (this.spearHits.length) {
+      this.spearHits = this.spearHits.filter(h => this.time - h.birth < 0.25);
+      for (const h of this.spearHits) this.visuals.push({ ...h.visual, phase: (this.time - h.birth) / 0.25 });
+    }
+    if (this.guardWave) {
+      const phase = (this.time - this.guardWave.birth) / 0.32;
+      if (phase < 1) this.visuals.push({ ...this.guardWave.visual, phase });
+      else this.guardWave = undefined;
+    }
     return hits;
   }
   finishStep() {
@@ -431,6 +519,8 @@ export class WarriorArsenal implements HeroKit {
     this.state.skillCooldown = this.state.area ? 0 : this.clock.remaining('warrior:whirlwind');
   }
   cancel() {
+    this.spearHits.length = 0;
+    this.guardWave = undefined;
     this.stopped = true;
     this.clock.stop();
     this.actions = [];

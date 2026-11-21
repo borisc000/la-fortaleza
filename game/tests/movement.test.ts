@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { worldDirection, moveCircle, overlaps, stepMovement } from '../src/domain/movement.ts';
+import { Navigation, clearPath } from '../src/domain/navigation.ts';
 import { ControlState } from '../src/input/state.ts';
 import { PLAYER } from '../src/content/config.ts';
 
@@ -100,4 +101,28 @@ test('joystick deadzone prevents drift; clearing removes keys and both pointers'
   assert.deepEqual(input.movement(), { right: 0, forward: 0 });
   assert.equal(input.movePointer, undefined);
   assert.equal(input.lookPointer, undefined);
+});
+
+test('indexed pursuit matches full collision and visibility checks at cell and map edges', () => {
+  const obstacles = Array.from({ length: 20 }, (_, i) => ({
+    min: { x: -16 + (i % 5) * 8, y: 0, z: -12 + Math.floor(i / 5) * 8 },
+    max: { x: -15.9 + (i % 5) * 8, y: 2, z: -6 + Math.floor(i / 5) * 8 },
+  }));
+  const nav = new Navigation(bounds, obstacles, 0.4);
+  for (const x of [-16.4, -8, -0.41, -0.4, 0, 3.99, 4, 19.6]) {
+    for (const z of [-12, -4.01, 0, 4, 19.6]) {
+      const from = { x, z };
+      for (const delta of [
+        { x: 0.05, z: 0.04 },
+        { x: 0, z: 0 },
+        { x: -5, z: 3 },
+      ]) {
+        const to = { x: x + delta.x, z: z + delta.z };
+        for (const radius of [0.04, 0.4, 0.8]) {
+          assert.equal(nav.clearPath(from, to, radius), clearPath(from, to, obstacles, radius));
+          assert.deepEqual(nav.move(from, delta, radius), moveCircle(from, delta, radius, bounds, obstacles));
+        }
+      }
+    }
+  }
 });

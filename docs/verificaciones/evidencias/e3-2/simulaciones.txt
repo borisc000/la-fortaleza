@@ -1,0 +1,43 @@
+ok 1 - normal-health warrior fire focused survival probe with earned upgrades
+ok 2 - normal-health warrior fire four survival probe with earned upgrades
+ok 3 - normal-health warrior earth focused survival probe with earned upgrades
+ok 4 - normal-health warrior earth four survival probe with earned upgrades
+ok 5 - normal-health mage fire focused survival probe with earned upgrades
+ok 6 - normal-health mage fire four survival probe with earned upgrades
+ok 7 - normal-health mage water focused survival probe with earned upgrades
+ok 8 - normal-health mage water four survival probe with earned upgrades
+ok 9 - normal-health archer fire focused survival probe with earned upgrades
+ok 10 - normal-health archer fire four survival probe with earned upgrades
+ok 11 - normal-health archer air focused survival probe with earned upgrades
+ok 12 - normal-health archer air four survival probe with earned upgrades
+ok 13 - the full six-minute actual-map archer run reaches fire four-skill build and boss victory (capture and shop)
+ok 14 - the full six-minute actual-map archer run reaches water four-skill build and boss victory (capture and shop)
+ok 15 - the full six-minute actual-map archer run reaches earth four-skill build and boss victory (capture and shop)
+ok 16 - the full six-minute actual-map archer run reaches air four-skill build and boss victory (capture and shop)
+ok 17 - the full six-minute actual-map mage run reaches fire four-skill build and boss victory (capture and shop)
+ok 18 - the full six-minute actual-map mage run reaches water four-skill build and boss victory (capture and shop)
+ok 19 - the full six-minute actual-map mage run reaches earth four-skill build and boss victory (capture and shop)
+ok 20 - the full six-minute actual-map mage run reaches air four-skill build and boss victory (capture and shop)
+ok 21 - the full six-minute actual-map warrior run reaches fire four-skill build and boss victory (capture and shop)
+ok 22 - the full six-minute actual-map warrior run reaches water four-skill build and boss victory (capture and shop)
+ok 23 - the full six-minute actual-map warrior run reaches earth four-skill build and boss victory (capture and shop)
+ok 24 - the full six-minute actual-map warrior run reaches air four-skill build and boss victory (capture and shop)
+ok 25 - the full six-minute actual-map warrior run reaches fire mastery and boss victory (combat route)
+ok 26 - the full six-minute actual-map warrior run reaches water mastery and boss victory (combat route)
+# tests 26
+# pass 26
+# fail 0
+Campaña archer fire con captura/tienda: 377.30 s, 1191 bajas, nivel 15, 18 elecciones, pico 91 enemigos, saldo 131, gasto 26, técnicas {}, apoyo ninguno 0, reliquias ["relic_edge","relic_boots","relic_magnet","relic_heart"] (sin GPU; vida ampliada solo en test).
+Campaña archer water con captura/tienda: 377.70 s, 1261 bajas, nivel 15, 18 elecciones, pico 90 enemigos, saldo 145, gasto 26, técnicas {}, apoyo earth 1, reliquias ["relic_edge","relic_boots","relic_magnet","relic_heart"] (sin GPU; vida ampliada solo en test).
+Campaña archer earth con captura/tienda: 385.12 s, 1193 bajas, nivel 15, 18 elecciones, pico 92 enemigos, saldo 139, gasto 26, técnicas {}, apoyo air 2, reliquias ["relic_edge","relic_stone","relic_boots","relic_heart"] (sin GPU; vida ampliada solo en test).
+Campaña archer air con captura/tienda: 378.47 s, 1150 bajas, nivel 15, 18 elecciones, pico 91 enemigos, saldo 133, gasto 26, técnicas {}, apoyo ninguno 0, reliquias ["relic_edge","relic_wind","relic_boots","relic_heart"] (sin GPU; vida ampliada solo en test).
+Campaña mage fire con captura/tienda: 387.73 s, 1275 bajas, nivel 15, 18 elecciones, pico 92 enemigos, saldo 132, gasto 26, técnicas {}, apoyo earth 2, reliquias ["relic_edge","relic_boots","relic_magnet","relic_heart"] (sin GPU; vida ampliada solo en test).
+Campaña mage water con captura/tienda: 388.73 s, 1268 bajas, nivel 15, 18 elecciones, pico 88 enemigos, saldo 137, gasto 26, técnicas {}, apoyo air 2, reliquias ["relic_edge","relic_boots","relic_magnet","relic_heart"] (sin GPU; vida ampliada solo en test).
+Campaña mage earth con captura/tienda: 386.95 s, 1268 bajas, nivel 15, 18 elecciones, pico 89 enemigos, saldo 138, gasto 26, técnicas {}, apoyo ninguno 0, reliquias ["relic_stone","relic_edge","relic_boots","relic_heart"] (sin GPU; vida ampliada solo en test).
+Campaña mage air con captura/tienda: 390.85 s, 1260 bajas, nivel 15, 18 elecciones, pico 89 enemigos, saldo 141, gasto 26, técnicas {}, apoyo water 1, reliquias ["relic_wind","relic_edge","relic_boots","relic_heart"] (sin GPU; vida ampliada solo en test).
+Campaña warrior fire con captura/tienda: 392.72 s, 1250 bajas, nivel 16, 19 elecciones, pico 79 enemigos, saldo 138, gasto 26, técnicas {}, apoyo ninguno 0, reliquias ["relic_edge","relic_boots","relic_magnet","relic_heart"] (sin GPU; vida ampliada solo en test).
+Campaña warrior water con captura/tienda: 391.00 s, 1229 bajas, nivel 15, 18 elecciones, pico 90 enemigos, saldo 135, gasto 26, técnicas {}, apoyo earth 1, reliquias ["relic_edge","relic_boots","relic_magnet","relic_heart"] (sin GPU; vida ampliada solo en test).
+Campaña warrior earth con captura/tienda: 393.08 s, 1230 bajas, nivel 15, 18 elecciones, pico 94 enemigos, saldo 148, gasto 26, técnicas {}, apoyo air 2, reliquias ["relic_edge","relic_stone","relic_boots","relic_heart"] (sin GPU; vida ampliada solo en test).
+Campaña warrior air con captura/tienda: 392.55 s, 1264 bajas, nivel 16, 19 elecciones, pico 87 enemigos, saldo 144, gasto 26, técnicas {}, apoyo ninguno 0, reliquias ["relic_edge","relic_wind","relic_boots","relic_heart"] (sin GPU; vida ampliada solo en test).
+Campaña warrior fire ruta de combate: 392.10 s, 1342 bajas, nivel 16, 16 elecciones, pico 84 enemigos, saldo 162, gasto 0, técnicas {}, apoyo ninguno 0, reliquias [] (sin GPU; vida ampliada solo en test).
+Campaña warrior water ruta de combate: 394.05 s, 1316 bajas, nivel 16, 16 elecciones, pico 93 enemigos, saldo 159, gasto 0, técnicas {}, apoyo ninguno 0, reliquias [] (sin GPU; vida ampliada solo en test).

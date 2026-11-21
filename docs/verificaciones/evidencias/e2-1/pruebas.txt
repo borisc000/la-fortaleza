@@ -1,0 +1,44 @@
+ok 1 - camera stops before a wall, including its volume and safety gap
+ok 2 - volume catches a corner missed by an unpadded centre ray
+ok 3 - parallel rays outside a wall and walls behind the player do not obstruct
+ok 4 - starting inside an expanded obstacle cannot place camera beyond it
+ok 5 - lowest camera position leaves space above the terrain
+ok 6 - snap in immediately; recover independently of render framerate
+ok 7 - wide screens increase camera collision volume to protect near-plane corners
+ok 8 - loading and pause require explicit entry; fatal state cannot resume
+ok 9 - offscreen candidates are preferred; visible fallback retains warning and safe distance
+ok 10 - unsafe or disconnected spawn rings are deferred without a later wave backlog
+ok 11 - only persistently distant unseen normals retire; visibility resets grace and rewards survive
+ok 12 - local replenishment follows a relocated player while respecting rests and population
+ok 13 - expanded map has connected activity clearings and safe normal/major spawns at edges
+ok 14 - seed 1: roadside rewards remain discoverable and approachable
+ok 15 - seed 2: roadside rewards remain discoverable and approachable
+ok 16 - seed 7: roadside rewards remain discoverable and approachable
+ok 17 - seed 19: roadside rewards remain discoverable and approachable
+ok 18 - seed 43: roadside rewards remain discoverable and approachable
+ok 19 - seed 77: roadside rewards remain discoverable and approachable
+ok 20 - seed 256: roadside rewards remain discoverable and approachable
+ok 21 - seed 9173: roadside rewards remain discoverable and approachable
+ok 22 - local reinforcement rings remain populated at all landmarks and activities for normal, elite and boss sizes
+ok 23 - director rejects a previously valid spawn when a persistent prop occupies it
+ok 24 - capture ground, loot and supplies do not suppress the horde; the flag and used props do
+ok 25 - W follows camera heading; D remains perpendicular and diagonal speed is capped
+ok 26 - one second of walking covers 5 metres and stops immediately after release
+ok 27 - thin wall stops a large displacement without tunnelling
+ok 28 - diagonal contact slides along the wall rather than stopping the tangent
+ok 29 - a circular body can round an exposed corner without penetrating
+ok 30 - concave wall junction and map limits cannot trap the body inside solids
+ok 31 - rotation takes the short path across ±PI and camera angle is independent
+ok 32 - two fingers remain independent when either is released or cancelled
+ok 33 - a third finger cannot steal movement and crossing screen halves keeps ownership
+ok 34 - joystick deadzone prevents drift; clearing removes keys and both pointers
+ok 35 - all six sectors have spatial territories and the route network joins the arrival and fifteen landmarks
+ok 36 - the actual fortress builds with fallback materials and every viewpoint has a safe camera
+ok 37 - walking from every spawn across the real clearing preserves body and camera clearance
+ok 38 - the full five-soldier encounter completes on the actual map with unique deaths
+ok 39 - a pursuer routes around the actual ruin rather than attacking through its walls
+ok 40 - reinforcements have enough safe reachable positions across the actual clearing
+ok 41 - E2.1 gate: towers keep the wall foot passable, the arch mouth open and their stone solid
+# tests 41
+# pass 41
+# fail 0

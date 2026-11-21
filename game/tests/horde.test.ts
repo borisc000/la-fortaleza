@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { SpatialBuckets } from '../src/domain/spatial-buckets.ts';
 import { Run } from '../src/domain/run.ts';
 import { Combat } from '../src/domain/combat.ts';
-import { CAMPAIGN, WAVES, LOCAL_HORDE } from '../src/content/campaign.ts';
+import { CAMPAIGN, WAVES, LOCAL_HORDE, incursionSchedule } from '../src/content/campaign.ts';
 import { ENEMIES } from '../src/content/enemies.ts';
 import { createHordeView } from '../src/rendering/horde.ts';
 import { createWorld } from '../src/rendering/world.ts';
@@ -36,13 +36,17 @@ test('spatial broad phase never drops exact neighbors, including moving across n
 });
 
 test('each stage fills its local target with a weak majority, bounded threats and no backlog', () => {
+  const seed = 17;
+  const incursions = incursionSchedule(seed);
   for (const stage of WAVES) {
-    const run = new Run(bounds, [], 17, undefined, undefined, TRAINING_EXPEDITION);
+    const run = new Run(bounds, [], seed, undefined, undefined, TRAINING_EXPEDITION);
     run.combat.retireNormals();
     run.eliteSpawned = true;
     run.combat.heroKit.cancel();
     run.combat.hp = 100000;
     for (let time = stage.at + 3; time < stage.at + 45; time += 3) {
+      // Incursions have their own squad and temporarily change the wave mix.
+      if (incursions.some(event => time >= event.at && time < event.at + event.duration)) continue;
       run.combat.time = time;
       run.step(1 / 60, hero);
       for (const enemy of run.combat.enemies) if (!enemy.dead) enemy.spawnRemaining = 999;

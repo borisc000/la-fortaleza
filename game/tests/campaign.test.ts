@@ -152,16 +152,16 @@ test('elite and boss have correct water resistance, while burn still applies', (
   c.enemies[0].wetRemaining = 3;
   c.enemies[0].cooldown = 999;
   steps(c, 60);
-  assert.ok(Math.abs(c.enemies[0].z + 10 - 1.7 * (1 - 0.15 * 0.25)) < 1e-7);
+  assert.ok(Math.abs(c.enemies[0].z + 10 - ENEMIES.boss.speed * (1 - 0.15 * 0.25)) < 1e-7);
 });
-test('boss alternates sweep, ground slam and volley with recovery windows', () => {
+test('boss rotates through close-range strikes and global spells with recovery windows', () => {
   const c = fixture('boss', -2);
   const e = c.enemies[0];
   c.hp = 10000;
   c.maxHp = 10000;
   const actions = new Set<string>();
   let recovered = false;
-  for (let i = 0; i < 720; i++) {
+  for (let i = 0; i < 1200; i++) {
     c.step(PLAYER.step, hero);
     c.takeEvents();
     if (e.attack) {
@@ -170,7 +170,7 @@ test('boss alternates sweep, ground slam and volley with recovery windows', () =
       if (e.attack.age > data.windup + data.active) recovered = true;
     }
   }
-  assert.deepEqual([...actions].sort(), ['melee', 'slam', 'volley']);
+  assert.deepEqual([...actions].sort(), ['edict', 'melee', 'rupture', 'slam', 'volley']);
   assert.equal(recovered, true);
 });
 test('leaving the boss slam circle before impact avoids damage', () => {

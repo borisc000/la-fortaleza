@@ -1,8 +1,8 @@
 # Idea futura — Eras, etapas y recuperación del reino
 
-Creado el 2 de noviembre de 2026. Actualizado el 8 de noviembre de 2026.
+Creado el 2 de noviembre de 2026. Actualizado el 20 de noviembre de 2026.
 
-**Dirección narrativa acordada para desarrollo futuro.** La implementación de la campaña queda pendiente de planificación.
+**Dirección narrativa acordada.** El selector ofrece la etapa exterior y un prototipo jugable del interior.
 
 ## Origen y vocabulario
 
@@ -37,6 +37,8 @@ Los títulos de las etapas son nombres de trabajo. **Una corona entre ruinas** q
 | **2. El corazón de piedra** | La expedición entra para recuperar el control del recinto. | Combatir en patios, cuarteles, caballerizas, armería y salón principal. Espacios amplios conectados por pasos breves. Descubrir indicios de enemigos que emergen desde abajo. | Se recupera la fortaleza y se encienden sus almenaras. Queda pendiente investigar las dependencias inferiores. |
 | **3. La primera bandera** | La fortaleza recién recuperada recibe un contraataque y una irrupción desde el subsuelo. | Defender el exterior y los patios, responder a la aparición de enemigos dentro y descender a las catacumbas para asegurar el recinto. | La fortaleza se consolida como primer refugio y futuro centro del reino. |
 
+El selector incluye el [prototipo jugable de El corazón de piedra](EL_CORAZON_DE_PIEDRA.md). El salón lo defiende el Capitán de la guarnición. El Castellano Vacío cae en la expedición del exterior.
+
 ### Desarrollo propuesto del tercer escenario
 
 La dirección aceptada combina defensa y descenso. La siguiente secuencia orienta el diseño detallado de la misión.
@@ -62,7 +64,7 @@ El primer mapa debe mostrar el momento de llegada de la expedición. El acceso e
 El pulido del primer escenario tomará esta dirección narrativa como referencia. La primera muestra visual propuesta comprende la explanada, un tramo de camino y la puerta principal.
 
 
-**Encaje con lo existente:** el MVP actual puede representar la primera etapa. Hoy la victoria se obtiene derrotando al Castellano Vacío en el exterior. Por ahora conservar ese comportamiento. Al producir la segunda etapa se decidirá si ese enemigo pasa a ser un guardián exterior con otro título, si es una primera manifestación del Castellano, o si el auténtico Castellano se reserva para el interior. Registrar esa decisión antes de cambiar historia o código para no presentar al mismo jefe muerto dos veces sin explicación.
+**Encaje con el prototipo.** La primera etapa concluye con la derrota del Castellano Vacío en el exterior. En la segunda, la expedición derrota al Capitán de la guarnición y recupera el recinto al encender la almenara del salón.
 
 ### Ideas opcionales archivadas para una futura ampliación
 
@@ -115,10 +117,8 @@ Ejemplo de cierre de la tercera:
 
 Personajes funcionales posibles: una intendente que organiza supervivientes, un veterano que recuerda la fortaleza antes de caer y una estudiosa que interpreta los sellos. Pueden aportar objetivos y perspectiva sin convertirse en acompañantes de combate ni exigir diálogos extensos.
 
-## Cuándo retomarlo
+## Continuidad con el plan general
 
-Mantener la siguiente entrega técnica **2.7.3**. No añadir ahora etapas, mapas, guardado de campaña, asedio ni nuevos sistemas. El plan conserva **48 subfases y 26 futuras**.
+Los dominios exteriores y el prototipo de El corazón de piedra están en el selector. Queda por diseñar y construir La primera bandera, en particular la transición hacia las catacumbas y las condiciones de victoria y derrota durante la defensa.
 
-Al revisar 3.1 y 3.7, usar esta idea para dar contexto a la primera etapa y reservar la posibilidad de reutilizar escenario. El interior completo y la defensa con objetivos de las etapas 2/3 exceden el interior breve y el combate de jefe del MVP actual: requieren una ampliación futura explícita del plan. En 3.8 puede evaluarse cómo representar progreso narrativo en resultados/refugio sin asumir que ya se implementará toda la campaña.
-
-Antes de producir más etapas, resolver: papel del protagonista, nombre de reino/fortaleza, antagonista, tres o cinco etapas de la primera era, política de progresión entre intentos, papel del Castellano y condiciones exactas de victoria/derrota en defensa. Son decisiones posteriores; este documento conserva la idea y una dirección para desarrollarla.
+Las entregas 3.1 y 3.7 del [plan general](../../PLAN_DESARROLLO.md) pueden aprovechar las piezas de la primera etapa. En 3.8 se puede concretar cómo guardar victorias, desbloquear etapas y mostrar el progreso en el refugio. Siguen abiertos el papel del protagonista, el nombre del reino y el origen de la resurrección. El [estado del proyecto](../../ESTADO.md) indica el punto de reanudación del desarrollo.

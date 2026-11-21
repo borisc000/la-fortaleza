@@ -2,6 +2,152 @@
 
 Historial de entregas, de la más reciente a la más antigua. El estado vigente y el punto de reanudación están en [ESTADO.md](ESTADO.md); el detalle de cada verificación, en [docs/verificaciones](docs/verificaciones/).
 
+### 2026-11-21 — Asedios, Montería y duelo con el Castellano
+
+Dos Toques de asedio avisan antes de reforzar los flancos con ballesteros y, al final, devastadores. Entre ambos, la Montería trae al Verdugo de la ronda, un perseguidor resistente que fija la dirección de su carga antes de embestir. [Reglas y verificación](docs/verificaciones/PRESION_EXTERIOR.md).
+
+El Castellano añade una arremetida y dos ataques que marcan el suelo desde cualquier distancia. Sal del círculo rojo de la Ruptura del suelo. Con el Edicto del vacío, permanece dentro del anillo turquesa hasta que pase el impacto.
+
+### 2026-11-20 — Pulido de los seis modelos de enemigos
+
+Cinco rondas por modelo. El Despojo gana una postura encorvada y un sudario rasgado. La guarnición se distingue por la rodela del Soldado y la capucha y ballesta del Ballestero. El Devastador lleva placas de asedio, cuernos curvos y un mazo ancho. El Portador y el Castellano tienen mantos, armaduras y núcleos de siluetas diferentes. Se revisaron los agarres, la postura de carga y los avisos de ataque desde la cámara del juego. [Comparativa y registro de rondas](docs/verificaciones/PULIDO_MODELOS_ENEMIGOS.md).
+
+### 2026-11-20 — El corazón de piedra
+
+La segunda expedición se puede iniciar desde el selector con las tres clases. Incluye portón, patio con dos grupos de guardias, armería opcional, rastrillo, salón con capitán y almenara interactiva para ganar. La cámara usa volúmenes de paredes, arcos y pilares. [Diseño](docs/diseno/EL_CORAZON_DE_PIEDRA.md) · [Verificación](docs/verificaciones/EL_CORAZON_DE_PIEDRA.md).
+
+### 2026-11-20 — Interfaz general de campaña
+
+Portada con arte original, selección de expedición de la Era I, preparación con retratos de las tres clases y afinidad inicial del Mago. Guía de juego y ajustes persistentes accesibles desde inicio y pausa. Se añadió el regreso al inicio y la confirmación antes de abandonar una expedición en curso. El HUD muestra una pista de aprendizaje a la vez y agrupa los controles auxiliares de cámara en un desplegable. [Verificación y capturas](docs/verificaciones/INTERFAZ_GENERAL.md).
+
+### 2026-11-18 — Consultas de obstáculos en la persecución
+
+La horda reutiliza las celdas de navegación para visibilidad y para pasos cortos libres. [Mediciones de la segunda optimización](docs/verificaciones/RENDIMIENTO_HORDA_60.md#segunda-optimización-de-la-persecución).
+
+### 2026-11-18 — Rendimiento en hordas
+
+Se aceleraron las consultas contra obstáculos y la búsqueda de blancos del Guerrero en recarga. [Mediciones con 60 enemigos](docs/verificaciones/RENDIMIENTO_HORDA_60.md).
+
+### 2026-11-18 — Animaciones de combate
+
+Se reforzó el contraste del primer impacto de los tres básicos y se diferenciaron las flechas laterales de Abanico de las de Salva. [Prueba de los dos finales cruzados](docs/verificaciones/BASICOS_CRUZADOS_APOYOS_M2_R1.md).
+
+Se afinó el filo visible de Hachas giratorias, la recarga de Onda residual y la estela de Tercera pasada. [Doce encuentros con ambos cuartetos](docs/verificaciones/BASICOS_APOYOS_MUTACION_2_REMATE_1.md).
+
+### 2026-11-18 — E3.2: relieve y límites naturales
+
+Taludes que cierran el claro y afloramientos rocosos; aplicación 0.2.15. Ver [verificación](docs/verificaciones/VERIFICACION_E3_2.md).
+
+- **Taludes:** desde 1,5 m fuera de las vallas el terreno sube 3,5–7 m en unos 11 m, con rocas medio enterradas cada 9–16 m. La malla del suelo pasa de 4 m a 1 m en esas franjas; dentro del claro los vértices no cambian.
+- **Freno de cámara:** la cámara no choca con el terreno, así que cajas escalonadas bajo los taludes, y las rocas del talud, la frenan solo a ella (`cameraOnly`). No entran en movimiento, navegación ni apariciones.
+- **Afloramientos:** doce grupos de rocas en terreno muerto dentro del mapa, con su propia serie aleatoria. Guardan 9 m a rutas y claros, 5 m a otros sólidos y 26 m a las esquinas donde se prueban las apariciones. Las rocas grandes y medianas colisionan.
+- **Material de roca** con desgaste propio (`ROCK_WEATHERING`) y textura proyectada según la orientación de cada cara.
+- **Prueba nueva:** la cámara no queda bajo el talud en más de 200 casos de borde, los sólidos de movimiento no pasan de las vallas y los afloramientos dejan libres rutas y claros.
+- **Obstáculos:** de movimiento, de 641 a 688; 512 nuevos solo de cámara.
+
+- **Coste:** +0,6 ms de mediana por fotograma sobre E3.1 (máximo +1,0 ms).
+
+Pruebas rápidas 357/357 y simulaciones completas 26/26 (ocho campañas varían ligeramente por los afloramientos, todas con victoria), lint, typecheck y build correctos.
+
+### 2026-11-18 — E3.1: superficies
+
+El suelo gastado de la explanada cubre todo el mapa, con carácter propio por sector; aplicación 0.2.15. Ver [verificación](docs/verificaciones/VERIFICACION_E3_1.md).
+
+- **Todo el mapa:** bordes gastados en caminos y claros, la repetición de la textura oculta y manchas grandes de tono (antes, solo en la zona de la puerta).
+- **Sectores (`SECTOR_SURFACES` en `content/terrain-layout.ts`):** humedad, musgo, luz y roderas, fundidos a lo largo de 12 m. Barro empapado en los campos del asedio, suelo musgoso en el bosque, tierra clara con roderas en la llegada y verdín en la abadía.
+- **Decoración del suelo:** charcos en caminos y claros, más frecuentes donde hay más humedad; empedrado antiguo en ruinas, abadía y encrucijada; franja de barro mojado a lo largo de toda la muralla.
+- **Lectura:** los caminos de tierra pierden la segunda cinta clara que, con los bordes gastados, dibujaba un contorno doble.
+- **Coste:** el carácter de sector se calcula por vértice. Primero costaba hasta +2,4 ms por fotograma; queda en +0,5 ms de mediana sobre E2. Mismos 864 obstáculos.
+
+Pruebas rápidas 356/356, simulaciones completas 26/26 (idénticas a E2.4), auditoría de la puerta igual que en E2.4, lint, typecheck y build correctos.
+
+### 2026-11-18 — Básicos con segunda mutación y segundo remate de los apoyos
+
+Se corrigieron los avisos de Cataclismo fracturado y la orientación del básico durante la lluvia. La Onda de acero cambió de silueta en el retorno. [Pruebas de ambos cuartetos](docs/verificaciones/BASICOS_APOYOS_MUTACION_2_REMATE_2.md).
+
+### 2026-11-18 — Impacto de los básicos con ambos cuartetos
+
+Se distinguió el primer blanco alcanzado por la espada, el proyectil mágico y la flecha central. [Doce encuentros con segundos remates de apoyo](docs/verificaciones/BASICOS_AMBOS_CUARTETOS_REMATE_2.md).
+
+### 2026-11-18 — Básicos a nivel 10 con el otro cuarteto
+
+Se ajustaron el golpe durante el Torbellino, la salida del proyectil durante la canalización y la suelta del arco al coincidir con la Salva. [Comparativas por clase](docs/verificaciones/BASICOS_OTRO_CUARTETO.md).
+
+### 2026-11-18 — Básicos a nivel 10 con cuatro apoyos
+
+Se ajustaron el filo del barrido y la estocada, el vuelo del proyectil mágico y la lectura de la flecha central durante la lluvia. [Capturas y configuraciones](docs/verificaciones/BASICOS_NIVEL_10.md).
+
+### 2026-11-18 — Segundo cuarteto de cada clase a nivel 10
+
+Se revisaron las doce técnicas restantes en combate y se ajustaron las lanzas, el espejo y la baliza. [Resultados por variante](docs/verificaciones/COMBATE_NIVEL_10_RESTANTES.md).
+
+### 2026-11-18 — Combate con ambos remates de nivel 10
+
+Se ajustaron las estelas de las hachas, la transparencia del haz, el movimiento de las runas de Implosión y el cierre de las trampas. [Seis encuentros y comparaciones visuales](docs/verificaciones/COMBATE_NIVEL_10.md).
+
+### 2026-11-18 — Cuatro habilidades por clase en combate
+
+Se ajustaron el Torbellino y el gancho de la Cadena, las siluetas del Sello, Cataclismo y Nova, y las señales de suelta, rebote y retorno del arquero. [Comparación de los tres encuentros](docs/verificaciones/COMBATE_CUATRO_HABILIDADES.md).
+
+### 2026-11-18 — Pulido de las 24 habilidades restantes
+
+Se actualizaron ocho animaciones por clase. El laboratorio permite hacer que un muñeco cruce las Estacas de guardia. La Cadena de guerra sigue al guerrero y al objetivo durante el tirón. [Secuencias y verificación](docs/verificaciones/PULIDO_24_HABILIDADES.md).
+
+### 2026-11-18 — Animaciones de Guardia, Sello y Asedio
+
+Placas de guardia que se abren al absorber golpes, runas que cierran al detonar y disparo pesado con retroceso y marcas de perforación. El laboratorio incorpora la cámara de juego y un atacante opcional para probar la barrera. [Verificación visual](docs/verificaciones/ANIMACIONES_GUARDIA_SELLO_ASEDIO.md).
+
+### 2026-11-18 — E2.4: comparación visual y cierre de E2
+
+Cierra la zona de referencia de la puerta; aplicación 0.2.15. Ver [verificación](docs/verificaciones/VERIFICACION_E2_4.md) y [criterios de acabado](docs/diseno/ACABADO_EXTERIOR_E2.md).
+
+- **Antes y después:** trece encuadres de E1 (último commit) frente a E2.4 con los mismos materiales, cámara y resolución, y cuatro con 100 enemigos ante la puerta. La horda se distingue igual o mejor sobre el suelo nuevo.
+- **Auditoría `audits/e24-gate-zone.ts`:** compara E1 y E2.4 con hordas de 60 soldados en cuatro sitios y un barrido de cámara de 650 casillas. Nadie atraviesa sólidos. La horda tarda hasta 1 s más en cerrarse junto a la puerta y la cámara se obstruye algo más al pie de las torres (13 % frente a 11 %).
+- **Corrección:** el pie de la escala colisionaba hasta 1,2 m y acercaba la cámara a 0,18 m; ahora mide 0,7 m.
+- **Coste de render:** el sombreado de E2.2–E2.3 costaba hasta 4,7 ms por fotograma en planos cercanos. Ahora el ruido solo se calcula donde se ve: queda en una mediana de +1,4 ms sobre E1 sin horda (GPU integrada, 1440 × 900). Con 100 enemigos la diferencia queda dentro del ruido de medición.
+- **Piezas reutilizables:** `src/rendering/exterior-pieces.ts` reúne materiales, herramientas, la puerta y los restos del asedio. El mundo produce exactamente la misma geometría y colisión, comprobado con una huella. En el laboratorio hay dos entradas nuevas en Escenario, «Puerta y torres» y «Restos del asedio».
+- **Criterios de acabado** de escala, materiales, densidad, lectura y coste en `docs/diseno/ACABADO_EXTERIOR_E2.md`, a revisar por el usuario antes de E3.
+
+Pruebas rápidas 355/355 y simulaciones completas 26/26, lint, typecheck y build correctos.
+
+### 2026-11-18 — E2.3: explanada y camino inmediato
+
+Muestra de suelo, vegetación y restos del asedio ante la puerta; aplicación 0.2.15. Ver [verificación](docs/verificaciones/VERIFICACION_E2_3.md).
+
+- **Zona de muestra:** centro (4; −4), entera hasta 34 m y desvanecida a 48 m. El resto del mapa no cambia hasta E3.1.
+- **Suelo (`wearGround` en `weathering.ts`):** el camino, la ronda y los claros pierden el borde recto y se gastan hacia el barro. Una segunda muestra girada de la textura oculta la cuadrícula del barro y del empedrado. Las cintas de camino llevan un vértice central y un atributo `edge`.
+- **Barro mojado** al pie de la muralla, once charcos que reflejan el cielo y unas 60 piedras sueltas.
+- **Vegetación:** malezas altas al pie de la muralla y de las torres, matas entre los adoquines y zarzas en cuatro rincones.
+- **Restos del asedio:** un ariete quemado ante la torre este, una escala contra la muralla y otra derribada, un barril y otro reventado, flechas clavadas, escudos caídos, una hoguera apagada, estacas y un estandarte en el barro. Solo colisionan el ariete, el barril y el pie de la escala.
+- **Prueba nueva:** el camino, la ronda, la explanada y el primer encuentro quedan libres.
+- **Coste:** de 24 a 27 mallas fusionadas, de 861 a 864 obstáculos y +3,2 % de triángulos. GPU sin medir (E2.4).
+
+Pruebas rápidas 353/353 y simulaciones completas 26/26, lint, typecheck y build correctos. Revisión en catorce encuadres fijos, cinco de ellos nuevos para la explanada.
+
+### 2026-11-18 — E2.2: materiales y construcción
+
+Desgaste de piedra, madera y hierro, con remates y daños en la puerta de E2.1; aplicación 0.2.15. Ver [verificación](docs/verificaciones/VERIFICACION_E2_2.md).
+
+- **`rendering/weathering.ts`:** una pasada de sombreado sobre los materiales existentes, por posición en el mundo y sin texturas nuevas. Aplica variación de tono en grande, humedad y musgo al pie, suciedad y liquen en las caras superiores, regueros de lluvia, hollín sobre las antorchas de la puerta y óxido en el hierro.
+- **Base:** piedra más fría y con más relieve en las juntas, madera más gris y hierro menos brillante. Como los materiales son compartidos, el cambio alcanza a todo el escenario.
+- **Puerta:** albardillas y cornisa; en cada torre un merlón caído y otro partido, con sus piedras al pie; un merlón partido en el cuerpo de guardia; una tabla arrancada del cadalso y otra colgando; estandartes rasgados y banderolas de cola de golondrina.
+- **Coste:** mismas 24 mallas fusionadas y 861 obstáculos que en E2.1; +0,2 % de triángulos. Coste de GPU del sombreado sin medir (E2.4).
+
+Pruebas rápidas 347/347, lint, typecheck y build correctos. Revisión en los nueve encuadres de E2.1.
+
+### 2026-11-18 — E2.1: puerta y dos torres
+
+Primera subfase de E2, según el concepto [Puerta de hierro](arte/01-puerta-de-hierro.png). Solo cambian `game/src/rendering/world.ts` y una prueba nueva; aplicación 0.2.15, sin cambios de reglas, clases, cámara ni recuentos del plan. Ver [verificación](docs/verificaciones/VERIFICACION_E2_1.md).
+
+- **Torres:** las dos torres cuadradas de 10 m, casi a ras de la muralla, pasan a ser redondas: pie en talud, imposta, matacanes, almenas hasta 14,3 m, saeteras, estandartes al frente y banderola en lo alto. Están adelantadas 5 m y no llevan tejado, para distinguirlas de las demás torres.
+- **Paso:** cuerpo de guardia con bóveda entre las torres y arco de 4,4 × 5,5 m (antes 5,9 × 7,25 m), con dovelas y clave. Rastrillo de hierro bajado en la boca y portón de madera al fondo.
+- **Coronación:** cadalso de madera sobre vigas y tornapuntas, con troneras y tejaroz de pizarra.
+- **Antorchas** con copa en los flancos interiores de las torres, iluminando la boca. Sin hierba ni piedras en el paso ni al pie de las torres; el reparto de hierba en el resto del mapa no cambia.
+- **Colisión:** las torres colisionan por franjas que no quedan dentro de la piedra visible. El personaje llega hasta el rastrillo. La prueba nueva rodea las torres por el pie de la muralla en ambos sentidos.
+- **Coste:** de 22 a 24 mallas fusionadas, de 856 a 861 obstáculos y +0,4 % de triángulos. Fotogramas y GPU sin medir (E2.4).
+
+Pruebas rápidas 347/347 y simulaciones completas 26/26 (14 campañas de seis minutos con victoria), lint, typecheck y build correctos. Revisión visual en nueve encuadres fijos antes y después, con las tres clases para la escala. No se recorrió la partida real hasta la puerta en el navegador (panel oculto, un fotograma por segundo).
+
 ### 2026-11-17 — Repositorio, CI y orden del código
 
 Sin cambios de jugabilidad; aplicación 0.2.15.

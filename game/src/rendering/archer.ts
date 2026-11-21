@@ -59,6 +59,16 @@ export function createArcher(template = source) {
     glove: joint('Glove' + side),
     leg: joint('Leg' + side),
   }));
+  const precisionBadge = new THREE.Group();
+  const pipGeo = new THREE.OctahedronGeometry(0.057);
+  const pipMat = new THREE.MeshBasicMaterial({ color: 0xffdc89 });
+  for (let i = 0; i < 3; i++) {
+    const pip = new THREE.Mesh(pipGeo, pipMat);
+    pip.position.set(0, 0.22 + i * 0.105, 0.04);
+    precisionBadge.add(pip);
+  }
+  bow.add(precisionBadge);
+  precisionBadge.visible = false;
   const grip = new THREE.Vector3(),
     nock = new THREE.Vector3(),
     cheek = new THREE.Vector3(0.078, 1.656, -0.067);
@@ -94,12 +104,15 @@ export function createArcher(template = source) {
     arm.glove.rotation.z = index === 1 ? draw * 1.3 : bow.rotation.z;
   }
 
-  function pose(draw: number, tension: number, nocked: boolean, released = false) {
+  function pose(draw: number, tension: number, nocked: boolean, released = false, brace = 0, recoil = 0, fan = 0) {
     const swing = Math.sin(stride) * gait;
-    torso.rotation.y = -0.94 * draw;
+    torso.rotation.y = -0.94 * draw - recoil * 0.2;
+    torso.rotation.x = -recoil * 0.11;
+    bow.scale.set(1, 1 - brace * 0.09, 1 + brace * 0.6);
     for (const [i, arm] of arms.entries()) {
       const side = i === 0 ? -1 : 1;
       arm.leg.position.set(side * 0.113, 0.94, 0).applyAxisAngle(up, torso.rotation.y);
+      arm.leg.position.z += side * brace * 0.15;
       arm.leg.rotation.set(-side * swing * 0.42, torso.rotation.y * 0.6, side * 0.075 * draw, 'YXZ');
     }
     head.rotation.y = -torso.rotation.y * 0.97;
@@ -109,12 +122,12 @@ export function createArcher(template = source) {
       THREE.MathUtils.lerp(-0.074 - swing * 0.055, -0.652, draw),
     );
     bow.position.copy(grip);
-    bow.rotation.z = -0.2 + draw * 0.28;
+    bow.rotation.z = -0.2 + draw * 0.28 + fan * 0.72;
     // Both halves terminate at the same point before, during and after a release.
     nock.set(0, 0, 0.135).applyQuaternion(bow.quaternion).add(grip).lerp(cheek, tension);
     strings.forEach((string, i) => {
       tip
-        .set(0, i === 0 ? 0.62 : -0.62, 0.135)
+        .set(0, (i === 0 ? 0.62 : -0.62) * bow.scale.y, 0.135 * bow.scale.z)
         .applyQuaternion(bow.quaternion)
         .add(grip);
       string.position.copy(tip);
@@ -127,6 +140,7 @@ export function createArcher(template = source) {
     // Meet the string as the bow rises. The drawing hand stays at the cheek upon release.
     restHand.lerp(nock, THREE.MathUtils.smoothstep(draw, 0, 0.72));
     if (released) restHand.lerp(cheek, Math.max(0, draw - tension) * draw);
+    if (released) restHand.x += fan * 0.19;
     reach(1, restHand, draw);
     arrow.visible = nocked;
     if (nocked) {
@@ -144,11 +158,30 @@ export function createArcher(template = source) {
       stride += dt * speed * 2.8;
       gait = THREE.MathUtils.damp(gait, Math.min(speed / 3, 1), 14, dt);
     },
-    combatPose(age: number | undefined, flash: number, raining = false, precision = 0) {
+    combatPose(
+      age: number | undefined,
+      flash: number,
+      raining = false,
+      precision = 0,
+      siegeAge?: number,
+      _stroke?: 'cut' | 'backhand' | 'thrust',
+      fanAge?: number,
+    ) {
+      precisionBadge.visible = precision > 0;
+      precisionBadge.children.forEach((pip, i) => {
+        pip.visible = i < precision;
+      });
+      const rainPose = raining && age === undefined;
       const { windup, duration } = ARCHER.basic;
       let draw = 0,
         tension = 0;
-      if (raining) {
+      if (siegeAge !== undefined) {
+        draw =
+          siegeAge < 0
+            ? THREE.MathUtils.smoothstep(siegeAge, -0.22, -0.015)
+            : 1 - THREE.MathUtils.smoothstep(siegeAge, 0.08, 0.36);
+        tension = siegeAge < 0 ? draw : 1 - THREE.MathUtils.smoothstep(siegeAge, 0, 0.035);
+      } else if (rainPose) {
         draw = tension = 1;
       } else if (age !== undefined && age <= windup) {
         draw = THREE.MathUtils.smoothstep(age, 0, windup);
@@ -157,18 +190,41 @@ export function createArcher(template = source) {
         draw = 1 - THREE.MathUtils.smoothstep(age, windup + 0.035, duration);
         tension = 1 - THREE.MathUtils.smoothstep(age, windup, windup + 0.025);
       }
-      const released = !raining && age !== undefined && age >= windup;
-      pose(draw, tension, raining || (age !== undefined && !released && draw >= 0.72), released);
+      const released = age !== undefined && age >= windup;
+      const fan = fanAge === undefined ? 0 : 1 - THREE.MathUtils.smoothstep(fanAge, 0.06, 0.27);
+      if (siegeAge === undefined)
+        pose(
+          age === undefined && fan > 0 ? fan : draw,
+          tension,
+          rainPose || (age !== undefined && !released && draw >= 0.72),
+          released || (age === undefined && fan > 0),
+          0,
+          0,
+          fan,
+        );
+      else
+        pose(
+          draw,
+          tension,
+          siegeAge < 0 && draw > 0.6,
+          siegeAge >= 0,
+          draw,
+          siegeAge >= 0 ? Math.sin((Math.PI * siegeAge) / 0.36) : 0,
+        );
       for (const material of materials.values()) {
         material.emissive.set(flash > 0 ? 0xac3927 : 0x626e40);
         material.emissiveIntensity = flash > 0 ? flash : precision * 0.025;
       }
     },
     resetPose() {
+      precisionBadge.visible = false;
       stride = gait = 0;
       pose(0, 0, false);
     },
     fade(opacity: number) {
+      pipMat.transparent = opacity < 1;
+      pipMat.opacity = opacity;
+      pipMat.depthWrite = opacity > 0.5;
       for (const material of materials.values()) {
         material.transparent = opacity < 1;
         material.opacity = opacity;

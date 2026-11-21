@@ -1,64 +1,66 @@
-import './style.css';
+import { heroFacing, playCombatPose } from './rendering/hero.ts';
 import * as THREE from 'three';
 import { loadWarriorAsset } from './rendering/warrior-asset.ts';
 import { loadArcherAsset } from './rendering/archer.ts';
 import { loadMageAsset } from './rendering/mage-asset.ts';
 import { loadAssets } from './rendering/assets.ts';
 import { createWorld } from './rendering/world.ts';
+import { createStoneHeartWorld } from './rendering/stone-heart-world.ts';
+import { createExpeditionViews } from './rendering/expedition-views.ts';
 import { ThirdPersonCamera } from './rendering/camera.ts';
-import { createCombatView } from './rendering/combat.ts';
-import { createEssenceView } from './rendering/essence.ts';
-import { createElementView } from './rendering/elements.ts';
-import { createProjectileView } from './rendering/projectiles.ts';
-import { createExplorationView } from './rendering/exploration.ts';
-import { createRangedArsenalView } from './rendering/ranged-arsenal.ts';
-import { createWarriorArsenalView } from './rendering/warrior-arsenal.ts';
-import { createArcherArrowView } from './rendering/archer-arrows.ts';
-import { createMageSpellView } from './rendering/mage-spells.ts';
 import { bindControls } from './input/controls.ts';
 import { PreviewState } from './app/state.ts';
 import { DamageTally } from './app/damage-tally.ts';
 import { GameAudio, AudioFeedback } from './audio/game-audio.ts';
-import { CAMERA, SIMULATION_STEP, PLAY_AREA, VIEWS } from './content/config.ts';
+import { SIMULATION_STEP, PLAY_AREA } from './content/config.ts';
 import { EXPEDITION } from './content/expedition.ts';
-import { WHIRLWIND } from './content/combat.ts';
+import type { ExpeditionId } from './content/expedition.ts';
+import { STONE_HEART_BOUNDS, STONE_HEART_LAYOUT } from './content/stone-heart.ts';
 import { classDefinition } from './content/classes.ts';
 import type { ClassId } from './content/class-definition.ts';
-import { classAffinity } from './content/class-definition.ts';
-import { isElement } from './content/elements.ts';
 import type { Element } from './content/elements.ts';
-import { mageRange } from './content/classes/mage.ts';
 import { angleDelta, stepMovement } from './domain/movement.ts';
 import type { Point } from './domain/movement.ts';
 import { Run } from './domain/run.ts';
 import type { UiContext } from './ui/context.ts';
+import { bindCampaign } from './ui/campaign.ts';
 import { element } from './ui/dom.ts';
 import { createHud } from './ui/hud.ts';
+import { bindInterfaceDialogs } from './ui/interface-dialogs.ts';
 import { createLevelUpScreen } from './ui/level-up.ts';
 import { createShopScreen } from './ui/shop.ts';
 import { renderPauseSummary, renderResults } from './ui/results.ts';
 import { bindInterfaceSounds, bindSettings } from './ui/settings.ts';
 
-const CLASS_DESCRIPTIONS: Record<'warrior' | 'archer', string> = {
-  warrior:
-    '100 de vida · espada a corta distancia. Aprende hasta cuatro habilidades automáticas y mejóralas hasta nivel 10. Torbellino y espada pueden actuar a la vez. Elige Fuego, Agua, Tierra o Aire al nivel 2.',
-  archer:
-    '90 de vida · alcance de 12 m. Encadena aciertos para que tus flechas atraviesen hasta tres enemigos. Lluvia de flechas automática. Elige Fuego, Agua, Tierra o Aire al nivel 2.',
+const EXPEDITION_OVERLAYS: Partial<Record<PreviewState['phase'], string>> = {
+  paused: 'paused',
+  results: 'results',
+  choosing: 'level-up',
+  shopping: 'shop',
 };
 
 const sound = new GameAudio();
 const state = new PreviewState();
 const canvas = element<HTMLCanvasElement>('world');
 const events = new AbortController();
+const portrait = matchMedia('(orientation: portrait) and (max-width: 800px)');
+const calm = matchMedia('(prefers-reduced-motion: reduce)');
+const campaign = bindCampaign(state, portrait, events.signal);
+const confirmExpedition = bindInterfaceDialogs(events.signal);
+const settingsHooks = { qualityChanged: () => {}, distanceChanged: (_distance: number) => {} };
+const settings = bindSettings(sound, events.signal, settingsHooks);
+bindInterfaceSounds(sound, events.signal);
+campaign.sync();
 let disposed = false,
   disposeScene = () => {};
 
 function showError(message: string) {
   sound.setPlaying(false);
   state.fail();
+  campaign.sync();
+  element('app').dataset.phase = state.phase;
+  canvas.inert = true;
   for (const id of [
-    'loading',
-    'welcome',
     'paused',
     'results',
     'level-up',
@@ -69,13 +71,16 @@ function showError(message: string) {
     'exploration-hud',
     'interaction-prompt',
     'loot-feedback',
+    'portrait',
   ])
     element(id).hidden = true;
+  for (const dialog of document.querySelectorAll<HTMLDialogElement>('dialog[open]')) dialog.close();
   element('fatal').hidden = false;
   element('fatal-message').textContent = message;
   element('controls').hidden = true;
   element<HTMLButtonElement>('pause').disabled = true;
   if (document.pointerLockElement) document.exitPointerLock();
+  element('reload').focus();
 }
 element('reload').addEventListener('click', () => location.reload(), { signal: events.signal });
 
@@ -84,13 +89,14 @@ async function boot() {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = settings.quality === 'high';
   renderer.shadowMap.type = THREE.PCFShadowMap;
   const start = performance.now();
   disposeScene = () => renderer.dispose();
   const assets = await loadAssets(renderer.capabilities.getMaxAnisotropy(), done => {
     element<HTMLProgressElement>('load-progress').value = done;
-    element('load-message').textContent = `Preparando materiales e iluminación · ${done} / 13`;
+    element('load-message').textContent =
+      done < 13 ? `Cargando materiales · ${done} de 13` : 'Preparando personajes y escenario…';
   });
   await Promise.all([loadMageAsset(), loadArcherAsset(), loadWarriorAsset()]);
   if (disposed) {
@@ -103,11 +109,15 @@ async function boot() {
     renderer.dispose();
   };
 
-  // Expedition state. A restart or class change replaces run, combat and definition.
+  // Scene resources belong to the selected expedition. A retry only resets its run.
+  let selectedExpedition: ExpeditionId = 'exterior';
   let selectedClass: ClassId = 'warrior';
   let selectedElement: Element = 'fire';
   let definition = classDefinition(selectedClass);
-  const world = createWorld(assets, definition);
+  let world: ReturnType<typeof createWorld> | ReturnType<typeof createStoneHeartWorld> = createWorld(
+    assets,
+    definition,
+  );
   element('class-name').textContent = definition.name;
   element('passive-name').textContent = definition.passive.name;
   element('skill-name').textContent = definition.skill.name;
@@ -117,26 +127,7 @@ async function boot() {
   let audioFeedback = new AudioFeedback(definition.stats.hp),
     tally = new DamageTally();
 
-  // Scene views: they consume combat state and events; none of them decides damage.
-  let combatView = createCombatView(world.scene, definition);
-  const mageSpellView = createMageSpellView(world.scene);
-  const archerArrowView = createArcherArrowView(world.scene);
-  const essenceView = createEssenceView(world.scene);
-  const elementView = createElementView(world.scene);
-  const rangedView = createRangedArsenalView(world.scene);
-  const arsenalView = createWarriorArsenalView(world.scene);
-  const projectileView = createProjectileView(world.scene);
-  const explorationView = createExplorationView(world.scene);
-  const sceneViews = [
-    essenceView,
-    elementView,
-    arsenalView,
-    rangedView,
-    projectileView,
-    explorationView,
-    mageSpellView,
-    archerArrowView,
-  ];
+  let views = createExpeditionViews(world.scene, definition);
 
   // Camera, hero body and frame loop bookkeeping.
   const camera = new ThirdPersonCamera();
@@ -161,22 +152,19 @@ async function boot() {
     samples = 0,
     saturatedFrames = 0;
   const loadSeconds = (performance.now() - start) / 1000;
-  const distanceControl = element<HTMLInputElement>('distance');
-  distanceControl.min = String(CAMERA.minDistance);
-  distanceControl.max = String(CAMERA.maxDistance);
-  distanceControl.value = String(camera.desiredDistance);
-  const portrait = matchMedia('(orientation: portrait) and (max-width: 800px)');
-  const calm = matchMedia('(prefers-reduced-motion: reduce)');
-
-  const settings = bindSettings(sound, events.signal, {
-    qualityChanged: () => {
-      renderer.shadowMap.enabled = settings.quality === 'high';
-      resize();
-    },
-    distanceChanged: distance => camera.setDistance(distance),
-    opened: () => pause('Ajustes abiertos. Pulsa Continuar para volver a la expedición.'),
-  });
-  bindInterfaceSounds(sound, events.signal);
+  camera.setDistance(settings.distance);
+  renderer.shadowMap.enabled = settings.quality === 'high';
+  settingsHooks.qualityChanged = () => {
+    renderer.shadowMap.enabled = settings.quality === 'high';
+    resize();
+  };
+  settingsHooks.distanceChanged = distance => {
+    camera.setDistance(distance);
+    if (state.phase === 'paused') {
+      camera.distance = camera.desiredDistance;
+      render(0);
+    }
+  };
 
   // Interface modules read the expedition through this live view.
   const ctx: UiContext = {
@@ -195,7 +183,7 @@ async function boot() {
     quiet: () => calm.matches || settings.reducedEffects,
     bearingTo: target => angleDelta(camera.yaw, Math.atan2(body.x - target.x, body.z - target.z)),
   };
-  const hud = createHud(ctx, world.movementSolids, cue => sound.cue(cue));
+  const hud = createHud(ctx, cue => sound.cue(cue));
   const levelUp = createLevelUpScreen(ctx, {
     chosen: () => {
       audioFeedback.update(run, [], () => {});
@@ -218,29 +206,33 @@ async function boot() {
 
   /** Shows the panels that belong to the current phase. */
   function sync() {
-    const phase = state.phase,
-      menu = phase === 'choosing' || phase === 'shopping';
+    const phase = state.phase;
+    const inExpedition = phase !== 'loading' && phase !== 'ready' && phase !== 'error';
+    const needsRotation = inExpedition && portrait.matches;
+    const activeOverlay = needsRotation ? 'portrait' : EXPEDITION_OVERLAYS[phase];
+    const newlyShown = activeOverlay && element(activeOverlay).hidden;
     element('app').dataset.phase = phase;
+    canvas.inert = !state.active;
     sound.setPlaying(state.active);
     if (!state.active) {
       frames = [];
       frameTime = 0;
       element('threat').hidden = true;
       element('damage-flash').style.opacity = '0';
+      element<HTMLDetailsElement>('camera-menu').open = false;
       hud.hideMarkers();
     }
-    element('welcome').hidden = phase !== 'ready';
-    element('paused').hidden = phase !== 'paused';
-    element('results').hidden = phase !== 'results';
-    element('level-up').hidden = phase !== 'choosing';
-    element('shop').hidden = phase !== 'shopping';
-    element('combat-hud').hidden = phase === 'loading' || phase === 'ready' || phase === 'error';
+    campaign.sync();
+    for (const id of ['paused', 'results', 'level-up', 'shop', 'portrait']) element(id).hidden = id !== activeOverlay;
+    element('combat-hud').hidden = !inExpedition;
     element('controls').hidden = phase !== 'active';
     if (!state.active)
       for (const id of ['exploration-hud', 'interaction-prompt', 'loot-feedback']) element(id).hidden = true;
     element<HTMLButtonElement>('pause').disabled = !state.active;
-    for (const id of ['world', 'settings', 'controls']) element(id).inert = menu;
-    document.querySelector<HTMLElement>('.masthead')!.inert = menu;
+    if (newlyShown) element(activeOverlay).querySelector('.panel-scroll')?.scrollTo(0, 0);
+    if (newlyShown && activeOverlay === 'paused') element('resume').focus({ preventScroll: true });
+    if (newlyShown && activeOverlay === 'results') element('result-title').focus({ preventScroll: true });
+    if (newlyShown && activeOverlay === 'portrait') element('portrait-title').focus({ preventScroll: true });
   }
 
   /** Stops the loop and freezes interpolation so a menu can open over a still frame. */
@@ -266,7 +258,7 @@ async function boot() {
     void controls.capture(true);
   }
 
-  function pause(reason: string) {
+  function pause(reason = '') {
     if (!state.active) return;
     state.pause();
     element('pause-reason').textContent = reason;
@@ -287,10 +279,7 @@ async function boot() {
   const controls = bindControls(canvas, element('joystick'), element('joystick-thumb'), {
     active: () => state.active,
     rotate: (dx, dy) => camera.rotate(dx, dy, settings.sensitivity, settings.invert),
-    zoom: delta => {
-      camera.zoom(delta);
-      distanceControl.value = String(camera.desiredDistance);
-    },
+    zoom: delta => camera.zoom(delta),
     pause,
     notice,
     interactionButton: element<HTMLButtonElement>('interact'),
@@ -315,7 +304,10 @@ async function boot() {
     data.level = String(progress.level);
     data.xp = String(progress.xp);
     data.wave = String(run.wave);
-    data.stage = run.phase;
+    data.expedition = run.expeditionId;
+    data.stage = run.stoneHeart?.phase ?? run.phase;
+    data.gateOpen = String(run.stoneHeart?.gateOpen ?? false);
+    data.living = String(combat.enemies.filter(enemy => !enemy.dead).length);
     data.seed = String(run.seed);
     data.classId = run.definition.id;
     data.affinity = progress.element ?? '';
@@ -328,33 +320,33 @@ async function boot() {
   }
 
   function render(dt: number) {
+    if ('setMission' in world && run.stoneHeart) {
+      const mission = run.stoneHeart;
+      world.setMission(mission.gateOpen, mission.phase === 'signal', mission.phase === 'complete', time);
+    }
     const alpha = Math.min(1, accumulator / SIMULATION_STEP);
     world.hero.root.position.set(
       THREE.MathUtils.lerp(previousBody.x, body.x, alpha),
       0,
       THREE.MathUtils.lerp(previousBody.z, body.z, alpha),
     );
-    const spin =
-      combat.whirlwind && selectedClass === 'warrior' ? (combat.whirlwind.age / WHIRLWIND.interval) * Math.PI * 2 : 0;
-    world.hero.root.rotation.y = combat.whirlwind
-      ? combat.whirlwind.yaw - spin
-      : (combat.attack?.yaw ?? previousBody.yaw + angleDelta(previousBody.yaw, body.yaw) * alpha);
+    world.hero.root.rotation.y = heroFacing(combat, previousBody.yaw + angleDelta(previousBody.yaw, body.yaw) * alpha);
     world.hero.walk(dt, movementSpeed);
     camera.update(world.hero.root.position, world.obstacles, dt);
     camera.camera.updateMatrixWorld();
     visibleFrustum.setFromProjectionMatrix(
       viewMatrix.multiplyMatrices(camera.camera.projectionMatrix, camera.camera.matrixWorldInverse),
     );
-    const feedback = combatView.update(combat, world.hero.root.position, camera.camera, alpha, dt);
-    essenceView.update(run.progression.drops, combat.time);
-    elementView.update(combat, world.hero.root.position, alpha, dt);
-    arsenalView.update(combat);
-    rangedView.update(combat);
-    projectileView.update(combat.projectiles.items, alpha);
-    mageSpellView.update(combat, alpha);
-    archerArrowView.update(combat, alpha);
-    explorationView.update(run.exploration.objects, run.exploration.focus(body)?.id, combat.time, run.capture);
-    world.hero.combatPose(combat.attack?.age, feedback.heroFlash, !!combat.whirlwind, combat.impetusStacks);
+    const feedback = views.combat.update(combat, world.hero.root.position, camera.camera, alpha, dt);
+    views.essence.update(run.progression.drops, combat.time);
+    views.elements.update(combat, world.hero.root.position, alpha, dt);
+    views.arsenal.update(combat);
+    views.ranged.update(combat);
+    views.projectiles.update(combat.projectiles.items, alpha);
+    views.mageSpells.update(combat, alpha);
+    views.archerArrows.update(combat, alpha);
+    views.exploration.update(run.exploration.objects, run.exploration.focus(body)?.id, combat.time, run.capture);
+    playCombatPose(world.hero, combat, feedback.heroFlash);
     element('damage-flash').style.opacity = String(feedback.damageFlash * (settings.reducedEffects ? 0.2 : 0.65));
     world.hero.fade(THREE.MathUtils.clamp((camera.distance - 0.6) / 0.85, 0.08, 1));
     world.update(time);
@@ -430,7 +422,7 @@ async function boot() {
       p95 = sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * 0.95))];
     element('metrics').textContent = [
       `${fps.toFixed(1)} FPS · p95 ${p95.toFixed(1)} ms`,
-      `${combat.enemies.filter(e => !e.dead).length} enemigos vivos · objetivo local ${run.stage.localTarget}`,
+      `${combat.enemies.filter(e => !e.dead).length} enemigos vivos · ${run.stoneHeart?.section ?? `objetivo local ${run.stage.localTarget}`}`,
       `${renderer.info.render.calls} llamadas · ${renderer.info.render.triangles.toLocaleString('es-CL')} triángulos`,
       `${canvas.width} × ${canvas.height} · DPR ${renderer.getPixelRatio().toFixed(2)}`,
       `Cámara ${camera.distance.toFixed(2)} / ${camera.desiredDistance.toFixed(1)} m`,
@@ -463,13 +455,13 @@ async function boot() {
         camera.yaw,
         SIMULATION_STEP,
         { ...definition.movement, speed: run.progression.speed },
-        PLAY_AREA,
-        world.movementSolids,
+        run.bounds,
+        run.movementSolids,
       );
-      const interactionId = controls.consumeInteraction() ? run.exploration.focus(body)?.id : undefined;
+      const interactionId = controls.consumeInteraction() ? run.focus(body)?.id : undefined;
       const combatEvents = run.step(SIMULATION_STEP, body, isVisible, interactionId);
-      combatView.events(combatEvents);
-      elementView.events(combatEvents);
+      views.combat.events(combatEvents, combat.time);
+      views.elements.events(combatEvents);
       tally.add(combatEvents);
       for (const event of combatEvents)
         if (event.type === 'hit' && event.target === 0) {
@@ -509,7 +501,6 @@ async function boot() {
       for (const part of document.querySelectorAll('.hero-plate, .action-bar, #exploration-hud, .top-stack'))
         part.animate([{ opacity: 0 }, { opacity: 0, offset: 0.45 }, { opacity: 1 }], { duration: 1100 });
     }
-    element<HTMLDetailsElement>('settings').open = false;
     controls.clear();
     accumulator = 0;
     movementSpeed = 0;
@@ -522,32 +513,43 @@ async function boot() {
     const { width, height } = canvas.getBoundingClientRect();
     renderer.setSize(width, height, false);
     camera.resize(width, height);
-    if (portrait.matches) pause('Gira el dispositivo y pulsa Continuar.');
+    if (portrait.matches && state.active) pause('Gira el dispositivo y pulsa Continuar.');
+    else sync();
     if (!state.active && state.phase !== 'error') render(0);
   }
   const observer = new ResizeObserver(resize);
   observer.observe(canvas);
 
-  function setView(index: number) {
-    const view = VIEWS[index];
+  function setArrival() {
+    const { start, arrivalName } = run.layout;
     controls.clear();
     accumulator = 0;
     movementSpeed = 0;
-    body.x = view.position[0];
-    body.z = view.position[2];
-    body.yaw = view.yaw;
+    Object.assign(body, start);
     Object.assign(previousBody, body);
     world.hero.resetPose();
-    camera.reset(view.yaw);
-    element('place').textContent = view.label;
+    camera.reset(start.yaw);
+    element('place').textContent = arrivalName;
+    element('pause-stage').textContent = run.title;
+    canvas.setAttribute(
+      'aria-label',
+      `${run.title}. WASD para caminar, ratón para mirar y rueda para ajustar la cámara.`,
+    );
     render(0);
   }
   function resetExpedition() {
     cancelAnimationFrame(raf);
     controls.clear();
-    combatView.reset();
-    for (const view of sceneViews) view.reset();
-    run = new Run(PLAY_AREA, world.movementSolids, newSeed(), selectedClass, selectedElement);
+    views.reset();
+    const interior = selectedExpedition === 'stone-heart';
+    run = new Run(
+      interior ? STONE_HEART_BOUNDS : PLAY_AREA,
+      world.movementSolids,
+      newSeed(),
+      selectedClass,
+      selectedElement,
+      interior ? STONE_HEART_LAYOUT : EXPEDITION,
+    );
     combat = run.combat;
     element('upgrade-options').replaceChildren();
     element('shop-offers').replaceChildren();
@@ -560,7 +562,8 @@ async function boot() {
     previous = 0;
     frames = [];
     frameTime = 0;
-    setView(0);
+    camera.setDistance(settings.distance);
+    setArrival();
     sync();
   }
   function restartEncounter() {
@@ -569,34 +572,43 @@ async function boot() {
     resetExpedition();
     resume();
   }
-  function selection() {
+  function leaveExpedition(screen: 'welcome' | 'home') {
     if (state.phase !== 'results' && state.phase !== 'paused') return;
     state.restart();
-    resetExpedition();
-    document.querySelector<HTMLElement>('.class-card[aria-pressed=true]')?.focus({ preventScroll: true });
+    sync();
+    campaign.show(screen);
   }
-  function changeSelection() {
-    if (state.phase !== 'ready') return;
-    const id = element<HTMLSelectElement>('select-class').value;
-    if (id !== 'warrior' && id !== 'mage' && id !== 'archer') return;
-    selectedClass = id;
-    const affinityValue = element<HTMLSelectElement>('select-element').value;
-    selectedElement = isElement(affinityValue) ? affinityValue : 'fire';
-    definition = classDefinition(selectedClass);
-    combatView.dispose();
-    world.replaceHero(definition);
-    combatView = createCombatView(world.scene, definition);
-    element('class-name').textContent = definition.name;
-    element('passive-name').textContent = definition.passive.name;
-    element('skill-name').textContent = definition.skill.name;
-    element('combat-hud').setAttribute('aria-label', `Estado del ${definition.name}`);
-    element('whirlwind-time').setAttribute('aria-label', `Disponibilidad de ${definition.skill.name}`);
-    element('initial-element').hidden = selectedClass !== 'mage';
-    element('class-description').textContent =
-      selectedClass === 'mage'
-        ? `80 de vida · alcance de ${mageRange({ element: selectedElement, rank: 1, mastery: false })} m. ${classAffinity(definition, selectedElement).description} Cada cuarto orbe gana +60 % de daño y estalla en área. Cataclismo se activa automáticamente.`
-        : CLASS_DESCRIPTIONS[selectedClass];
+  function enterExpedition() {
+    if (state.phase !== 'ready' || portrait.matches) return;
+    const { expedition, classId, affinity } = campaign.selection();
+    const nextDefinition = classDefinition(classId);
+    if (expedition !== selectedExpedition) {
+      const nextWorld =
+        expedition === 'stone-heart'
+          ? createStoneHeartWorld(assets, nextDefinition)
+          : createWorld(assets, nextDefinition);
+      const nextViews = createExpeditionViews(nextWorld.scene, nextDefinition);
+      views.dispose();
+      world.dispose();
+      world = nextWorld;
+      views = nextViews;
+      selectedExpedition = expedition;
+    } else if (classId !== selectedClass) {
+      world.replaceHero(nextDefinition);
+      views.replaceCombat(nextDefinition);
+    }
+    selectedElement = affinity;
+    if (selectedClass !== classId) {
+      selectedClass = classId;
+      definition = nextDefinition;
+      element('class-name').textContent = definition.name;
+      element('passive-name').textContent = definition.passive.name;
+      element('skill-name').textContent = definition.skill.name;
+      element('combat-hud').setAttribute('aria-label', `Estado del ${definition.name}`);
+      element('whirlwind-time').setAttribute('aria-label', `Disponibilidad de ${definition.skill.name}`);
+    }
     resetExpedition();
+    resume();
   }
 
   // Buttons and keys.
@@ -610,33 +622,15 @@ async function boot() {
       { signal: events.signal },
     );
   }
-  on('enter', resume);
+  on('enter', enterExpedition);
   on('resume', resume);
-  on('pause', () => pause('Pausaste la vista.'));
+  on('pause', pause);
   on('restart', restartEncounter);
-  on('restart-paused', restartEncounter);
-  on('select-results', selection);
-  on('select-paused', selection);
-  element('select-class').addEventListener('change', changeSelection, { signal: events.signal });
-  element('select-element').addEventListener('change', changeSelection, { signal: events.signal });
-  // Class and affinity cards drive the original selects, which stay the single source of truth.
-  function bindCards(selector: string, selectId: string, value: (card: HTMLElement) => string | undefined) {
-    const cards = [...document.querySelectorAll<HTMLButtonElement>(selector)],
-      select = element<HTMLSelectElement>(selectId);
-    for (const card of cards)
-      card.addEventListener(
-        'click',
-        () => {
-          if (state.phase !== 'ready') return;
-          select.value = value(card) ?? select.value;
-          select.dispatchEvent(new Event('change'));
-          for (const other of cards) other.setAttribute('aria-pressed', String(value(other) === select.value));
-        },
-        { signal: events.signal },
-      );
-  }
-  bindCards('.class-card', 'select-class', card => card.dataset.class);
-  bindCards('.element-chip', 'select-element', card => card.dataset.element);
+  on('restart-paused', () => confirmExpedition('¿Reiniciar la expedición?', 'Reiniciar', restartEncounter));
+  on('select-paused', () => confirmExpedition('¿Cambiar de clase?', 'Elegir clase', () => leaveExpedition('welcome')));
+  on('home-paused', () => confirmExpedition('¿Volver al inicio?', 'Volver al inicio', () => leaveExpedition('home')));
+  on('select-results', () => leaveExpedition('welcome'));
+  on('home-results', () => leaveExpedition('home'));
   document.addEventListener(
     'keydown',
     event => {
@@ -662,6 +656,7 @@ async function boot() {
       state.pauseShop();
       controls.clear();
       element('pause-reason').textContent = 'Saliste del mercader. Pulsa Continuar para retomar la expedición.';
+      renderPauseSummary(ctx);
       sync();
       render(0);
     },
@@ -676,6 +671,7 @@ async function boot() {
     { signal: events.signal },
   );
   on('capture', () => {
+    element<HTMLDetailsElement>('camera-menu').open = false;
     void controls.capture();
   });
   on('left', () => {
@@ -701,9 +697,8 @@ async function boot() {
   );
 
   state.loaded();
-  element('loading').hidden = true;
   sync();
-  setView(0);
+  setArrival();
   resize();
   if (assets.failures.length)
     notice(
@@ -713,8 +708,7 @@ async function boot() {
     cancelAnimationFrame(raf);
     observer.disconnect();
     controls.dispose();
-    combatView.dispose();
-    for (const view of sceneViews) view.dispose();
+    views.dispose();
     world.dispose();
     assets.dispose();
     renderer.dispose();

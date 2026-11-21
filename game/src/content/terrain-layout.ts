@@ -18,6 +18,18 @@ export const SECTORS = [
   { id: 'E', name: 'Campamentos del cerco', center: { x: -35, z: 35 }, minX: -60, maxX: 38, minZ: 18, maxZ: 85 },
 ] as const;
 
+// E3.1 ground character per sector: damp patches (wet), moss and grass tint (green), brightness offset (light)
+// and wheel ruts on dirt tracks (ruts). Values 0–1 except light, which is a small ± offset.
+export type SurfaceCharacter = { wet: number; green: number; light: number; ruts: number };
+export const SECTOR_SURFACES: Record<(typeof SECTORS)[number]['id'], SurfaceCharacter> = {
+  F: { wet: 0.35, green: 0.15, light: 0, ruts: 0.5 },
+  A: { wet: 0.2, green: 0.35, light: 0.07, ruts: 1 },
+  B: { wet: 0.95, green: 0.08, light: -0.07, ruts: 0.7 },
+  C: { wet: 0.4, green: 0.55, light: 0, ruts: 0.3 },
+  D: { wet: 0.6, green: 0.8, light: -0.1, ruts: 0.2 },
+  E: { wet: 0.55, green: 0.12, light: -0.04, ruts: 0.6 },
+};
+
 export function sectorAt(point: Point) {
   return (
     SECTORS.find(s => point.x >= s.minX && point.x <= s.maxX && point.z >= s.minZ && point.z <= s.maxZ) ?? SECTORS[0]

@@ -14,7 +14,11 @@ export function worldDirection(input: MoveInput, yaw: number): Point {
 export function angleDelta(from: number, to: number) {
   return Math.atan2(Math.sin(to - from), Math.cos(to - from));
 }
+function outsideBox(p: Point, radius: number, box: Solid) {
+  return p.x < box.min.x - radius || p.x > box.max.x + radius || p.z < box.min.z - radius || p.z > box.max.z + radius;
+}
 export function overlaps(position: Point, radius: number, box: Solid): boolean {
+  if (outsideBox(position, radius, box)) return false;
   const x = clamp(position.x, box.min.x, box.max.x),
     z = clamp(position.z, box.min.z, box.max.z);
   return Math.hypot(position.x - x, position.z - z) < radius - 1e-7;
@@ -38,6 +42,7 @@ export function moveCircle(
       next.z = clamp(next.z, bounds.minZ + radius, bounds.maxZ - radius);
       let corrected = false;
       for (const box of solids) {
+        if (outsideBox(next, radius, box)) continue;
         const x = clamp(next.x, box.min.x, box.max.x),
           z = clamp(next.z, box.min.z, box.max.z);
         const dx = next.x - x,

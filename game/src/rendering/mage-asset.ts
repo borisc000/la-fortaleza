@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { MAGE } from '../content/classes/mage.ts';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
 let source: THREE.Group | undefined, pending: Promise<void> | undefined;
@@ -52,6 +53,27 @@ export function createMageAsset(template = source) {
     pose('foreL', -0.08);
     pose('foreR', 0);
   }
+  const sparks = new THREE.Group();
+  const sparkGeo = new THREE.OctahedronGeometry(0.05);
+  const sparkMat = new THREE.MeshBasicMaterial({ color: 0xb8f3ff });
+  for (let i = 0; i < 3; i++) sparks.add(new THREE.Mesh(sparkGeo, sparkMat));
+  const staffLight = new THREE.Group();
+  const release = new THREE.Group();
+  for (let i = 0; i < 4; i++) {
+    const ray = new THREE.Mesh(sparkGeo, sparkMat);
+    const angle = Math.PI / 4 + (i * Math.PI) / 2;
+    ray.position.set(0.22 * Math.cos(angle), 0.22 * Math.sin(angle), 0);
+    ray.rotation.z = angle - Math.PI / 2;
+    ray.scale.set(0.85, 3, 0.85);
+    release.add(ray);
+  }
+  release.visible = false;
+  staffLight.add(sparks, release);
+  root.add(staffLight);
+  staffLight.position.set(0.36, 2.06, -0.14);
+  root.updateMatrixWorld(true);
+  bones.get('foreR')?.attach(staffLight);
+  sparks.visible = false;
   idle();
   return {
     root,
@@ -62,25 +84,45 @@ export function createMageAsset(template = source) {
     },
     combatPose(age: number | undefined, flash: number, casting = false, charges = 0) {
       if (age !== undefined || casting) {
-        pose('upperL', 0.65);
+        const lift = casting ? 1 : Math.sin(Math.min(1, (age ?? 0) / 0.4) * Math.PI);
+        pose('upperL', 0.3 + 0.6 * lift);
         pose('foreL', 0.55);
-        pose('upperR', 0.08);
+        pose('upperR', casting ? 0.55 : 0.08);
+      }
+      const sinceRelease = (age ?? -1) - MAGE.basic.windup;
+      release.visible = casting && sinceRelease >= 0 && sinceRelease < 0.16;
+      if (release.visible) {
+        const phase = sinceRelease / 0.16;
+        release.scale.setScalar(1.35 * (1 - phase * phase));
+        pose('foreR', -0.4 * Math.sin(phase * Math.PI));
+      }
+      sparks.visible = charges > 0;
+      for (const [i, spark] of sparks.children.entries()) {
+        const angle = time * 4 + (i * Math.PI * 2) / 3;
+        spark.visible = i < charges;
+        spark.position.set(Math.cos(angle) * 0.19, Math.sin(angle) * 0.14, Math.sin(angle) * 0.1);
       }
       for (const m of materials) {
         m.emissive.set(flash > 0 ? 0xac3927 : 0x000000);
         m.emissiveIntensity = flash;
         if (m.name.includes('Cristal')) {
           m.emissive.set(0x267e9b);
-          m.emissiveIntensity = 0.25 + charges * 0.08;
+          m.emissiveIntensity =
+            0.32 + charges * 0.57 + (age !== undefined ? 0.35 * Math.sin(Math.min(1, age / 0.4) * Math.PI) : 0);
         }
       }
     },
     resetPose() {
+      release.visible = false;
+      sparks.visible = false;
       time = gait = 0;
       bones.forEach((bone, name) => bone.quaternion.copy(bind.get(name)!));
       idle();
     },
     fade(opacity: number) {
+      sparkMat.transparent = opacity < 1;
+      sparkMat.opacity = opacity;
+      sparkMat.depthWrite = opacity > 0.5;
       materials.forEach(m => {
         m.transparent = opacity < 1;
         m.opacity = opacity;

@@ -1,0 +1,10 @@
+{
+  "fecha": "2026-11-18",
+  "equipo": "ANGLE (AMD Radeon(TM) Graphics 0x1681, Direct3D11), GPU integrada; panel del navegador oculto; CPU sin otras tareas",
+  "metodo": "Método de E2.4: createWorld real, 1440x900, pixelRatio 1, sombras PCF; por encuadre, 6 fotogramas de calentamiento y 30 medidos con lectura de 1 píxel tras cada uno. Mediana en ms; mínimo de dos rondas. 'Antes' es E3.1 cargado en la misma página. Una medición previa con las simulaciones en marcha dio tiempos 2–3 ms más altos en ambos y se descartó.",
+  "antes_E3_1": { "cerca": 11.0, "media": 10.2, "lejana": 10.5, "explanada-alta": 9.9, "a-llegada": 11.3, "b-campos": 10.5, "d-bosque": 11.2, "talud-oeste": 9.7, "talud-sur": 8.7, "talud-este": 9.6, "borde-camara": 10.3, "afloramiento-oeste": 9.6, "afloramiento-centro": 9.9, "afloramiento-abadia": 10.3 },
+  "despues_E3_2": { "cerca": 11.4, "media": 10.8, "lejana": 10.9, "explanada-alta": 10.1, "a-llegada": 12.1, "b-campos": 11.1, "d-bosque": 11.6, "talud-oeste": 10.5, "talud-sur": 9.6, "talud-este": 10.5, "borde-camara": 10.4, "afloramiento-oeste": 10.6, "afloramiento-centro": 10.7, "afloramiento-abadia": 10.7 },
+  "diferencia": { "mediana": 0.6, "maxima": 1.0 },
+  "porFotograma": { "llamadas": "128 → 130 en los encuadres de la puerta (material de roca)", "triangulos": "488.958 → 537.138 en 'cerca' (+48.180, sombras incluidas), sobre todo por la rejilla de 1 m en los taludes" },
+  "escena": { "mallasFusionadas": { "antes": 28, "despues": 29 }, "triangulos": { "antes": 269405, "despues": 300545 }, "obstaculos": { "antes": 864, "despues": 1423, "movimiento": "641 → 688" } }
+}

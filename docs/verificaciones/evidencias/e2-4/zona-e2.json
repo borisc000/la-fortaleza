@@ -1,0 +1,121 @@
+{
+  "world": "E2.4",
+  "obstacles": 864,
+  "movementSolids": 641,
+  "camera": {
+    "cells": 650,
+    "samples": 10400,
+    "min": 0.24,
+    "p5": 2.93,
+    "median": 12,
+    "under6m": 0.08,
+    "obstructed": 0.13,
+    "worst": [
+      {
+        "x": -6,
+        "z": -16,
+        "yaw": 1.57,
+        "distance": 0.24
+      },
+      {
+        "x": -6,
+        "z": -14,
+        "yaw": 1.57,
+        "distance": 0.24
+      },
+      {
+        "x": 2,
+        "z": -14,
+        "yaw": 4.71,
+        "distance": 0.24
+      },
+      {
+        "x": 6,
+        "z": -14,
+        "yaw": 1.57,
+        "distance": 0.24
+      },
+      {
+        "x": 14,
+        "z": -16,
+        "yaw": 4.71,
+        "distance": 0.24
+      }
+    ]
+  },
+  "hordes": [
+    {
+      "name": "explanada",
+      "hero": {
+        "x": 4,
+        "z": -8
+      },
+      "soldiers": 60,
+      "secondsToHalfWithin6m": 5.13,
+      "within4m": 60,
+      "within6m": 60,
+      "within10m": 60,
+      "stuckFarAway": 0,
+      "stuckAt": [],
+      "solidOverlapSamples": 0,
+      "status": "running"
+    },
+    {
+      "name": "boca de la puerta",
+      "hero": {
+        "x": 4,
+        "z": -15.6
+      },
+      "soldiers": 60,
+      "secondsToHalfWithin6m": 6.15,
+      "within4m": 59,
+      "within6m": 60,
+      "within10m": 60,
+      "stuckFarAway": 0,
+      "stuckAt": [],
+      "solidOverlapSamples": 0,
+      "status": "running"
+    },
+    {
+      "name": "flanco este, junto al ariete",
+      "hero": {
+        "x": 15.5,
+        "z": -12.5
+      },
+      "soldiers": 60,
+      "secondsToHalfWithin6m": 6.17,
+      "within4m": 60,
+      "within6m": 60,
+      "within10m": 60,
+      "stuckFarAway": 0,
+      "stuckAt": [],
+      "solidOverlapSamples": 0,
+      "status": "running"
+    },
+    {
+      "name": "flanco oeste, junto a la escala",
+      "hero": {
+        "x": -16,
+        "z": -12.5
+      },
+      "soldiers": 60,
+      "secondsToHalfWithin6m": 5.62,
+      "within4m": 58,
+      "within6m": 58,
+      "within10m": 58,
+      "stuckFarAway": 2,
+      "stuckAt": [
+        {
+          "x": 5.02,
+          "z": -18.98
+        },
+        {
+          "x": -16.3,
+          "z": 1.61
+        }
+      ],
+      "solidOverlapSamples": 0,
+      "status": "running"
+    }
+  ]
+}

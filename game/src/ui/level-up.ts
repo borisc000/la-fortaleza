@@ -73,6 +73,7 @@ export function createLevelUpScreen(ctx: UiContext, hooks: LevelUpHooks) {
         : 'Tu mejora está lista.';
       nextButton.hidden = false;
       nextButton.textContent = 'Continuar';
+      nextButton.focus({ preventScroll: true });
       return;
     }
     element('upgrade-title').textContent =

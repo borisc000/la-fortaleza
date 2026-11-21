@@ -1,10 +1,17 @@
-import { overlaps } from './movement.ts';
+import { moveCircle, overlaps } from './movement.ts';
 import type { Bounds, Point, Solid } from './movement.ts';
+
+const OBSTACLE_CELL_SIZE = 4;
 
 /** Capsule-like swept segment, conservatively padded against architecture. */
 export function clearPath(from: Point, to: Point, solids: readonly Solid[], padding = 0): boolean {
   const delta = { x: to.x - from.x, z: to.z - from.z };
+  const minX = Math.min(from.x, to.x) - padding,
+    maxX = Math.max(from.x, to.x) + padding,
+    minZ = Math.min(from.z, to.z) - padding,
+    maxZ = Math.max(from.z, to.z) + padding;
   for (const box of solids) {
+    if (box.max.x < minX || box.min.x > maxX || box.max.z < minZ || box.min.z > maxZ) continue;
     let near = 0,
       far = 1;
     for (const axis of ['x', 'z'] as const) {
@@ -45,8 +52,16 @@ export class Navigation {
   private obstacleBuckets = new Map<string, Solid[]>();
   private nearby(point: Point, margin: number): Solid[] {
     const result = new Set<Solid>();
-    for (let x = Math.floor((point.x - margin) / 4); x <= Math.floor((point.x + margin) / 4); x++)
-      for (let z = Math.floor((point.z - margin) / 4); z <= Math.floor((point.z + margin) / 4); z++)
+    for (
+      let x = Math.floor((point.x - margin) / OBSTACLE_CELL_SIZE);
+      x <= Math.floor((point.x + margin) / OBSTACLE_CELL_SIZE);
+      x++
+    )
+      for (
+        let z = Math.floor((point.z - margin) / OBSTACLE_CELL_SIZE);
+        z <= Math.floor((point.z + margin) / OBSTACLE_CELL_SIZE);
+        z++
+      )
         for (const solid of this.obstacleBuckets.get(`${x},${z}`) ?? []) result.add(solid);
     return [...result];
   }
@@ -56,8 +71,12 @@ export class Navigation {
     this.radius = radius;
     // Static broad phase: constructing a larger grid need not scan every wall at every cell.
     for (const solid of solids) {
-      for (let x = Math.floor(solid.min.x / 4); x <= Math.floor(solid.max.x / 4); x++)
-        for (let z = Math.floor(solid.min.z / 4); z <= Math.floor(solid.max.z / 4); z++) {
+      for (let x = Math.floor(solid.min.x / OBSTACLE_CELL_SIZE); x <= Math.floor(solid.max.x / OBSTACLE_CELL_SIZE); x++)
+        for (
+          let z = Math.floor(solid.min.z / OBSTACLE_CELL_SIZE);
+          z <= Math.floor(solid.max.z / OBSTACLE_CELL_SIZE);
+          z++
+        ) {
           const key = `${x},${z}`,
             bucket = this.obstacleBuckets.get(key) ?? [];
           bucket.push(solid);
@@ -80,7 +99,36 @@ export class Navigation {
       this.free[i] = this.nearby(point, radius + 0.08).some(box => overlaps(point, radius + 0.08, box)) ? 0 : 1;
     }
     this.links = Array.from({ length: this.free.length }, (_, i) => (this.free[i] ? this.buildNeighbours(i) : []));
-    this.obstacleBuckets.clear();
+  }
+  clearPath(from: Point, to: Point, padding = this.radius): boolean {
+    if (!this.solids.length) return true;
+    const minX = Math.floor((Math.min(from.x, to.x) - padding) / OBSTACLE_CELL_SIZE),
+      maxX = Math.floor((Math.max(from.x, to.x) + padding) / OBSTACLE_CELL_SIZE),
+      minZ = Math.floor((Math.min(from.z, to.z) - padding) / OBSTACLE_CELL_SIZE),
+      maxZ = Math.floor((Math.max(from.z, to.z) + padding) / OBSTACLE_CELL_SIZE);
+    // Long diagonal queries can cover more empty cells than there are boxes.
+    if ((maxX - minX + 1) * (maxZ - minZ + 1) >= this.solids.length) return clearPath(from, to, this.solids, padding);
+    for (let x = minX; x <= maxX; x++)
+      for (let z = minZ; z <= maxZ; z++) {
+        const boxes = this.obstacleBuckets.get(`${x},${z}`);
+        if (boxes && !clearPath(from, to, boxes, padding)) return false;
+      }
+    return true;
+  }
+  move(start: Point, delta: Point, radius: number): Point {
+    // One normal substep accepts its endpoint directly when it needs no contact or boundary correction.
+    if (Math.hypot(delta.x, delta.z) <= radius * 0.25) {
+      const end = { x: start.x + delta.x, z: start.z + delta.z };
+      if (
+        end.x >= this.bounds.minX + radius &&
+        end.x <= this.bounds.maxX - radius &&
+        end.z >= this.bounds.minZ + radius &&
+        end.z <= this.bounds.maxZ - radius &&
+        this.clearPath(end, end, radius)
+      )
+        return end;
+    }
+    return moveCircle(start, delta, radius, this.bounds, this.solids);
   }
   point(index: number): Point {
     return {
@@ -121,7 +169,7 @@ export class Navigation {
         if (!this.free[i]) continue;
         const p = this.point(i),
           d = Math.hypot(p.x - point.x, p.z - point.z);
-        if (d < distance && clearPath(point, p, this.solids, this.radius)) {
+        if (d < distance && this.clearPath(point, p)) {
           best = i;
           distance = d;
         }
@@ -137,7 +185,7 @@ export class Navigation {
           if (!this.free[i]) continue;
           const p = this.point(i),
             d = Math.hypot(p.x - point.x, p.z - point.z);
-          if (d < distance && clearPath(point, p, this.solids, 0.04)) {
+          if (d < distance && this.clearPath(point, p, 0.04)) {
             best = i;
             distance = d;
           }
@@ -160,7 +208,7 @@ export class Navigation {
       }
   }
   waypoint(from: Point, target: Point): Point | undefined {
-    if (clearPath(from, target, this.solids, this.radius)) return target;
+    if (this.clearPath(from, target)) return target;
     let index = this.nearest(from);
     if (index < 0 || this.distance[index] < 0) return undefined;
     let best = this.point(index);
@@ -170,7 +218,7 @@ export class Navigation {
       );
       if (next === undefined) break;
       const point = this.point(next);
-      if (!clearPath(from, point, this.solids, this.radius)) break;
+      if (!this.clearPath(from, point)) break;
       best = point;
       index = next;
     }

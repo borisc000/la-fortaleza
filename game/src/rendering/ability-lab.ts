@@ -1,3 +1,4 @@
+import { heroFacing, playCombatPose } from './hero.ts';
 import * as THREE from 'three';
 import { createAbilityTrial, TRIAL_DURATION, TRIAL_STEP, type TrialConfig } from '../domain/ability-lab.ts';
 import { catalog, type ModelView } from '../model-catalog.ts';
@@ -7,7 +8,6 @@ import { createWarriorArsenalView } from './warrior-arsenal.ts';
 import { createRangedArsenalView } from './ranged-arsenal.ts';
 import { createMageSpellView } from './mage-spells.ts';
 import { createArcherArrowView } from './archer-arrows.ts';
-import { WHIRLWIND } from '../content/combat.ts';
 
 export async function createAbilityLab(
   config: TrialConfig,
@@ -63,12 +63,8 @@ export async function createAbilityLab(
     spells.update(combat, 1);
     arrows.update(combat, 1);
     hero.walk(dt, 0);
-    // Same body animation wiring as the game, without inventing skill-specific gestures.
-    hero.root.rotation.y = combat.whirlwind
-      ? combat.whirlwind.yaw -
-        (combat.definition.id === 'warrior' ? (combat.whirlwind.age / WHIRLWIND.interval) * Math.PI * 2 : 0)
-      : (combat.attack?.yaw ?? 0);
-    hero.combatPose(combat.attack?.age, 0, !!combat.whirlwind, combat.impetusStacks);
+    hero.root.rotation.y = heroFacing(combat, 0);
+    playCombatPose(hero, combat, 0);
     hero.fade(1);
     dummies.forEach((dummy, i) => {
       const enemy = combat.enemies[i];
@@ -101,7 +97,7 @@ export async function createAbilityLab(
         while (frame < target) {
           const events = trial.step();
           frame++;
-          feedback.events(events);
+          feedback.events(events, trial.combat.time);
           elements.events(events);
           for (const event of events)
             if (event.type === 'hit' && event.target > 0) dummies[event.target - 1].flash = 0.25;

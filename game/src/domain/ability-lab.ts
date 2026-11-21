@@ -8,6 +8,8 @@ import { RangedArsenal } from './classes/ranged-arsenal.ts';
 
 export type TrialConfig = {
   abilityId: string;
+  testGuardHits?: boolean;
+  testStakeCrossing?: boolean;
   level: number;
   focus: Branch;
   mutation: 0 | 1;
@@ -59,12 +61,13 @@ export function createAbilityTrial(config: TrialConfig) {
   kit.abilities = build.abilities;
   const combat = new Combat(bounds, [], [], false, { ...classRuntime(classId), createKit: () => kit });
   const hero = { x: 0, z: 0, yaw: 0 };
+  const crossing = config.abilityId === 'archer:stakes' && config.testStakeCrossing;
   // Close targets expose melee/orbits; the row and flank expose penetration and ricochets.
   combat.addEnemies([
     { x: 0, z: -1.7 },
     { x: -1.6, z: -0.8 },
     { x: 1.6, z: -0.8 },
-    { x: 0, z: -4 },
+    { x: crossing ? 0.72 : 0, z: -4 },
     { x: 0, z: -6.3 },
     { x: 2, z: -4 },
   ]);
@@ -73,6 +76,8 @@ export function createAbilityTrial(config: TrialConfig) {
     enemy.hp = enemy.maxHp = 1_000_000;
     enemy.armor = 0;
   }
+  if (config.abilityId === 'warrior:retaliation' && config.testGuardHits) combat.enemies[0].stationary = false;
+  if (crossing) combat.enemies[3].stationary = false;
   combat.loadout = { element: config.element, rank: 1, mastery: false };
   const basicEnabled =
     build.definition.kind === 'basic' ||

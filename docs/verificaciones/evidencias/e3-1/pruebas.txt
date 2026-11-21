@@ -1,0 +1,40 @@
+ok 1 - offscreen candidates are preferred; visible fallback retains warning and safe distance
+ok 2 - unsafe or disconnected spawn rings are deferred without a later wave backlog
+ok 3 - only persistently distant unseen normals retire; visibility resets grace and rewards survive
+ok 4 - local replenishment follows a relocated player while respecting rests and population
+ok 5 - expanded map has connected activity clearings and safe normal/major spawns at edges
+ok 6 - coins collect once by proximity and supplies wait at full health
+ok 7 - walls block automatic collection, discovery and contextual interaction
+ok 8 - chests are unique rewards; sources preserve charges at full HP and exhaust visibly
+ok 9 - interaction targeting is deterministic, prefers unused objects and rechecks range
+ok 10 - normal deaths leave collectible currency once; withdrawal and boss deaths do not
+ok 11 - discovery remembers visited destinations but limits guidance to three nearby points
+ok 12 - paused choices freeze pickups and queued interactions; lethal hits take priority over healing
+ok 13 - reward state and balance reset while the same seed reproduces placement
+ok 14 - actual map placements are reproducible, separated and reachable with player clearance
+ok 15 - rendered props reflect used states and release objects and shared resources on restart
+ok 16 - E2.4 lab pieces: the gate builds alone at its world size, with the same collision as in the world
+ok 17 - E2.4 lab pieces: siege remains build in isolation and only the ram and barrel collide
+ok 18 - seed 1: roadside rewards remain discoverable and approachable
+ok 19 - seed 2: roadside rewards remain discoverable and approachable
+ok 20 - seed 7: roadside rewards remain discoverable and approachable
+ok 21 - seed 19: roadside rewards remain discoverable and approachable
+ok 22 - seed 43: roadside rewards remain discoverable and approachable
+ok 23 - seed 77: roadside rewards remain discoverable and approachable
+ok 24 - seed 256: roadside rewards remain discoverable and approachable
+ok 25 - seed 9173: roadside rewards remain discoverable and approachable
+ok 26 - local reinforcement rings remain populated at all landmarks and activities for normal, elite and boss sizes
+ok 27 - director rejects a previously valid spawn when a persistent prop occupies it
+ok 28 - capture ground, loot and supplies do not suppress the horde; the flag and used props do
+ok 29 - all six sectors have spatial territories and the route network joins the arrival and fifteen landmarks
+ok 30 - the actual fortress builds with fallback materials and every viewpoint has a safe camera
+ok 31 - walking from every spawn across the real clearing preserves body and camera clearance
+ok 32 - the full five-soldier encounter completes on the actual map with unique deaths
+ok 33 - a pursuer routes around the actual ruin rather than attacking through its walls
+ok 34 - reinforcements have enough safe reachable positions across the actual clearing
+ok 35 - E2.1 gate: towers keep the wall foot passable, the arch mouth open and their stone solid
+ok 36 - E2.3 explanada: siege remains leave the road, the ronda, the clearing and the opening encounter free
+ok 37 - E3.1 surfaces: every sector has a ground character and puddles stay off clearings and collision
+# tests 37
+# pass 37
+# fail 0

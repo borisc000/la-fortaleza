@@ -1,0 +1,14 @@
+{
+  "fecha": "2026-11-18",
+  "metodo": "Misma página de revisión y encuadres que E2.1: createWorld real con materiales y HDR, 1440x900, pixelRatio 1, sin contar personajes. Panel del navegador oculto; tiempos orientativos. El coste del sombreado por píxel no se midió.",
+  "antes_E2_1": { "mallasFusionadas": 24, "obstaculos": 861, "triangulos": 259442 },
+  "despues_E2_2": { "mallasFusionadas": 24, "obstaculos": 861, "triangulos": 260070, "construccionMs": 3007 },
+  "materiales": {
+    "piedra": { "color": "0xcac9c3", "normalScale": 0.9, "variacion": 1, "suciedadPie": 0.42, "alturaHumedad": 1.5, "musgo": 0.42, "superior": 0.45, "regueros": 0.2 },
+    "remate": { "color": "0xa9a89d", "desgaste": "piedra" },
+    "torreDelHomenaje": { "color": "0x8f9291", "desgaste": "piedra" },
+    "madera": { "color": "0xb3a797", "variacion": 0.8, "suciedadPie": 0.35, "alturaHumedad": 0.8, "musgo": 0.3, "superior": 0.3, "regueros": 0.12 },
+    "hierro": { "color": "0x3a403e", "metalness": 0.75, "roughness": 0.6, "oxido": 0.5 },
+    "hollin": { "fuentes": 2, "intensidad": 0.6, "origen": "antorchas de la puerta" }
+  }
+}

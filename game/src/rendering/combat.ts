@@ -1,211 +1,68 @@
 import { damageLabels, damageScale, damageTone, DAMAGE_TONES } from './damage-labels.ts';
 import type { DamageTone } from './damage-labels.ts';
+import { createBasicImpact } from './basic-impact.ts';
 import { createHordeView } from './horde.ts';
 import * as THREE from 'three';
-import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { WHIRLWIND, IMPETUS } from '../content/combat.ts';
 import { WARRIOR } from '../content/classes/warrior.ts';
 import type { ClassDefinition } from '../content/class-definition.ts';
 import type { Combat, CombatEvent, Enemy } from '../domain/combat.ts';
 import { ELEMENTS } from '../content/elements.ts';
-import { ENEMIES, actionStats, CHARGE } from '../content/enemies.ts';
+import { ENEMIES, actionStats, isGroundAttack } from '../content/enemies.ts';
 import type { EnemyKind } from '../content/enemies.ts';
+import { createCastellanWarning } from './castellan-warning.ts';
+import { type ArticulatedEnemy, buildEnemyParts, type EnemyPartCache } from './enemy-model.ts';
 
 const UNIT_BOX = new THREE.BoxGeometry(1, 1, 1);
-type PartCache = Map<EnemyKind, Map<string, THREE.BufferGeometry>>;
-const BOX = () => new THREE.BoxGeometry(1, 1, 1),
-  BALL = () => new THREE.SphereGeometry(1, 10, 8);
-const ROD = () => new THREE.CylinderGeometry(1, 1, 1, 7),
-  CONE = () => new THREE.CylinderGeometry(0, 1, 1, 7);
 
-/**
- * Static geometry for one enemy kind, merged per articulated group and material.
- * Slots: body, leg0/leg1, arm0 (left) / arm1 (right, weapon). Materials: bone, iron, cloth, dark and glow.
- * Merging keeps a full silhouette at roughly a dozen draw calls per enemy instead of one per primitive.
- */
-function enemyGeometry(kind: EnemyKind) {
-  const buckets = new Map<string, THREE.BufferGeometry[]>();
-  const put = (
-    slot: string,
-    mat: string,
-    g: THREE.BufferGeometry,
-    x: number,
-    y: number,
-    z: number,
-    sx: number,
-    sy: number,
-    sz: number,
-    rx = 0,
-    rz = 0,
-  ) => {
-    g.scale(sx, sy, sz);
-    if (rx) g.rotateX(rx);
-    if (rz) g.rotateZ(rz);
-    g.translate(x, y, z);
-    const key = `${slot}:${mat}`;
-    if (!buckets.has(key)) buckets.set(key, []);
-    buckets.get(key)!.push(g);
-  };
-  const armoured = kind !== 'archer',
-    heavy = kind === 'charger' || kind === 'elite' || kind === 'boss',
-    lord = kind === 'elite' || kind === 'boss';
-  for (const [i, sign] of [
-    [0, -1],
-    [1, 1],
-  ] as const) {
-    const leg = `leg${i}`,
-      arm = `arm${i}`;
-    put(leg, 'bone', ROD(), 0, -0.23, 0, 0.052, 0.43, 0.052);
-    put(leg, 'bone', BALL(), 0, -0.44, 0, 0.075, 0.07, 0.075);
-    put(leg, 'bone', ROD(), 0, -0.64, 0.01, 0.043, 0.37, 0.043);
-    put(leg, 'iron', BOX(), 0, -0.81, -0.055, 0.13, 0.12, 0.27);
-    if (armoured) {
-      put(leg, 'iron', BOX(), 0, -0.62, -0.035, 0.105, 0.3, 0.05);
-      put(leg, 'iron', BALL(), 0, -0.44, -0.05, 0.07, 0.065, 0.05);
-    } else put(leg, 'cloth', BOX(), 0, -0.66, 0, 0.1, 0.2, 0.1);
-    put(arm, 'bone', ROD(), sign * 0.03, -0.17, 0, 0.045, 0.29, 0.045);
-    put(arm, 'bone', ROD(), sign * 0.04, -0.41, -0.06, 0.04, 0.25, 0.04, 0.25);
-    put(arm, 'bone', BALL(), sign * 0.04, -0.55, -0.085, 0.052, 0.07, 0.06);
-    // Shoulders: bare joint, a single worn pauldron, or full spiked plates.
-    if (heavy) {
-      put(arm, 'iron', BALL(), sign * 0.02, 0.02, 0, 0.16, 0.115, 0.16);
-      put(arm, 'iron', BOX(), sign * 0.05, -0.1, 0, 0.2, 0.05, 0.22);
-      if (kind !== 'elite') put(arm, 'iron', CONE(), sign * 0.09, 0.17, 0, 0.04, 0.18, 0.04, 0, -sign * 0.45);
-    } else if (kind === 'soldier' && sign === 1) put(arm, 'iron', BALL(), 0, 0.01, 0, 0.125, 0.095, 0.125);
-    else put(arm, 'bone', BALL(), 0, 0, 0, 0.1, 0.085, 0.1);
-    if (armoured) put(arm, 'iron', BOX(), sign * 0.04, -0.4, -0.065, 0.075, 0.2, 0.075, 0.25);
-  }
-  // Rib cage, spine, pelvis and skull shared by every kind.
-  put('body', 'cloth', BOX(), 0, 0.87, 0.02, 0.35, 0.28, 0.24);
-  put('body', 'bone', ROD(), 0, 1.17, 0.035, 0.045, 0.52, 0.045);
-  for (let i = 0; i < 4; i++) put('body', 'bone', BALL(), 0, 1.11 + i * 0.075, -0.035, 0.21 - i * 0.013, 0.024, 0.11);
-  put('body', 'bone', BOX(), 0, 1.4, -0.035, 0.42, 0.035, 0.06);
-  put('body', 'bone', BALL(), 0, 1.6, -0.09, 0.12, 0.14, 0.11);
-  put('body', 'bone', BOX(), 0, 1.49, -0.115, 0.13, 0.055, 0.11);
-  for (const sign of [-1, 1]) put('body', 'dark', BALL(), sign * 0.048, 1.61, -0.184, 0.031, 0.033, 0.025);
-  put('body', 'dark', BOX(), 0, 1.56, -0.196, 0.028, 0.04, 0.02);
-  // Ragged tabard: uneven strips below the belt read as torn cloth from the game camera.
-  put('body', 'cloth', BOX(), 0, 1.0, -0.125, 0.22, 0.46, 0.02);
-  put('body', 'dark', BOX(), 0, 0.99, -0.02, 0.37, 0.05, 0.27);
-  put('body', 'cloth', BOX(), -0.06, 0.66, -0.128, 0.09, 0.22, 0.018);
-  put('body', 'cloth', BOX(), 0.055, 0.7, -0.128, 0.075, 0.14, 0.018);
-  put('body', 'cloth', BOX(), 0.03, 0.68, 0.14, 0.2, 0.2, 0.018);
+const ENEMY_PALETTES = {
+  soldier: { bone: 0xbdb49d, iron: 0x64685d, cloth: 0x666146, dark: 0x383331 },
+  archer: { bone: 0xc6beaa, iron: 0x606b70, cloth: 0x405765, dark: 0x4e3e33 },
+  charger: { bone: 0xa99a7a, iron: 0x644b46, cloth: 0x77382c, dark: 0x372c27 },
+  hunter: { bone: 0xc7a89a, iron: 0x694958, cloth: 0x893758, dark: 0x3a2938 },
+  elite: { bone: 0xb8aa8a, iron: 0x696055, cloth: 0x7b5d39, dark: 0x41362c },
+  boss: { bone: 0xc2b4ab, iron: 0x64586a, cloth: 0x64475d, dark: 0x322937 },
+};
+const CROSSBOW_SUPPORT = new THREE.Quaternion().setFromUnitVectors(
+  new THREE.Vector3(-0.04, -0.55, -0.105).normalize(),
+  new THREE.Vector3(0.38, -0.135, -0.41).normalize(),
+);
 
-  if (kind === 'soldier') {
-    // Kettle hat, round shield and an arming sword.
-    put('body', 'iron', BALL(), 0, 1.71, -0.065, 0.135, 0.085, 0.13);
-    put('body', 'iron', BOX(), 0, 1.68, -0.07, 0.31, 0.035, 0.28);
-    put('body', 'cloth', BOX(), 0.08, 1.18, 0.085, 0.14, 0.44, 0.1, 0, -0.2);
-    put('arm0', 'dark', ROD(), -0.07, -0.42, -0.15, 0.21, 0.035, 0.21, Math.PI / 2);
-    put('arm0', 'iron', BALL(), -0.07, -0.42, -0.175, 0.06, 0.06, 0.04);
-    put('arm0', 'iron', ROD(), -0.07, -0.42, -0.158, 0.215, 0.02, 0.215, Math.PI / 2);
-    put('arm1', 'dark', BOX(), 0.04, -0.55, -0.085, 0.035, 0.18, 0.035);
-    put('arm1', 'iron', BOX(), 0.04, -0.65, -0.085, 0.2, 0.035, 0.045);
-    put('arm1', 'iron', BOX(), 0.04, -0.93, -0.085, 0.055, 0.52, 0.018);
-    put('arm1', 'iron', CONE(), 0.04, -1.22, -0.085, 0.028, 0.07, 0.01, Math.PI);
-  }
-  if (kind === 'archer') {
-    // Hood and cowl, belt quiver and a crossbow with prod, string and stirrup.
-    put('body', 'cloth', BALL(), 0, 1.63, -0.045, 0.15, 0.17, 0.155);
-    put('body', 'cloth', BOX(), 0, 1.44, -0.01, 0.46, 0.07, 0.27);
-    put('body', 'cloth', BOX(), 0, 1.36, 0.1, 0.3, 0.34, 0.06);
-    put('body', 'cloth', CONE(), 0, 1.78, 0.1, 0.07, 0.2, 0.07, -1.1);
-    put('body', 'dark', ROD(), -0.2, 0.92, 0.12, 0.055, 0.32, 0.055, 0, 0.3);
-    for (const dx of [-0.02, 0.015, 0.04])
-      put('body', 'bone', BOX(), -0.25 + dx, 1.1, 0.12, 0.012, 0.12, 0.012, 0, 0.3);
-    put('arm1', 'dark', BOX(), 0, -0.45, -0.25, 0.07, 0.08, 0.56);
-    put('arm1', 'iron', BOX(), 0, -0.45, -0.46, 0.6, 0.035, 0.05);
-    for (const sign of [-1, 1]) put('arm1', 'iron', BOX(), sign * 0.31, -0.45, -0.43, 0.04, 0.035, 0.09);
-    put('arm1', 'bone', BOX(), 0, -0.45, -0.37, 0.6, 0.01, 0.01);
-    put('arm1', 'iron', BOX(), 0, -0.45, -0.56, 0.09, 0.02, 0.06);
-    put('arm1', 'bone', BOX(), 0, -0.4, -0.3, 0.012, 0.012, 0.34);
-  }
-  if (kind === 'charger') {
-    // Horned, visored helm, a breastplate and a long maul held low.
-    put('body', 'iron', BALL(), 0, 1.71, -0.065, 0.15, 0.1, 0.145);
-    put('body', 'iron', BOX(), 0, 1.675, -0.19, 0.23, 0.05, 0.04);
-    put('body', 'iron', BOX(), 0, 1.545, -0.19, 0.2, 0.09, 0.04);
-    for (const sign of [-1, 1])
-      put('body', 'bone', CONE(), sign * 0.19, 1.81, -0.06, 0.045, 0.26, 0.045, 0, -sign * 0.55);
-    put('body', 'iron', BOX(), 0, 1.32, 0, 0.58, 0.16, 0.32);
-    put('body', 'iron', BOX(), 0, 1.2, -0.07, 0.4, 0.3, 0.22);
-    put('body', 'iron', BOX(), 0, 1.2, -0.185, 0.05, 0.3, 0.03);
-    put('arm1', 'dark', ROD(), 0.04, -0.72, -0.085, 0.028, 1.05, 0.028);
-    put('arm1', 'iron', BOX(), 0.04, -1.22, -0.085, 0.2, 0.2, 0.17);
-    put('arm1', 'iron', CONE(), 0.04, -1.37, -0.085, 0.05, 0.12, 0.05, Math.PI);
-    for (const sign of [-1, 1])
-      put('arm1', 'iron', CONE(), 0.04 + sign * 0.15, -1.22, -0.085, 0.05, 0.12, 0.05, 0, (-sign * Math.PI) / 2);
-  }
-  if (lord) {
-    // Plate, tassets, cloak and the core burning in the rib cage.
-    const boss = kind === 'boss';
-    put('body', 'iron', BOX(), 0, 1.23, -0.03, 0.42, 0.45, 0.26);
-    put('body', 'iron', BOX(), 0, 1.3, -0.165, 0.05, 0.3, 0.03);
-    for (const sign of [-1, 1]) put('body', 'iron', BOX(), sign * 0.13, 0.86, -0.135, 0.17, 0.28, 0.03);
-    put('body', 'cloth', BOX(), 0, boss ? 1.0 : 1.1, 0.2, boss ? 0.62 : 0.48, boss ? 1.08 : 0.85, 0.05);
-    put('body', 'cloth', BOX(), 0, 1.44, 0.03, boss ? 0.66 : 0.5, 0.09, 0.36);
-    put('body', 'iron', ROD(), 0, 1.25, -0.166, 0.1, 0.03, 0.1, Math.PI / 2);
-    put('body', 'glow', BALL(), 0, 1.25, -0.175, 0.07, 0.07, 0.035);
-    put('body', 'iron', BALL(), 0, 1.71, -0.065, 0.14, 0.09, 0.135);
-    if (boss) {
-      // Crown of spikes over an open helm, hollow eyes alight.
-      for (let i = -2; i <= 2; i++)
-        put(
-          'body',
-          'iron',
-          CONE(),
-          i * 0.058,
-          1.87 - Math.abs(i) * 0.012,
-          -0.07,
-          0.022,
-          0.24 - Math.abs(i) * 0.035,
-          0.022,
-        );
-      put('body', 'iron', ROD(), 0, 1.76, -0.065, 0.145, 0.04, 0.14);
-      for (const sign of [-1, 1]) put('body', 'glow', BALL(), sign * 0.048, 1.61, -0.196, 0.02, 0.022, 0.016);
-    } else {
-      put('body', 'iron', BOX(), 0, 1.68, -0.07, 0.29, 0.035, 0.27);
-      put('body', 'cloth', BOX(), 0, 1.86, -0.01, 0.04, 0.16, 0.28);
-    }
-    const length = boss ? 1.05 : 0.85;
-    put('arm1', 'dark', BOX(), 0.04, -0.55, -0.085, 0.04, 0.22, 0.04);
-    put('arm1', 'iron', BOX(), 0.04, -0.66, -0.085, boss ? 0.32 : 0.25, 0.04, 0.05);
-    put('arm1', 'iron', BOX(), 0.04, -0.68 - length / 2, -0.085, 0.075, length, 0.022);
-    put('arm1', 'iron', CONE(), 0.04, -0.68 - length - 0.05, -0.085, 0.038, 0.1, 0.012, Math.PI);
-    put('arm1', 'iron', BALL(), 0.04, -0.44, -0.085, 0.04, 0.04, 0.04);
-  }
-  const merged = new Map<string, THREE.BufferGeometry>();
-  for (const [key, list] of buckets) {
-    merged.set(key, mergeGeometries(list)!);
-    for (const g of list) g.dispose();
-  }
-  return merged;
-}
-
-/** Articulated undead soldier; every kind shares the skeleton and adds its own kit, deliberately distinct from the hero. */
-function skeleton(cache: PartCache, kind: EnemyKind) {
+/** Reuse the merged geometry within a fight. Each actor owns its hit and spawn materials. */
+function skeleton(cache: EnemyPartCache, kind: Exclude<EnemyKind, 'thrall'>) {
   const stats = ENEMIES[kind];
-  if (!cache.has(kind)) cache.set(kind, enemyGeometry(kind));
-  const parts = cache.get(kind)!;
+  const model = kind === 'hunter' ? 'charger' : kind;
+  let parts = cache.get(model);
+  if (!parts) {
+    parts = buildEnemyParts(model);
+    cache.set(model, parts);
+  }
   const root = new THREE.Group(),
     body = new THREE.Group();
+  root.name = stats.name;
+  body.name = 'Cuerpo';
   root.add(body);
-  const bone = new THREE.MeshStandardMaterial({ color: 0xc4b99d, roughness: 0.92 });
+  const tint = ENEMY_PALETTES[kind];
+  const bone = new THREE.MeshStandardMaterial({ color: tint.bone, vertexColors: true, roughness: 0.87 });
   const iron = new THREE.MeshStandardMaterial({
-    color: kind === 'boss' ? 0x3a3340 : 0x4c514a,
-    roughness: 0.7,
-    metalness: 0.55,
+    color: tint.iron,
+    vertexColors: true,
+    roughness: 0.69,
+    metalness: 0.33,
   });
-  const cloth = new THREE.MeshStandardMaterial({ color: stats.color, roughness: 1 });
-  const dark = new THREE.MeshStandardMaterial({ color: 0x161c17, roughness: 1 });
-  const glow = new THREE.MeshBasicMaterial({ color: kind === 'boss' ? 0xb98cff : 0xffd27a });
-  const materials = [bone, iron, cloth, dark],
-    lookup: Record<string, THREE.Material> = { bone, iron, cloth, dark, glow };
+  const cloth = new THREE.MeshStandardMaterial({ color: tint.cloth, vertexColors: true, roughness: 0.96 });
+  const dark = new THREE.MeshStandardMaterial({ color: tint.dark, vertexColors: true, roughness: 0.89 });
+  const glow = new THREE.MeshBasicMaterial({
+    color: kind === 'boss' ? 0xd3a9fb : kind === 'hunter' ? 0xff789d : 0xffc76b,
+    vertexColors: true,
+  });
+  const materials = [bone, iron, cloth, dark];
+  const lookup = { bone, iron, cloth, dark, glow };
   const legs: THREE.Group[] = [],
     arms: THREE.Group[] = [];
   for (const sign of [-1, 1]) {
     const leg = new THREE.Group();
-    leg.position.set(sign * 0.13, 0.88, 0);
+    leg.position.set(sign * (model === 'charger' ? 0.148 : 0.13), 0.88, 0);
     body.add(leg);
     legs.push(leg);
     const arm = new THREE.Group();
@@ -213,13 +70,12 @@ function skeleton(cache: PartCache, kind: EnemyKind) {
     body.add(arm);
     arms.push(arm);
   }
-  for (const [key, geometry] of parts) {
-    const [slot, mat] = key.split(':'),
-      parent = slot === 'body' ? body : slot.startsWith('leg') ? legs[Number(slot[3])] : arms[Number(slot[3])];
-    const m = new THREE.Mesh(geometry, lookup[mat]);
-    m.castShadow = mat !== 'glow';
-    m.receiveShadow = mat !== 'glow';
-    parent.add(m);
+  const slots = { body, leg0: legs[0], leg1: legs[1], arm0: arms[0], arm1: arms[1] };
+  for (const { slot, material, geometry } of parts) {
+    const m = new THREE.Mesh(geometry, lookup[material]);
+    m.castShadow = material !== 'glow';
+    m.receiveShadow = material !== 'glow';
+    slots[slot].add(m);
   }
   const mesh = (
     parent: THREE.Group,
@@ -265,6 +121,7 @@ function skeleton(cache: PartCache, kind: EnemyKind) {
   fan.rotation.x = -Math.PI / 2;
   fan.position.y = 0.04;
   root.add(fan);
+  const groundWarning = kind === 'boss' ? createCastellanWarning(root) : undefined;
   const spawnMaterial = new THREE.MeshBasicMaterial({
     color: 0xcbd4b3,
     transparent: true,
@@ -290,53 +147,75 @@ function skeleton(cache: PartCache, kind: EnemyKind) {
     update(enemy: Enemy, dt: number, flash: number, selected: boolean, camera: THREE.Camera) {
       stride += Math.min(enemy.speed, 3) * dt * 3;
       const swing = Math.sin(stride) * Math.min(1, enemy.speed / 1.5);
+      const attack = enemy.attack,
+        data = actionStats(kind, attack?.action);
       legs[0].rotation.x = swing * 0.5;
       legs[1].rotation.x = -swing * 0.5;
-      arms[0].rotation.x = -0.17 - swing * 0.2;
+      arms[0].rotation.set(-0.17 - swing * 0.2, 0, 0);
       arms[1].rotation.set(swing * 0.16, 0, 0);
+      if (kind === 'archer') {
+        arms[0].position.x = -0.25;
+        arms[1].position.x = 0.25;
+      }
       body.rotation.z = enemy.dead ? Math.PI / 2 : 0;
       body.position.y = enemy.dead ? 0.08 : 0;
       body.rotation.x = enemy.dead ? 0 : 0.1;
-      if (enemy.attack) {
-        const data = actionStats(kind, enemy.attack.action),
-          a = enemy.attack.age,
-          progress = THREE.MathUtils.clamp((a - data.windup) / data.active, 0, 1);
-        arms[1].rotation.x = a < data.windup ? -2.1 * Math.min(1, a / 0.25) : -2.1 + progress * 2.4;
-        arms[0].rotation.x = -0.5;
-        if (enemy.attack.action === 'shot' || enemy.attack.action === 'volley') {
-          arms[1].rotation.x = -1.3;
-          arms[0].rotation.x = -1.2;
-        }
-        if (enemy.attack.action === 'charge') {
-          body.rotation.x = 0.3;
-          arms[1].rotation.x = -0.8;
-        }
-        if (enemy.attack.action === 'slam') {
+      if (attack && !enemy.dead) {
+        const a = attack.age;
+        const progress = THREE.MathUtils.clamp((a - data.windup) / data.active, 0, 1);
+        if (attack.action === 'shot') {
+          const aim =
+            THREE.MathUtils.smoothstep(a, 0, 0.24) * (1 - THREE.MathUtils.smoothstep(a, data.windup, data.duration));
+          // Tuck the shoulders toward the stock so the left hand supports the receiver.
+          arms[0].position.x += 0.025 * aim;
+          arms[1].position.x -= 0.08 * aim;
+          arms[1].rotation.x = THREE.MathUtils.lerp(swing * 0.16, 1.2, aim);
+          arms[0].quaternion.slerp(CROSSBOW_SUPPORT, aim);
+        } else if (attack.action === 'volley') {
+          arms[1].rotation.x = 0.68;
+          arms[0].rotation.x = 1.48;
+        } else if (attack.action === 'charge') {
+          body.rotation.x = THREE.MathUtils.lerp(-0.12, -0.32, progress);
+          arms[0].rotation.x = 0.88;
+          arms[1].rotation.x = 0.66;
+        } else if (attack.action === 'slam') {
           arms[1].rotation.x = a < data.windup ? -2.7 : 0.5;
           arms[0].rotation.x = arms[1].rotation.x;
+        } else if (isGroundAttack(attack.action)) {
+          const lift = THREE.MathUtils.smoothstep(a, 0, 0.35);
+          arms[0].rotation.set(-2.3 * lift + 1.9 * progress, 0, -0.32 * lift);
+          arms[1].rotation.set(arms[0].rotation.x, 0, -arms[0].rotation.z);
+        } else {
+          arms[1].rotation.x = a < data.windup ? -2.1 * Math.min(1, a / 0.25) : -2.1 + progress * 2.4;
+          arms[0].rotation.x = -0.5;
         }
       }
       root.visible = !enemy.dead || enemy.deathAge < 1.6;
       spawnRing.visible = enemy.spawnRemaining > 0;
       spawnRing.scale.setScalar(1 + enemy.spawnRemaining * 0.5);
-      const attack = enemy.attack,
-        data = actionStats(kind, attack?.action),
-        preparing = !!attack && attack.age < data.windup;
+      const preparing = !!attack && attack.age < data.windup;
       const showing = !enemy.dead && !!attack && attack.age < data.windup + data.active;
       warning.visible = showing && (!attack?.action || attack.action === 'melee');
       circle.visible = showing && attack?.action === 'slam';
       circle.scale.setScalar(data.range + 0.4);
       lane.visible = !enemy.dead && preparing && (attack?.action === 'shot' || attack?.action === 'charge');
-      const length = attack?.action === 'charge' ? CHARGE.length : stats.range;
+      const length = data.range;
       lane.scale.set(attack?.action === 'charge' ? 2 * (enemy.radius + 0.4) : 0.12, length, 1);
       lane.position.z = -length / 2;
       fan.visible = !enemy.dead && preparing && attack?.action === 'volley';
+      groundWarning?.update(enemy.dead ? undefined : attack);
       warningMat.color.set(
         !preparing ? 0xbd4435 : attack?.action === 'shot' || attack?.action === 'volley' ? 0x80c7dc : 0xc68032,
       );
       warningMat.opacity = preparing ? 0.2 + (0.3 * attack!.age) / data.windup : 0.45;
       bar.visible =
-        !enemy.dead && (selected || enemy.hp < enemy.maxHp || !!enemy.attack || kind === 'elite' || kind === 'boss');
+        !enemy.dead &&
+        (selected ||
+          enemy.hp < enemy.maxHp ||
+          !!enemy.attack ||
+          kind === 'hunter' ||
+          kind === 'elite' ||
+          kind === 'boss');
       bar.quaternion.copy(root.quaternion).invert().multiply(camera.quaternion);
       const fraction = enemy.hp / enemy.maxHp;
       hp.scale.x = 0.63 * fraction;
@@ -352,6 +231,7 @@ function skeleton(cache: PartCache, kind: EnemyKind) {
       }
     },
     dispose() {
+      groundWarning?.dispose();
       [...materials, glow, warningMat, spawnMaterial, backMaterial, hpMaterial].forEach(m => m.dispose());
       [warning, circle, lane, fan, spawnRing].forEach(m => m.geometry.dispose());
     },
@@ -359,15 +239,15 @@ function skeleton(cache: PartCache, kind: EnemyKind) {
 }
 
 /** Isolated inspection of the same enemy geometry used in combat, without HUD or warnings. */
-export function createEnemyModelPreview(kind: Exclude<EnemyKind, 'thrall'>) {
-  const cache: PartCache = new Map();
+export function createEnemyModelPreview(kind: ArticulatedEnemy) {
+  const cache: EnemyPartCache = new Map();
   const view = skeleton(cache, kind);
   for (const child of view.root.children.slice(1)) child.visible = false;
   return {
     root: view.root,
     dispose() {
       view.dispose();
-      for (const g of cache.get(kind)!.values()) g.dispose();
+      for (const { geometry } of cache.get(kind)!) geometry.dispose();
     },
   };
 }
@@ -376,7 +256,9 @@ export function createCombatView(scene: THREE.Scene, definition: ClassDefinition
   const root = new THREE.Group();
   scene.add(root);
   const horde = createHordeView(root);
-  const partCache: PartCache = new Map();
+  const basicImpact = createBasicImpact(definition.id);
+  root.add(basicImpact.mesh);
+  const partCache: EnemyPartCache = new Map();
   const enemies = new Map<number, ReturnType<typeof skeleton>>();
   const flashes = new Map<number, number>();
   const numbers: Array<{ sprite: THREE.Sprite; age: number; size: number; drift: number }> = [];
@@ -403,7 +285,10 @@ export function createCombatView(scene: THREE.Scene, definition: ClassDefinition
   slash.rotation.x = -Math.PI / 2;
   slash.visible = false;
   const slashRoot = new THREE.Group();
-  slashRoot.add(slash);
+  const bladeLight = new THREE.MeshBasicMaterial({ color: 0xfff0d1, transparent: true, depthWrite: false });
+  const bladeTrace = new THREE.Mesh(new THREE.OctahedronGeometry(1), bladeLight);
+  bladeTrace.visible = false;
+  slashRoot.add(slash, bladeTrace);
   root.add(slashRoot);
   const spinRoot = new THREE.Group();
   root.add(spinRoot);
@@ -417,7 +302,13 @@ export function createCombatView(scene: THREE.Scene, definition: ClassDefinition
   });
   const pulseMaterial = spinMaterial.clone();
   pulseMaterial.opacity = 0.22;
-  const spinGeometry = new THREE.RingGeometry(WHIRLWIND.radius * 0.72, WHIRLWIND.radius, 28, 1, 0, Math.PI * 0.75);
+  const spinGeometry = new THREE.RingGeometry(WHIRLWIND.radius * 0.9, WHIRLWIND.radius, 28, 1, 0, Math.PI * 0.72);
+  // Thin the trailing edge while keeping the leading edge at the real hit radius.
+  const vertices = spinGeometry.attributes.position;
+  for (let i = 0; i < 29; i++) {
+    const width = 0.012 + 0.088 * (i / 28) ** 2;
+    vertices.setXY(i, vertices.getX(i + 29) * (1 - width), vertices.getY(i + 29) * (1 - width));
+  }
   for (let i = 0; i < 2; i++) {
     const arc = new THREE.Mesh(spinGeometry, spinMaterial);
     arc.rotation.x = -Math.PI / 2;
@@ -464,9 +355,10 @@ export function createCombatView(scene: THREE.Scene, definition: ClassDefinition
     numbers.length = 0;
   }
   return {
-    events(events: CombatEvent[]) {
+    events(events: CombatEvent[], time: number) {
       for (const event of events)
         if (event.type === 'hit') {
+          basicImpact.hit(event, time);
           flashes.set(event.target, 0.16);
           if (event.target === 0) damageFlash = 0.28;
         }
@@ -494,6 +386,7 @@ export function createCombatView(scene: THREE.Scene, definition: ClassDefinition
       }
     },
     update(combat: Combat, hero: THREE.Vector3, camera: THREE.Camera, alpha: number, dt: number) {
+      basicImpact.update(camera, combat.time);
       if (showEnemies) horde.update(combat.enemies, alpha, combat.time);
       const existing = new Set(combat.enemies.map(e => e.id));
       for (const [id, view] of enemies)
@@ -558,12 +451,34 @@ export function createCombatView(scene: THREE.Scene, definition: ClassDefinition
         slashArc = currentArc;
       }
       slash.scale.setScalar((combat.attack?.range ?? definition.basic.range) / definition.basic.range);
-      slashRoot.position.copy(hero).y = 0.8;
+      slashRoot.position.copy(hero).y = combat.whirlwind ? 1.28 : 0.8;
       slashRoot.rotation.y = combat.attack?.yaw ?? 0;
       const slashElement = combat.attack?.loadout?.element;
       slashMaterial.color.set(
         slashElement ? ELEMENTS[slashElement].color : (combat.attack?.multiplier ?? 1) > 1 ? 0xf4d68c : 0xe7d7af,
       );
+      bladeTrace.visible = slash.visible && !!combat.attack?.swordStroke;
+      if (combat.attack?.swordStroke && slash.visible) {
+        const progress = THREE.MathUtils.clamp(
+          (combat.attack.age - definition.basic.windup) / definition.basic.active,
+          0,
+          1,
+        );
+        const indices = slash.geometry.index!.count;
+        const count = Math.max(6, Math.ceil((indices * progress) / 6) * 6);
+        slash.geometry.setDrawRange(combat.attack.swordStroke === 'backhand' ? indices - count : 0, count);
+        const thrust = combat.attack.swordStroke === 'thrust';
+        const sweep = combat.attack.swordStroke === 'backhand' ? 1 - progress : progress;
+        const angle = thrust ? 0 : currentArc * (sweep - 0.5);
+        const reach = combat.attack.range ?? definition.basic.range;
+        const tip = thrust ? reach * (0.5 + 0.5 * Math.sin((progress * Math.PI) / 2)) : reach;
+        const length = thrust ? tip * 0.72 : 0.65;
+        bladeTrace.rotation.y = angle;
+        bladeTrace.position.set(-Math.sin(angle) * (tip - length / 2), 0.13, -Math.cos(angle) * (tip - length / 2));
+        bladeTrace.scale.set(thrust ? 0.16 : 0.11, 0.055, length / 2);
+        bladeLight.opacity = 0.94 - 0.42 * progress;
+        if (thrust) slash.visible = false;
+      } else slash.geometry.setDrawRange(0, Infinity);
       slashMaterial.opacity = 0.4 + (combat.impetusStacks / IMPETUS.maxStacks) * 0.18;
       spinRoot.visible = definition.id === 'warrior' && !!combat.whirlwind;
       if (definition.id === 'warrior' && combat.whirlwind) {
@@ -575,18 +490,22 @@ export function createCombatView(scene: THREE.Scene, definition: ClassDefinition
         spinRoot.position.copy(hero);
         spinRoot.rotation.y = combat.whirlwind.yaw - phase * Math.PI * 2;
         const pulsePhase = phase - Math.floor(phase);
-        pulse.scale.setScalar(0.85 + pulsePhase * 0.15);
+        spinMaterial.opacity = 0.24 + 0.42 * (1 - pulsePhase) ** 3;
+        for (const arc of spinRoot.children.slice(0, 2)) arc.scale.setScalar(0.87 + 0.13 * (1 - pulsePhase));
+        pulse.scale.setScalar(0.72 + pulsePhase * 0.28);
         pulseMaterial.opacity = 0.32 * (1 - pulsePhase);
       }
       return { damageFlash: damageFlash / 0.28, heroFlash: (flashes.get(0) ?? 0) / 0.16 };
     },
     reset() {
+      basicImpact.reset();
       horde.reset();
       clearNumbers();
       flashes.clear();
       damageFlash = 0;
       slash.visible = false;
       spinRoot.visible = false;
+      bladeTrace.visible = false;
       for (const enemy of enemies.values()) {
         root.remove(enemy.root);
         enemy.dispose();
@@ -595,12 +514,15 @@ export function createCombatView(scene: THREE.Scene, definition: ClassDefinition
     },
     dispose() {
       this.reset();
+      basicImpact.dispose();
       horde.dispose();
       scene.remove(root);
-      for (const kindParts of partCache.values()) for (const g of kindParts.values()) g.dispose();
+      for (const parts of partCache.values()) for (const { geometry } of parts) geometry.dispose();
       partCache.clear();
       slash.geometry.dispose();
       slashMaterial.dispose();
+      bladeTrace.geometry.dispose();
+      bladeLight.dispose();
       spinGeometry.dispose();
       pulseGeometry.dispose();
       spinMaterial.dispose();

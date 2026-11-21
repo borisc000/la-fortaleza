@@ -1,0 +1,23 @@
+{
+  "fecha": "2026-11-18",
+  "equipo": "ANGLE (AMD Radeon(TM) Graphics 0x1681, Direct3D11), GPU integrada; panel del navegador oculto",
+  "metodo": "Página de revisión con createWorld real, materiales y HDR, 1440x900, pixelRatio 1, sombras PCF. Por encuadre: 6 fotogramas de calentamiento y 40 medidos; cada fotograma es render + lectura de 1 píxel (espera a la GPU). Se da la mediana en ms, el mínimo de 3 rondas sin horda y de 1–2 con horda. No equivale a FPS en partida: no incluye simulación, interfaz ni composición del navegador.",
+  "sinHorda": {
+    "E1": { "cerca": 9.5, "contrapicado": 9.6, "detalle": 9.8, "oblicua-este": 9.6, "oblicua-oeste": 9.6, "media": 8.7, "lejana": 8.5, "aproximacion": 9.0, "escala": 14.2, "explanada-alta": 8.6, "camino": 9.3, "flanco-oeste": 9.5, "flanco-este": 9.5, "suelo": 9.5 },
+    "E2_4": { "cerca": 10.9, "contrapicado": 12.2, "detalle": 11.2, "oblicua-este": 14.1, "oblicua-oeste": 10.7, "media": 10.5, "lejana": 10.6, "aproximacion": 9.7, "escala": 15.6, "explanada-alta": 9.6, "camino": 10.7, "flanco-oeste": 10.6, "flanco-este": 10.6, "suelo": 11.4 },
+    "llamadas": { "E1": 122, "E2_4": 128 },
+    "triangulosPorFotograma": { "E1": 469590, "E2_4": 488132, "nota": "incluye la pasada de sombras" }
+  },
+  "conHorda100": {
+    "E1": { "cerca": 15.3, "contrapicado": 13.2, "detalle": 13.5, "oblicua-este": 16.9, "oblicua-oeste": 17.3, "media": 29.9, "lejana": 23.9, "aproximacion": 19.0, "escala": 16.6, "explanada-alta": 24.3, "camino": 25.0, "flanco-oeste": 12.2, "flanco-este": 19.2, "suelo": 15.3 },
+    "E2_4": { "cerca": 21.2, "contrapicado": 21.6, "detalle": 19.1, "oblicua-este": 23.0, "oblicua-oeste": 19.8, "media": 23.8, "lejana": 21.1, "aproximacion": 19.4, "escala": 26.0, "explanada-alta": 21.7, "camino": 24.2, "flanco-oeste": 16.8, "flanco-este": 20.1, "suelo": 20.5 },
+    "llamadas": "1.500–2.900 en ambos; la horda domina el coste y la variación entre rondas supera la diferencia entre E1 y E2"
+  },
+  "atribucionAntesDeOptimizar": {
+    "nota": "Misma página, quitando primero el sombreado de suelo y después el de desgaste (cerca, media, explanada-alta, suelo)",
+    "conTodo": [14.0, 10.9, 10.9, 13.2],
+    "sinSuelo": [11.1, 9.6, 9.7, 10.9],
+    "sinNinguno": [9.3, 9.5, 9.6, 9.7]
+  },
+  "optimizacion": "Ruido tras las condiciones que lo hacen visible (banda húmeda, caras superiores, hierro, zona de muestra y borde de las cintas), campo de dos octavas reutilizado para tono y tinte, segunda muestra de textura solo dentro de la zona. Diferencia con E1 tras optimizar: mediana +1,4 ms (de +0,7 a +4,5 ms según encuadre)."
+}

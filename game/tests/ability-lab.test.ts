@@ -88,3 +88,110 @@ test('isolated skills suppress basic attacks while support skills deliberately k
     assert.equal(basic, trial.basicEnabled);
   }
 });
+
+test('a sparring hit opens the guard and a break emits exactly one wave before expiry', () => {
+  const trial = createAbilityTrial({
+    ...config('warrior:retaliation'),
+    testGuardHits: true,
+    level: 5,
+    focus: 'specialization',
+  });
+  let damaged = false;
+  const pulses = new Set<string>();
+  for (let i = 0; i < 180; i++) {
+    trial.step();
+    for (const v of trial.kit.presentation) {
+      if ('damageFraction' in v && v.damageFraction === 0.5) damaged = true;
+      if (v.kind === 'guard-wave') pulses.add(v.id);
+    }
+  }
+  assert.ok(damaged);
+  assert.equal(pulses.size, 1);
+  assert.equal(trial.kit.state.barrier, undefined);
+  assert.ok(trial.hits > 0);
+});
+
+test('residual seals flash at each damage pulse and siege trails clear after the projectile ends', () => {
+  const seal = createAbilityTrial({ ...config('mage:detonation'), level: 10, mutation: 1, finisher: 0 });
+  const flashes = new Set<string>();
+  let residual = false;
+  for (let i = 0; i < 120; i++) {
+    seal.step();
+    for (const v of seal.kit.presentation) {
+      if (v.kind === 'seal-flash') flashes.add(v.id);
+      if (v.kind === 'seal' && 'residual' in v && v.residual) residual = true;
+    }
+  }
+  assert.equal(flashes.size, 2);
+  assert.ok(residual);
+  assert.ok(!seal.kit.presentation.some(v => v.kind === 'seal-flash'));
+  const siege = createAbilityTrial(config('archer:siege-shot'));
+  let afterFlight = false;
+  const perforations = new Set<string>();
+  for (let i = 0; i < 60; i++) {
+    siege.step();
+    for (const v of siege.kit.presentation) if (v.kind === 'pierce') perforations.add(v.id);
+    afterFlight ||= !!siege.kit.state.siegeTrail && !siege.kit.state.projectiles?.length;
+  }
+  assert.equal(perforations.size, 3);
+  assert.ok(afterFlight);
+  assert.equal(siege.kit.state.siegeTrail, undefined);
+});
+
+test('crossing a stake triggers its impact on the same step and replay follows the same path', () => {
+  const run = () => {
+    const trial = createAbilityTrial({ ...config('archer:stakes'), testStakeCrossing: true });
+    const crossings: number[] = [];
+    for (let frame = 0; frame < 100; frame++) {
+      const events = trial.step();
+      if (events.some(e => e.type === 'hit' && e.source === 'ability')) {
+        assert.ok(trial.kit.presentation.some(v => v.kind === 'stake-hit' && v.phase === 0));
+        crossings.push(frame);
+      }
+    }
+    return crossings;
+  };
+  const crossings = run();
+  assert.ok(crossings.length > 0);
+  assert.deepEqual(run(), crossings);
+});
+
+test('return arrows mark their turn and mirror echoes appear only on the copied shot', () => {
+  const arrows = createAbilityTrial(config('archer:return-arrows'));
+  let turned = false;
+  for (let frame = 0; frame < 60; frame++) {
+    arrows.step();
+    const returning = arrows.kit.state.projectiles?.filter(p => p.leg === 1) ?? [];
+    if (returning.length && !turned) {
+      assert.ok(arrows.kit.presentation.some(v => v.kind === 'bend' && v.phase === 0));
+      assert.ok(returning.every(p => p.flightOrigin && p.flightOrigin.z === 0));
+      turned = true;
+    }
+  }
+  assert.ok(turned);
+  const mirror = createAbilityTrial(config('mage:mirror'));
+  let copies = 0;
+  for (let frame = 0; frame < 220; frame++) {
+    mirror.step();
+    if (mirror.kit.presentation.some(v => v.kind === 'echo' && v.phase === 0)) {
+      assert.ok(mirror.kit.state.projectiles?.some(p => p.echo && p.age === 0));
+      copies++;
+    }
+  }
+  assert.equal(copies, 1);
+});
+
+test('chain presentation follows both endpoints during recovery without retriggering damage', () => {
+  const trial = createAbilityTrial(config('warrior:war-chain'));
+  trial.step();
+  const first = trial.kit.presentation.find(v => v.kind === 'chain')!;
+  const target = trial.combat.enemies[0];
+  const damage = trial.damage;
+  trial.hero.x += 0.45;
+  target.z -= 0.2;
+  trial.step();
+  const follow = trial.kit.presentation.find(v => v.id === first.id)!;
+  assert.equal(follow.x, (trial.hero.x + target.x) / 2);
+  assert.equal(follow.z, (trial.hero.z + target.z) / 2);
+  assert.equal(trial.damage, damage);
+});

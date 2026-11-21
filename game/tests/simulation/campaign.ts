@@ -44,6 +44,9 @@ export function campaignTest(classId: 'warrior' | 'mage' | 'archer', optional: b
       bought = false;
     const deaths = new Set<number>();
     const kinds = new Set<string>();
+    const incursionWarnings = new Set<number>();
+    const activeIncursions = { siege: new Set<number>(), hunt: new Set<number>() };
+    const hunters = new Set<number>();
     const merchant = run.exploration.objects.find(o => o.kind === 'shop')!;
     const chests = run.exploration.objects.filter(o => o.kind === 'chest').slice(0, 2);
     const desiredSecondary = (['fire', 'water', 'earth', 'air'] as const)[
@@ -100,8 +103,17 @@ export function campaignTest(classId: 'warrior' | 'mage' | 'archer', optional: b
           continue;
         }
         const enemies = run.combat.enemies.filter(e => !e.dead && e.spawnRemaining <= 0);
-        const nearest = <T extends { x: number; z: number }>(items: T[]) =>
-          [...items].sort((a, b) => Math.hypot(a.x - body.x, a.z - body.z) - Math.hypot(b.x - body.x, b.z - body.z))[0];
+        const nearest = <T extends { x: number; z: number }>(items: T[]) => {
+          let best: T | undefined;
+          let bestDistance = Infinity;
+          for (const item of items) {
+            const distance = Math.hypot(item.x - body.x, item.z - body.z);
+            if (distance >= bestDistance) continue;
+            best = item;
+            bestDistance = distance;
+          }
+          return best;
+        };
         const core = run.progression.drops.find(d => d.core);
         const nearbyLoot = nearest(run.progression.drops);
         const excursion =
@@ -121,8 +133,11 @@ export function campaignTest(classId: 'warrior' | 'mage' | 'archer', optional: b
             ? nearbyLoot
             : (run.elite ?? nearest(enemies) ?? nearbyLoot));
         if (target) {
-          nav.update(target);
-          const waypoint = nav.waypoint(body, target);
+          let waypoint: { x: number; z: number } | undefined = target;
+          if (!nav.clearPath(body, target)) {
+            nav.update(target);
+            waypoint = nav.waypoint(body, target);
+          }
           if (waypoint && Math.hypot(body.x - waypoint.x, body.z - waypoint.z) > 0.2) {
             const yaw = Math.atan2(body.x - waypoint.x, body.z - waypoint.z);
             stepMovement(
@@ -142,6 +157,12 @@ export function campaignTest(classId: 'warrior' | 'mage' | 'archer', optional: b
           undefined,
           excursion?.kind === 'shop' || excursion?.kind === 'chest' ? excursion.id : undefined,
         );
+        const incursion = run.incursion;
+        if (incursion) {
+          if (run.combat.time < incursion.at) incursionWarnings.add(incursion.at);
+          else activeIncursions[incursion.kind].add(incursion.at);
+        }
+        if (run.hunter) hunters.add(run.hunter.id);
         if (run.shop.isOpen) {
           assert.equal(run.capture.state, 'completed');
           const offer = run.shop.offers.find(
@@ -188,7 +209,19 @@ export function campaignTest(classId: 'warrior' | 'mage' | 'archer', optional: b
         assert.equal(run.progression.mastery, run.progression.affinityRank === 3);
         assert.ok(run.progression.mastery || run.progression.core, 'Elite core must be collected');
       } else assert.equal(run.progression.mastery, true);
-      assert.deepEqual([...kinds].sort(), ['archer', 'boss', 'charger', 'elite', 'soldier', 'thrall']);
+      assert.deepEqual([...kinds].filter(kind => kind !== 'hunter').sort(), [
+        'archer',
+        'boss',
+        'charger',
+        'elite',
+        'soldier',
+        'thrall',
+      ]);
+      assert.equal(activeIncursions.siege.size, 2);
+      assert.equal(activeIncursions.hunt.size, 1);
+      assert.deepEqual(incursionWarnings, new Set([...activeIncursions.siege, ...activeIncursions.hunt]));
+      assert.equal(hunters.size, 1);
+      assert.equal(run.hunter, undefined);
       assert.ok(peak <= CAMPAIGN.maxEnemies);
       assert.equal(run.progression.pending, 0);
       assert.equal(run.combat.projectiles.items.length, 0);

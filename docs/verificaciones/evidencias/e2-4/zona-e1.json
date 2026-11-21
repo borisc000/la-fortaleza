@@ -1,0 +1,127 @@
+{
+  "world": "E1 (antes de E2)",
+  "obstacles": 856,
+  "movementSolids": 618,
+  "camera": {
+    "cells": 669,
+    "samples": 10704,
+    "min": 0.13,
+    "p5": 4.62,
+    "median": 12,
+    "under6m": 0.06,
+    "obstructed": 0.11,
+    "worst": [
+      {
+        "x": -6,
+        "z": -16,
+        "yaw": 1.57,
+        "distance": 0.13
+      },
+      {
+        "x": -6,
+        "z": -16,
+        "yaw": 1.18,
+        "distance": 0.14
+      },
+      {
+        "x": -6,
+        "z": -16,
+        "yaw": 1.96,
+        "distance": 0.14
+      },
+      {
+        "x": -6,
+        "z": -16,
+        "yaw": 0.79,
+        "distance": 0.2
+      },
+      {
+        "x": -6,
+        "z": -16,
+        "yaw": 2.36,
+        "distance": 0.2
+      }
+    ]
+  },
+  "hordes": [
+    {
+      "name": "explanada",
+      "hero": {
+        "x": 4,
+        "z": -8
+      },
+      "soldiers": 60,
+      "secondsToHalfWithin6m": 4.67,
+      "within4m": 60,
+      "within6m": 60,
+      "within10m": 60,
+      "stuckFarAway": 0,
+      "stuckAt": [],
+      "solidOverlapSamples": 0,
+      "status": "running"
+    },
+    {
+      "name": "boca de la puerta",
+      "hero": {
+        "x": 4,
+        "z": -15.6
+      },
+      "soldiers": 60,
+      "secondsToHalfWithin6m": 5.13,
+      "within4m": 59,
+      "within6m": 59,
+      "within10m": 59,
+      "stuckFarAway": 1,
+      "stuckAt": [
+        {
+          "x": 16.99,
+          "z": -14.54
+        }
+      ],
+      "solidOverlapSamples": 0,
+      "status": "running"
+    },
+    {
+      "name": "flanco este, junto al ariete",
+      "hero": {
+        "x": 15.5,
+        "z": -12.5
+      },
+      "soldiers": 60,
+      "secondsToHalfWithin6m": 5.2,
+      "within4m": 59,
+      "within6m": 59,
+      "within10m": 59,
+      "stuckFarAway": 1,
+      "stuckAt": [
+        {
+          "x": 1.94,
+          "z": -18.92
+        }
+      ],
+      "solidOverlapSamples": 0,
+      "status": "running"
+    },
+    {
+      "name": "flanco oeste, junto a la escala",
+      "hero": {
+        "x": -16,
+        "z": -12.5
+      },
+      "soldiers": 60,
+      "secondsToHalfWithin6m": 5.58,
+      "within4m": 59,
+      "within6m": 59,
+      "within10m": 59,
+      "stuckFarAway": 1,
+      "stuckAt": [
+        {
+          "x": 5.02,
+          "z": -18.98
+        }
+      ],
+      "solidOverlapSamples": 0,
+      "status": "running"
+    }
+  ]
+}
